@@ -1,0 +1,22 @@
+# Coding questions
+
+1. Write class for trie and searching in a trie  
+
+2. Find the least common ancestor of given two nodes in a tree 
+
+3. Output binary tree by level 
+ 
+4. (C1) Given a binary tree, print all the leaf nodes.   
+   (C2) Now, print all the left most nodes, and all right most nodes ( assume there is a triangle around the binary tree, so all nodes which falls on that triangle , print them in clockwise ordering).
+   C1: Leaf nodes: Preorder traversal limited to leaves.
+   C2: Left side: Preorder traversal limited to nodes which matches certain criteria.
+   Right side: Only visit those nodes that meet certain criteria - Post Order traversal.
+   
+5. (D1) Given an array which contains series of 0s and series of 1s, find the index where 1s start.
+   How would you test this method?
+   (D2) Assume input array has infinite length, how will you find the index in O(logn) time?
+   D1: binary search O(logN)
+   Testcases: null array, empty array, array with just one element - 0, array with just one element - 1.
+   Array with only 0s. array with only 1s. 5 element array with 2 0s and 3 1s, array with numbers other then 0 and 1.
+   D2: 2 step process: (i) Find the block in which transition from 0 to 1 happens. (ii)Then find the exact index within that block.
+   For #i, consider first block with size K, if no transition in this block, then check next block with size 2K, then 4K, then 8K. Once we find the block with transition then step#ii is simple binary search.   

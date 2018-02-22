@@ -1,7 +1,9 @@
 /*
  * Swap every other element in a linked list. e.g. a->b->c->d becomes b->a->d->c 
  * 
- * Source: https://www.youtube.com/watch?v=jiLloHVmLDc
+ * Source: 
+ * https://www.youtube.com/watch?v=jiLloHVmLDc
+ * https://www.geeksforgeeks.org/pairwise-swap-elements-of-a-given-linked-list-by-changing-links/
  * 
  * TC: O(n)  
  */

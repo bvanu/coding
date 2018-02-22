@@ -1,4 +1,27 @@
 # Design questions
 
 1. How would you design a software system that controls a traffic signal? Draw the system on the white board.  
+
 2. Design a system to count in a sliding window.
+
+3. What would an API look like for the interactions between a plane and air traffic control.
+
+4. OO design: Black Jack Game. 
+
+5. System design: Amazon video subscription.
+
+6. Design Amazon locker system
+
+7. (A1) Design a single machine, single user system for hotel table reservations. Constraints: assume 16 tables with capacity 4, 16 tables with capacity 8. Can book for just 1 hr. Max 2 months in advance. Which classes, which data-stuctures? 
+   (A2) What happens when a party of 16 requests for a table. You can join tables which are next to each other. Implement this.
+   A1. Array of size 32. Each element in the array contains linkedList sorted by startTime where each link represents timeslot that is already booked/reserved.
+   A2. Get a list of tables which are available in the requested time period, check if there is a contiguous set of tables which total up to 16 and then reserve those tables.
+
+8. (B1) Design a deck of cards.
+   (B2) Now assume 10 million users are using this card deck.
+   B1. Deck class. Card class. Suit enum. Value Enum. Card contains Value and Suit enums. Deck contains an array of 52 cards. Constructor of Deck initializes 52 card class.
+   Card should expose comparable interface.
+   Deck should expose Shuffle and iterator interface.
+   Some considerations: Should Deck be singleton? Should Deck be made generic to accept different types of cards? Should Desk be made threadsafe?
+   B2. If there are 10 million users on the same machine using 10 million Decks, then we don't really need 520 million cards.
+   Each Card instance is immutable. So we just need 52 card instances which are shared between 10 million Decks.
