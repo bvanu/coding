@@ -1,4 +1,4 @@
-package amazonsde2;
+package amzn2;
 
 public class HelloAmazon {
 	public static void main(String[] args) {

@@ -3,7 +3,7 @@
  * TC: O(3^n)
  */
 
-package amazonsde2;
+package amzn2;
 
 import java.util.*;
 

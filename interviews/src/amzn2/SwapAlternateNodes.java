@@ -7,7 +7,7 @@
  * 
  * TC: O(n)  
  */
-package amazonsde2;
+package amzn2;
 
 class Node
 {

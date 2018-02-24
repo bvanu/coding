@@ -8,7 +8,7 @@
  * TC: O(nlogn)
  */
 
-package amazonsde2;
+package amzn2;
 
 class TreeNode
 {
