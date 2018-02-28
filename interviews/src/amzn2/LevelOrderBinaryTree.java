@@ -10,6 +10,7 @@
  * Output: [[14], [5, 9], [4, 1, 3, 6]]
  * 
  * TC: O(n) have to touch each element
+ * SC: O(1)
  */
 package amzn2;
 
