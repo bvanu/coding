@@ -15,3 +15,37 @@
    Array with only 0s. array with only 1s. 5 element array with 2 0s and 3 1s, array with numbers other then 0 and 1.
    D2: 2 step process: (i) Find the block in which transition from 0 to 1 happens. (ii)Then find the exact index within that block.
    For #i, consider first block with size K, if no transition in this block, then check next block with size 2K, then 4K, then 8K. Once we find the block with transition then step#ii is simple binary search.   
+
+6. Given 2 array of size m , n , find the pair from diff array with minimum difference 
+
+7. given an array of Strings , not necessarily in any order , find out if the string create a chain , such that first last char of a string is the first character of another and thus making a chain including at least all string
+
+8. Coin denomination problem
+
+9. LRU Cache
+
+10. Print binary tree in zigzag order (http://articles.leetcode.com/printing-binary-tree-in-zig-zag-level_18/)
+
+11. Difference/explain all kinds of sorting
+
+12. I have a number in mind. Can you tell your approach to find it? 
+
+13. How do you split a string into meaning ful words? ex: icandoit -> i can do it
+
+14. Find an element in rotated sorted array 
+
+15. Find nth non repeating character in a stream 
+
+16. Given a string. Suppose all its characters can be jumbled up and all possible strings are arranged in an alphabetical order. Now given a number n, find the nth word in the ordered list of words.
+
+17. Make biggest Palindrome of the string. String contains on digits.String can have digits starting from 0.
+
+18. Regular Expression.
+
+19. Clone of linked list having random pointer. 
+
+20. Topological sorting 
+
+21. Given an unsorted array, find kth minimum element. They need best solution. Sorting array is nlogn complexity . They dont agree for it. 
+
+30. Dynamic programming, backtracking, matrix traversal, optimal sub-sequence, longest continuous path in a matrix

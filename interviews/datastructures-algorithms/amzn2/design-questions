@@ -25,3 +25,45 @@
    Some considerations: Should Deck be singleton? Should Deck be made generic to accept different types of cards? Should Desk be made threadsafe?
    B2. If there are 10 million users on the same machine using 10 million Decks, then we don't really need 520 million cards.
    Each Card instance is immutable. So we just need 52 card instances which are shared between 10 million Decks.
+
+ 9. Design distributed cache
+ 
+10. How will you built a query service for all the stakeholders responsible for delivery of product.
+ 
+11. How to handle server scaling up to sudden increased of request 
+ 
+12. How to handle scaling the data
+
+13. Design BookMyShow tables.
+
+14. 2 . Given a party with n people , a given function Knows() , such that
+	A knows B : true if a knows B
+	A Celebrity would be a person who knows no one but is known by all
+	Find out the celebrity if he exists in the party. I would like the mail id to be kept confidential.
+	
+15. To implement trending in twitter
+
+16. Design questions on email client, how to maintain contact list, attachments etc.
+
+17. Find top 10 most frequent words from tweeter feeds based on minute, day
+
+18. Given a graph of social network like facebook, write a program to determine how many Ads needs to be pushed to reach entire network.
+
+19. Some of the most common design questions i have come across:
+	1. Elevator
+	2. Facebook like Social Network
+	3. Twitter like Microblogging website
+	4. ATM Machine
+	5. Amazon like shopping cart website for general users
+	6. Blogging website
+	7. Google docs like online collaboration document
+	8. Youtube like online video streaming website.
+	9. JIRA like project management system
+	10. Quora or Yahoo answers like question answers website
+	11. Online food delivery like foodpanda
+	12. Game(human vs human) of chess, sudoku, tic tac toe etc.
+	
+20. Source
+	- https://www.educative.io/collection/5668639101419520/5649050225344512
+	- 
+	
