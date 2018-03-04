@@ -1,6 +1,11 @@
 # Coding questions
 # Source: https://www.glassdoor.com/Interview/Amazon-Software-Development-Engineer-II-Interview-Questions-EI_IE6036.0,6_KO7,39_IP2.htm
 
+Must solve:
+https://www.geeksforgeeks.org/amazon-interview-preparation/
+https://www.geeksforgeeks.org/must-do-coding-questions-for-companies-like-amazon-microsoft-adobe/
+DP: https://www.geeksforgeeks.org/top-20-dynamic-programming-interview-questions/
+
 4. (C1) Given a binary tree, print all the leaf nodes.   
    (C2) Now, print all the left most nodes, and all right most nodes ( assume there is a triangle around the binary tree, so all nodes which falls on that triangle, print them in clockwise ordering).
    C1: Leaf nodes: Preorder traversal limited to leaves.
@@ -15,8 +20,6 @@
    Array with only 0s. array with only 1s. 5 element array with 2 0s and 3 1s, array with numbers other then 0 and 1.
    D2: 2 step process: (i) Find the block in which transition from 0 to 1 happens. (ii)Then find the exact index within that block.
    For #i, consider first block with size K, if no transition in this block, then check next block with size 2K, then 4K, then 8K. Once we find the block with transition then step#ii is simple binary search.   
-
-6. Given 2 array of size m , n , find the pair from diff array with minimum difference 
 
 7. given an array of Strings , not necessarily in any order , find out if the string create a chain , such that first last char of a string is the first character of another and thus making a chain including at least all string
 

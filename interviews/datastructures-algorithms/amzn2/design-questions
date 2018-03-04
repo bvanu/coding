@@ -1,5 +1,8 @@
 # Design questions
 
+Grokking the system design interview:
+https://www.educative.io/collection/5668639101419520/5649050225344512
+
 1. How would you design a software system that controls a traffic signal? Draw the system on the white board.  
 
 2. Design a system to count in a sliding window.
@@ -63,7 +66,4 @@
 	11. Online food delivery like foodpanda
 	12. Game(human vs human) of chess, sudoku, tic tac toe etc.
 	
-20. Source
-	- https://www.educative.io/collection/5668639101419520/5649050225344512
-	- 
 	
