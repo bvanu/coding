@@ -1,14 +1,22 @@
 /*
  * Given an unsorted array, find kth minimum element.
  * 
+ * Solved using
+ * 1. Arrays implementing Max heap from scratch
+ * 2. Priority queues
+ * 
  * TC: O(nlogk)
  * SC: O(logk)
  */
 package amzn2;
 
 import java.util.Arrays;
+import java.util.PriorityQueue;
 
 public class KthSmallestElement {
+	/*
+	 * Using arrays
+	 */
 	public int findKthSmallestElement(int[] a, int k) throws Exception
 	{
 		if(a==null || a.length<1 || k>a.length)
@@ -84,6 +92,32 @@ public class KthSmallestElement {
 		return heap;
 	}
 	
+	/*
+	 * Using Priority queue
+	 */
+	public int findKthSmallestUsingPQ(int[] a, int k) throws Exception
+	{
+		if(a==null || a.length<1)
+			throw new IllegalArgumentException();
+		
+		// java 8, lambda expressions
+		PriorityQueue<Integer> maxHeap = new PriorityQueue<Integer>((m,n) -> n-m);
+		
+		for(int i=0; i<k; i++)
+			maxHeap.add(a[i]);
+		
+		for(int i=k; i<a.length; i++)
+		{
+			if(maxHeap.peek()>a[i])
+			{
+				maxHeap.poll();
+				maxHeap.add(a[i]);
+			}
+		}
+		
+		return maxHeap.peek();
+	}
+	
 	public static void main(String[] args) throws Exception
 	{
 		KthSmallestElement ke = new KthSmallestElement();
@@ -92,18 +126,21 @@ public class KthSmallestElement {
 		int[] test1 = {-2, -1, -6}; 
 		k = 3;
 		System.out.println(k + "rd smallest elemnt is " + ke.findKthSmallestElement(test1, k));
+		System.out.println(k + "rd smallest elemnt is " + ke.findKthSmallestUsingPQ(test1, k));
 		Arrays.sort(test1);;
 		System.out.println(Arrays.toString(test1) + "\n"); // -1
 		
 		int[] test2 = {2, 1, 9, 8, 7, 6, 3, 5, 4};
 		k = 5;
 		System.out.println(k + "th smallest elemnt is " + ke.findKthSmallestElement(test2, k));
+		System.out.println(k + "th smallest elemnt is " + ke.findKthSmallestUsingPQ(test2, k));
 		Arrays.sort(test2);;
 		System.out.println(Arrays.toString(test2) + "\n"); // 5
 		
 		int[] test3 = {-2, -11, 0, -9, 8, 7, -6, 3, 5, 4};
 		k = 8;
 		System.out.println(k + "th smallest elemnt is " + ke.findKthSmallestElement(test3, k));
+		System.out.println(k + "th smallest elemnt is " + ke.findKthSmallestUsingPQ(test3, k));
 		Arrays.sort(test3);;
 		System.out.println(Arrays.toString(test3) + "\n"); // 5
 	}
