@@ -5,6 +5,8 @@ Must solve:
 https://www.geeksforgeeks.org/amazon-interview-preparation/
 https://www.geeksforgeeks.org/must-do-coding-questions-for-companies-like-amazon-microsoft-adobe/
 DP: https://www.geeksforgeeks.org/top-20-dynamic-programming-interview-questions/
+Career cup: https://careercup.com/page?pid=sde-2-interview-questions
+http://www.crazyforcode.com/amazon-interview-questions-set-9-for-sde-2/
 
 4. (C1) Given a binary tree, print all the leaf nodes.   
    (C2) Now, print all the left most nodes, and all right most nodes ( assume there is a triangle around the binary tree, so all nodes which falls on that triangle, print them in clockwise ordering).
@@ -49,6 +51,10 @@ DP: https://www.geeksforgeeks.org/top-20-dynamic-programming-interview-questions
 
 20. Topological sorting 
 
-21. Given an unsorted array, find kth minimum element. They need best solution. Sorting array is nlogn complexity . They dont agree for it. 
+21. Given an unsorted array, find kth minimum element.
 
 30. Dynamic programming, backtracking, matrix traversal, optimal sub-sequence, longest continuous path in a matrix
+
+31. Written test, sort a million Person records according to their age.
+
+32. F2F Algorithm for calender event scheduling, Algorithm for simple arithmetic expression… 
