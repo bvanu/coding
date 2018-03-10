@@ -30,7 +30,7 @@ public class CoinChangingMinCoins {
 		// initially fill the remaining T[i] with infinity
 		for(int i=1; i<=total; i++)
 		{
-			T[i] = Integer.MAX_VALUE-1;
+			T[i] = Integer.MAX_VALUE-1; // System.out.println(1+Integer.MAX_VALUE < Integer.MAX_VALUE); Inf <Inf should return false but it returns True, so subtract 1 initially
 			R[i] = -1;
 		}
 
@@ -38,7 +38,7 @@ public class CoinChangingMinCoins {
 		{
 			for(int i=1; i<=total; i++)
 			{
-				if(i>=coins[j] && (1+T[i-coins[j]])<T[i])
+				if(coins[j]<=i && (1+T[i-coins[j]])<T[i])
 				{
 					T[i] = 1+T[i-coins[j]];
 					R[i] = j;
@@ -46,6 +46,9 @@ public class CoinChangingMinCoins {
 			}
 		}
 		
+		 System.out.println("T: " + Arrays.toString(T));
+	     System.out.println("R: " + Arrays.toString(R));
+	        
 		List<Integer> minCoins = getCoinCombinations(R, coins);		
 		
 		return minCoins;
@@ -78,6 +81,11 @@ public class CoinChangingMinCoins {
 		int[] coins = {1, 3, 7, 6};
 		int total = 13;
 		
-		System.out.println(findMinimumCoinsToMakeTotal(coins, total));
+		System.out.println(findMinimumCoinsToMakeTotal(coins, total) + "\n");
+		
+		int[] coins2 = {2};
+		int total2 = 3;
+		
+		System.out.println(findMinimumCoinsToMakeTotal(coins2, total2));
 	}
 }
