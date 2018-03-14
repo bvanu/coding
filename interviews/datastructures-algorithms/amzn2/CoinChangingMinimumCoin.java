@@ -2,9 +2,17 @@
  * Coin denomination:
  * Given set of coins of unlimited quantity and a total. How many minimum coins would it take to form this total. 
  * 
- * Source: https://www.youtube.com/watch?v=NJuKJ8sasGk
+ * Coins: {1, 3, 5}
+ * Total: 6
  * 
- * TC: T(Total*NumOfCoins) Total >>> NumOfCOins, pseudo polynomial
+ * T: 	0	Inf	1	1	1	2	2
+ * R: 	-1	-1	1	0	2	1	0
+ * 
+ * Output: {3, 3}
+ * 
+ * TC: T(Total*NumOfCoins) ~ T(Total), Total >>> NumOfCOins, pseudo polynomial
+ * 
+ * Source: https://www.youtube.com/watch?v=NJuKJ8sasGk
  */
 package amzn2;
 
@@ -12,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class CoinChangingMinCoins {
+public class CoinChangingMinimumCoin {
 	public static List<Integer> findMinimumCoinsToMakeTotal(int[] coins, int total)
 	{
 		if(coins==null || coins.length<1)

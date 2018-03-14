@@ -25,8 +25,6 @@ http://www.crazyforcode.com/amazon-interview-questions-set-9-for-sde-2/
 
 7. given an array of Strings , not necessarily in any order , find out if the string create a chain , such that first last char of a string is the first character of another and thus making a chain including at least all string
 
-8. Coin denomination problem
-
 9. LRU Cache
 
 10. Print binary tree in zigzag order (http://articles.leetcode.com/printing-binary-tree-in-zig-zag-level_18/)
