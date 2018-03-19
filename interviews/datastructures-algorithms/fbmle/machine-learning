@@ -1,0 +1,13 @@
+Facebook uses machine learning in the following ways:
+1. Automatic friend tagging suggestions: When a pic is uploaded on facebook, a suggestion asking if you want to tag your friend in the pic appears. This is done by Facebook's face detection and recognition algorithms based on the advanced deep learning neural network research project Deepface.
+2. Mutual friend analysis: Facebook uses the clustering algorithm(comes under unsupervised learning) to find mutual friends.
+3. Newsfeed: I think facebook uses ML to arrange your Newsfeed too. Like posts of close friends may come up first. Posts related to your favourite pages come up first.
+4. Friend Suggestions: Machine learning is used by FB to suggest new friends based on mutual friend circles.
+
+Translation is a good application of ML. Some1 writes in native language, you can always see translation in English.
+Article recommendation is also a great ML exercise. Your entire feed is selected, scored for relevance before presented to you.
+Placing relevant advertisements is a good example. It fetches them revenue. When I was planning my trip, somehow I got travel related ads.
+Identifying abusive online content and user accounts.
+Identifying Best user who can make a post viral or popular in a particular area. This is done via flow analysis though.
+Now FB has different shades of emotions instead of just a like button. This way, they can find a lot of things about user e. g. left/right wing orientation, political causes one espouses and uses these for smart campaigning for their clients (election campaigning…).
+Mixing some geogrpahic, census info and NLP of posts - FB can clearly identify issues faced by specific community etc…This can be of use to govt authorities.
