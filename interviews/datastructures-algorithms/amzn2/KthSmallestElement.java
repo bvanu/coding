@@ -57,7 +57,7 @@ public class KthSmallestElement {
 		int lastElementIndex = heap.length-1;
 		int parentIndex = lastElementIndex/2; // this gives the parent of lastElementIndex
 		
-		for(int i=parentIndex; i>0; i--)
+		for(int i=parentIndex; i>0; i--) // isn't this i>=0??? NO because my array[0] = 0 and the actual elements start from index=1
 		{
 			maxHeapify(heap, heapSize, i);
 		}

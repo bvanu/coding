@@ -1,0 +1,23 @@
+How will you cluster short text tweets, what problems you expect to face during this process?
+What is the significance of TF-IDF?
+What are the trade-offs between statistical and rule based machine translation?
+What is the difference between shallow parsing and dependency parsing?
+What are the trade offs between supervised and unsupervised methods specific to NLP problems like word sense disambiguation or machine translation etc.
+How would you approach a problem in NLP which is very easily solved for English (where you have abundant resources like Wordnet, Dictionaries, Sense tagged and parallel corpora) for other resource deprived languages like Hindi, Marathi etc. ?
+What are the linguistic properties that are invariant across languages?
+Which is better to use while extracting features character n-grams or word n-grams? Why?
+What is a POS tagger? How can you built one?
+What is dimensionality reduction?
+Explain the working of SVM/NN/Maxent algorithms
+Which is a better algorithm for POS tagging - SVM or hidden markov models ? why?
+What packages are you aware of in python which are used in NLP and ML?
+What are conditional random fields ?
+When can you use Naive Bayes algorithm for training, what are its advantages and disadvantages?
+What is a regular grammar? Does this differ in power to a regular expression and if so, in what way?
+What is dependency parsing?
+What tools for training NLP models (nltk, Apache OpenNLP, GATE, MALLET etc…) have you used?
+What are stop words? Describe an application in which stop words should be removed.
+How would you build a POS tagger from scratch given a corpus of annotated sentences? How would you deal with unknown words?
+What is part of speech (POS) tagging? What is the simplest approach to building a POS tagger that you can imagine?
+
+Given 3-4 words from a search entry, how would you determine location context for the search?   

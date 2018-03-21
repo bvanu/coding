@@ -1,0 +1,19 @@
+Underfitting - High Bias
+
+
+Overfitting - High Variance
+Solve:
+1. Reduce #features
+	- Manually remove some features minimizing the data loss
+	- Pricipal component analysis to select most important features
+2. Regularization
+	- Keep all features
+	- Reduce magnitude of parameters theta
+	- We don't penalize theta0, regularization is from theta0
+	- Regularization parameter lambda
+		- If lambda is large, we penalize allt eh parameters, all theta => 0 ; results in Underfitting
+		- If lambda too small, Overfitting still exists
+
+		
+Nueral Networks:
+- Complex non-linear hypothesis when feature space is big

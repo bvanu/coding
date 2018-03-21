@@ -1,0 +1,25 @@
+Here's how you might do that. Go download NLTK (Natural Language Toolkit). Then build some software that does something cool.
+
+Here are some ideas:
+Run a bunch of different POS taggers on some text and characterize the differences. Which is better for what domain? Do they make similar mistakes? 
+Build a sentiment analysis system and run it on a bunch of reviews, or tweets about something. See what mistakes it's making and figure out how to make it better. What features should you use that can help it do better? Find out if people liked the Interview, or whatever the movie du jour is!
+Write a system to detect spam reviews on review sites. You can find a huge dataset here: Detect Fake Reviews and Reviewers or a smaller one here: http://myleott.com/op_spam/. 
+Build a system for some other language. Text segmentation in Chinese is fun and hard, but really pick any problem and apply it to another language, and you'll learn a huge amount about your assumptions about what works and what doesn't work.
+None of these things will work well on your first try -- a key lesson in NLP, actually -- so the main thing you should focus on, once you get a baseline system working, is to figure out how to make your system better. That's 90+% of the effort in NLP.
+
+Videos:
+CS 224N / Ling 284 by Christopher Manning : the best course I have come across
+CS224d: Deep Learning for Natural Language Processing : Excellent course, and goes over all the latest Deep learning research related to NLP. Not all the lectures are posted on youtube, so there would be a need to switch between 2015 and 2016 videos. There is an active discussion on reddit about how to follow the course
+https://www.reddit.com/r/CS224d/...
+Natural Language Processing @ Coursera : co-instructed By Christopher Manning : less mathy but still good
+Dan Jurafsky & Chris Manning: Natural Language Processing - his lectures on youtube.
+
+Link: https://www.quora.com/How-do-I-learn-Natural-Language-Processing
+
+
+
+Notes:
+
+Keyphrase extraction:
+http://bdewilde.github.io/blog/2014/09/23/intro-to-automatic-keyphrase-extraction/
+
