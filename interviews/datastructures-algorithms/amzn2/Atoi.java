@@ -37,7 +37,7 @@ public class Atoi {
 				if(sign*sum<Integer.MIN_VALUE)
 					return Integer.MIN_VALUE ;
 				if(sign*sum>Integer.MAX_VALUE)
-					return Integer.MAX_VALUE ;
+					return Integer.MAX_VALUE;
 			}
 			else
 				break;
