@@ -7,12 +7,6 @@ https://www.geeksforgeeks.org/must-do-coding-questions-for-companies-like-amazon
 DP: https://www.geeksforgeeks.org/top-20-dynamic-programming-interview-questions/
 Career cup: https://careercup.com/page?pid=sde-2-interview-questions
 http://www.crazyforcode.com/amazon-interview-questions-set-9-for-sde-2/
-
-4. (C1) Given a binary tree, print all the leaf nodes.   
-   (C2) Now, print all the left most nodes, and all right most nodes ( assume there is a triangle around the binary tree, so all nodes which falls on that triangle, print them in clockwise ordering).
-   C1: Leaf nodes: Preorder traversal limited to leaves.
-   C2: Left side: Preorder traversal limited to nodes which matches certain criteria.
-   Right side: Only visit those nodes that meet certain criteria - Post Order traversal.
    
 5. (D1) Given an array which contains series of 0s and series of 1s, find the index where 1s start.
    How would you test this method?

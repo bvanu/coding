@@ -1,0 +1,20 @@
+1. Make a simple function that returns the minimum value of 0 or more integers. Without using builtins such as Math.min(), etc.
+  // example: [6, 2, 33, -3, 3, 6, 10, -1] should return -3   
+3. Array manipulation. Brute force solution then optimization. Hints from interviewer if you're moving in the right direction.   
+4. A bit manipulation question/parsing from string to number.   
+5. Typical tree questions/data structure questions.   
+6. Name two data structures and where would each one will be used   
+7. Construct the first n Fibonacci sequence.   
+8. Reverse the order of words in a sentence and the second one 4 numbers are missing, find them.
+9. Given a binary tree and a sum, determine if the tree has a root-to-leaf path such that adding up all the values along the path equals the given sum.
+10. Given a binary tree and a sum, find all root-to-leaf paths where each path's sum equals the given sum.   
+11.Determine if parenthesis in a string all have valid matches   
+12. String, array, bit manipulation questions. Easy - medium.   
+13. questions about trees with unconventional structures   
+14. How many ways can you represent an amount of money using $1,$5,$10, or $25.   
+15. Implement a tree
+16. Convert number type   
+17. Cumulative sum of fibonacci series. fib(n) = addition of all the fibonacci numbers upto n -1.   
+18. Questions were about string and array manipulations, minesweeper game, LRU Cache, Blackjack game, trees 
+19. Give a deck of card, calculate total number of point that is closes to 21. ex A,A,J = 12 , J,J,A,2 = 23 A, 2 = 13  
+20. Write a function that take an integer and return a reversed number. Ex. Reverse(1234), return 4321
