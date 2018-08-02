@@ -57,7 +57,7 @@ public class SetMatrixZeros {
             }
         }
         
-        // use mark zeros toset elements
+        // use mark zeros to set elements
         for(int i=1; i<m; i++)
         {
             for(int j=1; j<n; j++)
