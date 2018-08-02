@@ -1,7 +1,12 @@
 package amzn2;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class AnagramSort implements Comparator<String>{
 	public String sortString(String str)
@@ -18,13 +23,38 @@ public class AnagramSort implements Comparator<String>{
 	{
 		return sortString(s1).compareTo(sortString(s2));
 	}
+		
+	 public List<List<String>> groupAnagrams(String[] strs) 
+	 {
+		 if(strs==null || strs.length<1)
+				return new ArrayList<List<String>>();
+		 
+		 Map<String, List<String>> map = new HashMap<String, List<String>>();
+		 
+		 for(String str: strs)
+		 {
+			char[] ca = str.toCharArray();
+			Arrays.sort(ca);
+			String keyString = new String(ca);
+			
+			if(!map.containsKey(keyString))
+			{
+				map.put(keyString, new ArrayList<String>());
+			}
+			map.get(keyString).add(str);
+		 }
+		 
+		 return new ArrayList<List<String>>(map.values());
+	 }	
 	
 	public static void main(String[] args)
 	{
-		AnagramSort as = new AnagramSort();
+		
 		String[] input = {"eat", "tea", "tan", "ate", "nat", "bat"};
 		Arrays.sort(input, new AnagramSort());
-		
 		System.out.println(Arrays.toString(input));
+		
+		AnagramSort as = new AnagramSort();
+		System.out.println(as.groupAnagrams(input));
 	}
 }
