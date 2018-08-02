@@ -35,7 +35,7 @@ public class PascalTriangle {
 			curr = new ArrayList<Integer>();
 			curr.add(1); // first
 			
-			for(int j=1; j<i; j++)
+			for(int j=1; j<i; j++) // j<i can be replaced by j<pre.size()
 			{
 				curr.add(prev.get(j) + prev.get(j-1)); // middle
 			}
