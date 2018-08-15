@@ -45,7 +45,7 @@ public class WordLadder {
 			return 0;
 		
 		int step = 0;
-		List<String> wordLadder = new ArrayList<String>();
+		List<List<String>> wordLadder = new LinkedList<>();
 		Queue<String> qu = new LinkedList<String>();
 		qu.offer(beginWord);
 		dict.remove(beginWord);
@@ -53,21 +53,26 @@ public class WordLadder {
 		while(!qu.isEmpty())
 		{
 			int size = qu.size();
+			List<String> words = new ArrayList<String>();
 			
 			for(int i=0; i<size; i++)
 			{
 				String currWord = qu.poll();
+				words.add(currWord);
 				
 				if(currWord.equals(endWord))
 				{
+					wordLadder.add(Arrays.asList(endWord));
+					System.out.println("WordLadder: " + wordLadder);
 					return ++step;
 				}
 				
 				findNext(currWord, dict, qu);
 			}
+			wordLadder.add(words);
 			step++;
-		}
-				
+		}			
+		
 		return 0;
 	}
 	
@@ -100,5 +105,6 @@ public class WordLadder {
 	public static void main(String[] args)
 	{
 		System.out.println(wordLadder("hit", "cog", Arrays.asList("hot","dot","dog","lot","log","cog")));
+		System.out.println(wordLadder("hit", "cog", Arrays.asList("hot","dot","lot","cog")));
 	}
 }
