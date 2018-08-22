@@ -15,6 +15,12 @@ Explanation: Return true because "applepenapple" can be segmented as "apple pen 
 Example 3:
 Input: s = "catsandog", wordDict = ["cats", "dog", "sand", "and", "cat"]
 Output: false
+
+TC: O(mn) m# lenght of s, n #words in the dictionary
+SC: O(1)
+
+
+For al substrings of the words the loop can run for #words in the dictionary
  */
 
 package amzn2;
@@ -24,13 +30,13 @@ import java.util.List;
 import java.util.*;
 
 public class WordBreak {	
-	Set<String> map = new HashSet();
+	Set<String> map = new HashSet<String>();
 	
 	public boolean wordBreak(String s, List<String> wordDict) {
         if(wordDict.contains(s))
             return true;
         
-        if(map.contains(s))
+        if(map.contains(s)) // can't break words
             return false;
         
         for(String word: wordDict)
