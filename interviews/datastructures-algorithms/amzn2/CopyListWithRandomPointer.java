@@ -27,7 +27,7 @@ public class CopyListWithRandomPointer {
 	        Map<RandomListNode, RandomListNode> map = new HashMap<RandomListNode, RandomListNode>();
 	        RandomListNode node = head;
 	        
-	        // loop 1: copy all the nodes
+	        // loop 1: copy all the nodes, you have to follow two step process, as the random node might not have been created at that point
 	        while(node!=null)
 	        {
 	            map.put(node, new RandomListNode(node.label));
