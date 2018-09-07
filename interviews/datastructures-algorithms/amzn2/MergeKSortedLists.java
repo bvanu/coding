@@ -14,7 +14,7 @@ class ListNode
 public class MergeKSortedLists {
 	public static ListNode mergeKLists(ListNode[] lists)
 	{  
-		if(lists.length<1)
+		if(lists==null || lists.length<1)
 			return null;
 		
 		return mergeKLists(lists, 0, lists.length-1);
@@ -55,9 +55,15 @@ public class MergeKSortedLists {
 		}
 		
 		if(node1!=null)
+        {
 			p.next = node1;
-		else if(node2!=null) // this check is not required
+            return head.next;
+        }
+		if(node2!=null)
+        {
 			p.next = node2;
+            return head.next;
+        }
 		
 		return head.next;
 	}

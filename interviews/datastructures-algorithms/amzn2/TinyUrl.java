@@ -11,6 +11,61 @@ package amzn2;
 import java.util.*;
 
 public class TinyUrl {
+	
+	/*
+    Approach #2 Random fixed-length encoding
+	Algorithm
+	In this case, again, we make use of the set of numbers and alphabets to generate the coding for the given URLs. 
+	But in this case, the length of the code is fixed to 6 only. 
+	In case, the code generated collides with some previously generated code, we form a new random code.
+	
+	Performance Analysis
+	The number of URLs that can be encoded is quite large in this case, nearly of the order (10+26∗2)^6
+	The length of the encoded URLs is fixed to 6 units, which is a significant reduction for very large URLs.
+	The performance of this scheme is quite good, due to a very less probability of repeated same codes generated.
+	We can increase the number of encodings possible as well, by increasing the length of the encoded strings. Thus, there exists a tradeoff 
+	between the length of the code and the number of encodings possible.
+	Predicting the encoding isn't possible in this scheme since random numbers are used.
+     */
+    String alphabets = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    java.util.Random rand = new java.util.Random(); // what is the time complexity of rand ?
+    String key = getRand(); 
+    Map<String, String> map = new HashMap<String, String>();
+    
+    public String getRand()
+    {
+    	StringBuilder sb = new StringBuilder();
+    	
+    	for(int i=0; i<6; i++)
+    	{
+    		sb.append(alphabets.charAt(rand.nextInt(62)));
+    	}
+    	
+    	return sb.toString();
+    }
+    
+    // Encodes a URL to a shortened URL.
+    public String encode_(String longUrl) {
+        if(longUrl==null ||longUrl.length()<1)
+            return null;
+
+        if(map.containsKey(key))
+        	key = getRand();
+        
+        map.put(key,  longUrl);
+        
+        return "https://tinyurl.com" + key;
+    }
+
+    // Decodes a shortened URL to its original URL.
+    public String decode_(String shortUrl) {
+        if(shortUrl==null ||shortUrl.length()<1)
+            return null;
+        
+        String key = shortUrl.replaceAll("https://tinyurl.com", "");
+        
+        return map.get(key);
+    }
 	/* 
 	 * 
 	Approach #1 Using hashcode
@@ -57,58 +112,5 @@ public class TinyUrl {
         return urlMappings.get(key);
     }
     
-    /*
-    Approach #2 Random fixed-length encoding
-	Algorithm
-	In this case, again, we make use of the set of numbers and alphabets to generate the coding for the given URLs. 
-	But in this case, the length of the code is fixed to 6 only. 
-	In case, the code generated collides with some previously generated code, we form a new random code.
-	
-	Performance Analysis
-	The number of URLs that can be encoded is quite large in this case, nearly of the order (10+26∗2)^6
-	The length of the encoded URLs is fixed to 6 units, which is a significant reduction for very large URLs.
-	The performance of this scheme is quite good, due to a very less probability of repeated same codes generated.
-	We can increase the number of encodings possible as well, by increasing the length of the encoded strings. Thus, there exists a tradeoff 
-	between the length of the code and the number of encodings possible.
-	Predicting the encoding isn't possible in this scheme since random numbers are used.
-     */
-    String alphabets = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    java.util.Random rand = new java.util.Random();
-    String key = getRand();
-    Map<String, String> map = new HashMap<String, String>();
     
-    public String getRand()
-    {
-    	StringBuilder sb = new StringBuilder();
-    	
-    	for(int i=0; i<6; i++)
-    	{
-    		sb.append(alphabets.charAt(rand.nextInt(62)));
-    	}
-    	
-    	return sb.toString();
-    }
-    
-    // Encodes a URL to a shortened URL.
-    public String encode_(String longUrl) {
-        if(longUrl==null ||longUrl.length()<1)
-            return null;
-
-        if(map.containsKey(key))
-        	key = getRand();
-        
-        map.put(key,  longUrl);
-        
-        return "https://tinyurl.com" + key;
-    }
-
-    // Decodes a shortened URL to its original URL.
-    public String decode_(String shortUrl) {
-        if(shortUrl==null ||shortUrl.length()<1)
-            return null;
-        
-        String key = shortUrl.replaceAll("https://tinyurl.com", "");
-        
-        return map.get(key);
-    }
 }

@@ -36,8 +36,8 @@ public class LCABinarySearchTree {
 
 		if(node2.value < root.value)
 			return findLCA(root.left, node1, node2);
-		else
-			return findLCA(root.right, node1, node2);
+
+		return findLCA(root.right, node1, node2);
 	}
 
 	/* If if we are not sure the two given nodes are in BST or not, first verify if the nodes exist

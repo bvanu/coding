@@ -33,7 +33,17 @@ public class FirstUniqueCharInString {
 	            loc[c-'a'] = i; // this will be overriden by the last char
 	        }
 	        
-	        int res = -1;
+	        for(int i=0; i<s.length(); i++)
+	        {
+	            char ch = s.charAt(i);
+	            
+	            if(alphabet[ch-'a']==1)
+	                return i;
+	        }
+	        
+	        return -1;
+	        
+	        /*int res = -1;
 	        for(int i=0; i<alphabet.length; i++)
 	        {
 	            if(alphabet[i]==1)
@@ -42,7 +52,7 @@ public class FirstUniqueCharInString {
 	            }
 	        }
 	          
-	        return res;
+	        return res;*/
 	    }
 	
 	// TC: O(n)

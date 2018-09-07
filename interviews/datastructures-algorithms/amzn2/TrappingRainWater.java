@@ -27,8 +27,6 @@ https://leetcode.com/problems/trapping-rain-water/solution/#
  */
 package amzn2;
 
-import java.util.*;
-
 public class TrappingRainWater {
 	public int trap(int[] height) {
 		int left = 0, right = height.length-1;
@@ -37,20 +35,20 @@ public class TrappingRainWater {
 
 		while(left<right)
 		{
-			if(height[left]<height[right])
+			if(height[left]<height[right]) // h[l] plays role
 			{
 				if(height[left] >= left_max)
 					left_max=height[left];
 				else
-					ans+=left_max-height[left];
+					ans += left_max-height[left];
 				left++;
 			}
-			else
+			else //  h[r] plays role
 			{
 				if(height[right]>=right_max)
 					right_max=height[right];
 				else
-					ans+=right_max-height[right];
+					ans += right_max-height[right];
 				right--;
 			}
 		}

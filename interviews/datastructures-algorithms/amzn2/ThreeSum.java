@@ -1,6 +1,10 @@
-/*Given an array nums of n integers, are there elements a, b, c in nums such that a + b + c = 0? Find all unique triplets in the array which gives the sum of zero.
+/*Given an array nums of n integers, are there elements a, b, c in nums such that a + b + c = 0? 
+Find all unique triplets in the array which gives the sum of zero.
 Note:
 The solution set must not contain duplicate triplets.
+
+TC: O(nlogn+n^2)
+SC: O(!)
  */
 
 package amzn2;
@@ -13,19 +17,25 @@ public class ThreeSum {
 		if(num==null || num.length<1)
 			return null;
 		
-		Arrays.sort(num);
+		Arrays.sort(num); // o(nlogn)
 		List<List<Integer>> res = new LinkedList<>(); 
-		for (int i = 0; i < num.length-2; i++) {
-			if (i == 0 || (i > 0 && num[i] != num[i-1])) {
+		for (int i = 0; i < num.length-2; i++) { // no(n^2)
+			if (i == 0 || (i > 0 && num[i] != num[i-1])) // don't have to keep the same elements constant as you will get the same combination again
+			{
 				int lo = i+1, hi = num.length-1, sum = 0 - num[i];
-				while (lo < hi) {
-					if (num[lo] + num[hi] == sum) {
+				while (lo < hi) // find all two possible combinations that make nums[i]
+				{
+					if (num[lo] + num[hi] == sum) 
+					{
 						res.add(Arrays.asList(num[i], num[lo], num[hi]));
 						while (lo < hi && num[lo] == num[lo+1]) lo++;
 						while (lo < hi && num[hi] == num[hi-1]) hi--;
-						lo++; hi--;
-					} else if (num[lo] + num[hi] < sum) lo++;
-					else hi--;
+						lo++; hi--; // IMP
+					} 
+					else if (num[lo] + num[hi] < sum) 
+						lo++;
+					else
+						hi--;
 				}
 			}
 		}
@@ -34,6 +44,8 @@ public class ThreeSum {
 
 	/* this method doens't account for duplicates 
 	 * OUTPUT: [[-1, 0, 1], [-1, 1, 0], [-1, 2, -1], [-1, -1, 2], [0, 1, -1], [0, -1, 1], [1, -1, 0]]
+	 * TC: O(n^2)
+	 * SC: O(n)
 	public static List<List<Integer>> findThreeSum(int[] nums)
 	{
 		if(nums==null || nums.length<1)
@@ -65,8 +77,7 @@ public class ThreeSum {
 			}
 		}			
 		return res;
-	}
-	*/
+	}*/
 
 	public static void main(String[] args)
 	{

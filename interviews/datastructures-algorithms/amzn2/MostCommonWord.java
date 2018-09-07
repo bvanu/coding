@@ -24,14 +24,16 @@ public class MostCommonWord {
 	public String mostCommonWord(String paragraph, String[] banned) {
         if(paragraph==null || paragraph.length()<1)
             return null;
-        
-        Set<String> bannedDict = new HashSet<String>();
+                
+        Set<String> bannedDict = new HashSet<String>(Arrays.asList(banned));
         Map<String, Integer> map = new HashMap<String, Integer>();
         
+        /*
+        Set<String> bannedDict = new HashSet<String>();
         for(String word: banned)
         {
             bannedDict.add(word);   
-        }
+        }*/
         
         String[] words = paragraph.replaceAll("[!?',;.]", "").toLowerCase().split(" ");
 
