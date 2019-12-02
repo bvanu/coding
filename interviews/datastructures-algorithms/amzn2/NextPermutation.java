@@ -1,7 +1,13 @@
 /*
- * Here’s my attempt to simplify the intuition:
+Implement next permutation, which rearranges numbers into the lexicographically next greater permutation of numbers.
 
-Let’s say we define
+If such arrangement is not possible, it must rearrange it as the lowest possible order (ie, sorted in ascending order).
+
+The replacement must be in-place and use only constant extra memory.
+
+ * Hereâ€™s my attempt to simplify the intuition:
+
+Letâ€™s say we define
 number refers to the value of the whole array. In the example provided, since we have 6, 3, 4, 9, 8, 7, 1, so the value of number is 6349871.
 element[i] refers to specific value of an element in the array. Here element[2] is 4.
 
@@ -10,7 +16,7 @@ First we should note two important properties:
 Number is the smallest one when all the elements all in ascending order, no matter how the permutation could perform on it.
 Number is the greatest one when all the elements all in descending order, no matter how the permutation could perform on it.
 
-The goal is to find the next smallest number that is greater than its current number. So we first find the first two adjacent ascending elements from the right, which are 4 & 9 in this example, respectively. We don’t need to do anything with the elements that are in front of these two.
+The goal is to find the next smallest number that is greater than its current number. So we first find the first two adjacent ascending elements from the right, which are 4 & 9 in this example, respectively. We donâ€™t need to do anything with the elements that are in front of these two.
 
 Then because we want the whole number to be the smallest number that is greater than its current number, we want 4 to be replaced with the smallest number from the later array that is greater than 4, which is 7 here
 
@@ -19,7 +25,7 @@ change
 to
 6, 3, 7, 9, 8, 4, 1
 
-Then we don’t need to do anything with elements that are former or equal to 7, which are 6, 3, 7.
+Then we donâ€™t need to do anything with elements that are former or equal to 7, which are 6, 3, 7.
 At last, we want to make sure the elements later than 7, which are 9, 8, 4, 1 forms the smallest number. So according property 1, we sort it in ascending order to be 1, 4, 8, 9.
 
 So in the end, we have 6, 3, 7, 1, 4, 8, 9.
