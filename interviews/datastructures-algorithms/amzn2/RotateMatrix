@@ -24,14 +24,26 @@ rotate the input matrix in-place such that it becomes:
 ]
 
 Time complexity:
-TC: O(n^2)
+TC: O(r * n^2)
 SC: O(1)
 */
 
 class Solution {
-    public void rotate(int[][] matrix) {
+    public void rotate(int[][] matrix, int deg) {
+        if(matrix==null || matrix.length<1)
+          return;
+          
         final int n = matrix.length;
+    
+        // if given degrees to rotate matrix
+        int numRotations = (deg/90) % 4;
         
+        for(int r=0; r<numRotations; r++)
+          rotateImageBy90(matrix);
+    }
+    
+    public void rotateImageBy90Deg(int[][] matrix)
+    {
         // number of layers to rotate
         for(int layer =0; layer<n/2; layer++)
         {
