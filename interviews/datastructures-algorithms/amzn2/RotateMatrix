@@ -22,6 +22,10 @@ rotate the input matrix in-place such that it becomes:
   [8,5,2],
   [9,6,3]
 ]
+
+Time complexity:
+TC: O(n^2)
+SC: O(1)
 */
 
 class Solution {
