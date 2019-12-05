@@ -31,7 +31,7 @@ public class LongestStringWithoutRepeatingCharacters {
         	return 1;
         
         Map<Character, Integer> map = new HashMap<Character, Integer>();
-        int i=0, j=0;
+        int i=0, j=0; // j is the start index
         int n = s.length();
         int res = 0;
         
