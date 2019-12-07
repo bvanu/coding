@@ -29,7 +29,7 @@ import java.util.PriorityQueue;
 
 public class KthLargestElemenet {
 	public int findKthLargest(int[] nums, int k) {
-		if(nums==null || nums.length<1)
+		if(nums==null || nums.length<1 || k>nums.length)
 			return 0;
 
 		PriorityQueue<Integer> minHeap = new PriorityQueue<Integer>();
@@ -42,22 +42,14 @@ public class KthLargestElemenet {
 			}
 		});*/
 
-		for(int i=0; i<nums.length; i++)
-		{
-			if(i<k)
-			{
-				minHeap.add(nums[i]);
-			}
-			else
-			{
-				if(minHeap.peek()<nums[i])
-				{
-					minHeap.remove();
-					minHeap.add(nums[i]);
-				}
-			}
-		}
+		for(int n: nums)
+        	{
+            		minHeap.add(n);
+            
+            		if(minHeap.size()>k)
+                		minHeap.poll();
+        	}
 
-		return minHeap.peek();
+		return minHeap.poll();
 	}
 }
