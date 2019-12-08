@@ -103,6 +103,15 @@ public class KthSmallestElement {
 		// java 8, lambda expressions
 		PriorityQueue<Integer> maxHeap = new PriorityQueue<Integer>((m,n) -> n-m);
 		
+		for(int n: nums)
+        	{
+            		maxHeap.add(n);
+            
+			// maintain teh heap size as k always
+            		if(maxHeap.size()>k)
+                		maxHeap.poll();
+        	}
+		
 		for(int i=0; i<k; i++)
 			maxHeap.add(a[i]);
 		
