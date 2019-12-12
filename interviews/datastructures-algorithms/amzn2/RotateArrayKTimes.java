@@ -46,6 +46,19 @@ public class RotateArrayKTimes {
 		//reverseArray(arr, 0, n-1);
 		
 		return arr;
+		
+		/*
+		
+		 int n = nums.length;
+        
+        if(nums==null||n<1)
+            return;
+        
+        k %= n;
+        
+        reverse(nums,0, n-1);
+        reverse(nums,0,k-1);
+        reverse(nums,k,n-1);*/
 	}
 	
 	public int[] reverseArray(int[] arr, int start, int end)
