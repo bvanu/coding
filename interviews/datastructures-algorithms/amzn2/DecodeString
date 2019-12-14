@@ -1,0 +1,87 @@
+/*
+Given an encoded string, return its decoded string.
+
+The encoding rule is: k[encoded_string], where the encoded_string inside the square brackets is being repeated exactly k times. Note that k is guaranteed to be a positive integer.
+
+You may assume that the input string is always valid; No extra white spaces, square brackets are well-formed, etc.
+
+Furthermore, you may assume that the original data does not contain any digits and that digits are only for those repeat numbers, k. For example, there won't be input like 3a or 2[4].
+
+Examples:
+
+s = "3[a]2[bc]", return "aaabcbc".
+s = "3[a2[c]]", return "accaccacc".
+s = "2[abc]3[cd]ef", return "abcabccdcdcdef".
+
+Complexity:
+TC: O(n)
+SC: O(n)
+*/
+
+class DecodeString {
+    public String decodeString(String s) {
+        int n = s.length();
+        
+        if(s==null ||n<1)
+            return "";
+        
+        Stack<Character> stk = new Stack<Character>();
+        
+        for(int i=0; i<n; i++)
+        {
+            if(s.charAt(i)==']')
+            {
+                String val = "";
+                String k = "";
+                
+                // get val
+                while(stk.peek()!='[')
+                {
+                    val = stk.pop() + val;
+                }
+                stk.pop();
+                
+                // get k
+                while(!stk.isEmpty() && ((int)stk.peek()-'0')>=0 && ((int)stk.peek()-'0')<=9)
+                {
+                    k = stk.pop() + k;
+                }
+                
+                // find value
+                String str = "";
+                for(int m=0; m<Integer.parseInt(k); m++)
+                {
+                    str = str + val;
+                }
+                
+                for(int p=0; p<str.length(); p++)
+                    stk.push(str.charAt(p));
+            }
+            else
+            {
+                stk.push(s.charAt(i));
+            }
+        }
+            
+        // reverse stack
+        return popStack(stk);
+    }
+    
+    public String popStack(Stack<Character> stk)
+    {
+        Stack<Character> rev = new Stack<Character>();
+        
+        while(!stk.isEmpty())
+        {
+            rev.push(stk.pop());
+        }
+            
+        StringBuilder sb = new StringBuilder();
+        while(!rev.isEmpty())
+        {
+            sb.append(rev.pop());
+        }
+
+        return sb.toString();
+    }
+}
