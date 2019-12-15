@@ -42,6 +42,7 @@ class Solution {
 
   public void backtrack(String combination, String next_digits) {
     // if there is no more digits to check
+    // 3. Goal and breaking condition
     if (next_digits.length() == 0) {
       // the combination is done
       output.add(combination);
@@ -50,6 +51,7 @@ class Solution {
     else {
       // iterate over all letters which map 
       // the next available digit
+      // 1. Our choices && this doesn't have 2. any constraints
       String digit = next_digits.substring(0, 1);
       String letters = phone.get(digit);
       for (int i = 0; i < letters.length(); i++) {
