@@ -25,9 +25,9 @@ public class BestTimeToBuySellStock {
             return 0;
 
        int maxProfit = 0;
-       int soFarMin = prices[0];
+       int soFarMin = Integer.MAX_VALUE;
        
-       for(int i=1; i<prices.length; i++)
+       for(int i=0; i<prices.length; i++)
        {
            if(prices[i] > soFarMin)
                maxProfit = Math.max(maxProfit, prices[i] - soFarMin); // if want to know which days, put if condition here and save min and max days
