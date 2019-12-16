@@ -28,76 +28,24 @@ class ListNode
 
 public class AddTwoNumbers {
 	public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-		if(l1==null && l2==null)
-			return null;
-		if(l1==null)
-			return l2;
-		if(l2==null)
-			return l1;
-
-		ListNode l3= new ListNode(0);
-		ListNode h3 = l3;
-		int sum = 0, carry = 0;
-
-		while(l1!=null && l2!=null)
-		{
-			sum = l1.val + l2.val + carry;
-			l1 = l1.next;
-			l2 = l2.next;
-
-			carry = sum/10;
-			sum = sum%10;
-
-			l3.next = new ListNode(sum);
-			l3 = l3.next;                
-
-			//printLinkedList(h3);
+		ListNode dummyHead = new ListNode(0);
+		ListNode p1 = l1;
+		ListNode p2 = l2;
+		int carry = 0;
+		ListNode cur = dummyHead;
+		
+		while (p1 != null || p2 != null) {
+		    int n1 = p1 != null ? p1.val : 0;
+		    int n2 = p2 != null ? p2.val : 0;
+		    int sum = n1 + n2 + carry;
+		    carry = sum / 10;
+		    cur.next = new ListNode(sum % 10);
+		    cur = cur.next;
+		    if (p1 != null) p1 = p1.next;
+		    if (p2 != null) p2 = p2.next;
 		}
-
-		while(l1!=null)
-		{
-			if(carry==0)
-			{
-				l3.next = l1;
-				return h3.next;
-			}
-			else
-			{
-				sum = l1.val + carry;
-				carry = sum/10;
-				sum = sum%10;
-
-				l3.next = new ListNode(sum);
-				l3 = l3.next;
-				l1 = l1.next;
-			}
-		}
-
-		while(l2!=null)
-		{
-			if(carry==0)
-			{
-				l3.next = l2;
-				return h3.next;
-			}
-			else
-			{
-				sum = l2.val + carry;
-				carry = sum/10;
-				sum = sum%10;
-
-				l3.next = new ListNode(sum);
-				l3 = l3.next;
-				l2 = l2.next;
-			}
-		}
-
-		if(carry>0) // assumption is carry is single digigt
-		{
-			l3.next = new ListNode(carry);
-		}
-
-		return h3.next;
+		if (carry > 0) cur.next = new ListNode(carry);
+		return dummyHead.next;
 	}
 
 	private void printLinkedList(ListNode head)
