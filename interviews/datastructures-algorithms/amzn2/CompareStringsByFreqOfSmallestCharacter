@@ -41,18 +41,28 @@ SC: O(k) - f(s) stores length of string
 
 class CompareStringsByFreqOfSmallestCharacter {
     public int[] numSmallerByFrequency(String[] queries, String[] words) {
-        if(queries==null || words==null || queries.length<1 || words.length<1)
+        int m = queries.length;
+        int n = words.length;
+        if(queries==null || words==null || m<1 ||n<1)
             return null;
 
-        int[] res = new int[queries.length];
+        int[] res = new int[m];
+        int[] queries_ = new int[m];
+        int[] words_ = new int[n];
 
-        for(int i=0; i<queries.length; i++)
+        for(int i=0; i<m; i++)
+            queries_[i] = funct(queries[i]);
+        
+        for(int i=0; i<n; i++)
+            words_[i] = funct(words[i]);
+        
+        for(int i=0; i<m; i++)
         {
             int count = 0;
-            for(int j=0; j<words.length; j++)
+            for(int j=0; j<n; j++)
             {
-                if(funct(queries[i])<funct(words[j]))
-                count++;
+                if(queries_[i]<words_[j])
+                    count++;
             }
             res[i] = count;
         }
