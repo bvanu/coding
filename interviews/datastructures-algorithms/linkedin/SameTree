@@ -1,4 +1,5 @@
 /**
+ * LinkedIn
  * Definition for a binary tree node.
  * public class TreeNode {
  *     int val;
@@ -12,17 +13,59 @@
  *         this.right = right;
  *     }
  * }
- *
- * Complexity Analysis
- * Time complexity : \mathcal{O}(N)O(N), where N is a number of nodes in the tree, since one visits each node exactly once.
- * Space complexity : \mathcal{O}(\log(N))O(log(N)) in the best case of completely balanced tree and \mathcal{O}(N)O(N) in the worst case of completely unbalanced tree, to keep a recursion stack.
  */
 class Solution {
-    public boolean isSameTree(TreeNode root1, TreeNode root2) {
-        return (root1==null && root2==null) ||
-            (root1!=null && root2!=null && 
-             root1.val==root2.val && 
-             isSameTree(root1.left, root2.left) &&
-             isSameTree(root1.right, root2.right));
+    /** Approach #1 : Recursion
+    Complexity Analysis
+     * Time complexity : O(N), where N is a number of nodes in the tree, since one visits each node exactly once.
+    * Space complexity : O(log(N)) in the best case of completely balanced tree and O(N) in the worst case of completely unbalanced tree, to keep a recursion stack.
+   **/
+    public boolean isSameTree_recursion(TreeNode p, TreeNode q) {
+        if(p==null && q==null) return true;
+        if(p==null || q==null) return false;
+        if(p.val!=q.val) return false;
+        
+        return isSameTree_recursion(p.left, q.left) && isSameTree_recursion(p.right, q.right);
+    }
+    
+    /** Approach #2 : Iteration
+    
+    	        Throws exception	Returns special value
+        Insert	add(e)	            offer(e)
+        Remove	remove()	        poll()
+        Examine	element()	        peek()
+        
+        Complexity Analysis
+     * Time complexity : O(N), where N is a number of nodes in the tree, since one visits each node exactly once.
+    * Space complexity : O(log(N)) in the best case of completely balanced tree and O(N) in the worst case of completely unbalanced tree, to keep a recursion stack.
+    **/
+    public boolean isSameTree(TreeNode p, TreeNode q) {       
+        Queue<TreeNode> que1 = new LinkedList<TreeNode>();
+        Queue<TreeNode> que2 = new LinkedList<TreeNode>();
+        
+        que1.add(p);
+        que2.add(q);
+        
+        while(!que1.isEmpty())
+        {
+            if(que2.isEmpty()) return false;
+            
+            p = que1.poll();
+            q = que2.poll();
+            
+            if(p==null && q==null) continue;
+            if(p==null || q==null) return false;
+            
+            if(p.val!=q.val) return false;
+            
+            que1.add(p.left);
+            que1.add(p.right);
+            que2.add(q.left);
+            que2.add(q.right);
+        }
+        
+        if(que2.isEmpty()) return true;
+        
+        return false;
     }
 }
