@@ -1,0 +1,44 @@
+/*
+Given two arrays, write a function to compute their intersection.
+
+Example 1:
+Input: nums1 = [1,2,2,1], nums2 = [2,2]
+Output: [2,2]
+
+Complexity Analysis
+
+Time Complexity: \mathcal{O}(n + m)O(n+m), where nn and mm are the lengths of the arrays. We iterate through the first, and then through the second array; insert and lookup operations in the hash map take a constant time.
+Space Complexity: \mathcal{O}(\min(n, m))O(min(n,m)). We use hash map to store numbers (and their counts) from the smaller array.
+*/
+class Solution {
+    public int[] intersect(int[] nums1, int[] nums2) {
+        if(nums2.length< nums1.length)
+            return intersect(nums2, nums1);
+        
+        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+        int[] res = new int[nums2.length];
+        int k = 0;
+        
+        for(int val: nums1)
+            map.put(val, map.getOrDefault(val,0)+1);
+        
+        for(int val: nums2)
+        {
+            if(map.containsKey(val))
+            {
+                res[k++] = val;
+                
+                if(map.get(val)==1)
+                    map.remove(val);
+                else
+                    map.put(val, map.getOrDefault(val,0)-1);
+            }
+        }
+        
+        // Java 8
+        // List<Integer> list = new ArrayList<Integer>();
+        //int[] array = list.stream().mapToInt(i->i).toArray();
+        
+        return Arrays.copyOf(res, k);
+    }
+}
