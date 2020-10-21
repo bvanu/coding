@@ -1,0 +1,25 @@
+/**
+ * Linkedin
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ *
+ * Time Complexity: O(N)O(N), where NN is the number of nodes in the BST. In the worst case we might be visiting all the nodes of the BST.
+
+* Space Complexity: O(N)O(N). This is because the maximum amount of space utilized by the recursion stack would be NN since the height of a skewed BST could be NN.
+ */
+
+class Solution {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        // Order of p and q doesn't matter
+        if(p.val<root.val && q.val<root.val)
+            return lowestCommonAncestor(root.left, p, q);
+        if(p.val>root.val && q.val>root.val)
+            return lowestCommonAncestor(root.right, p, q);
+        return root;
+    }
+}
