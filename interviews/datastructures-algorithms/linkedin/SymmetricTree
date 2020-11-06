@@ -1,0 +1,101 @@
+/*
+LinkedIn
+
+Given a binary tree, check whether it is a mirror of itself (ie, symmetric around its center).
+
+For example, this binary tree [1,2,2,3,4,4,3] is symmetric:
+
+    1
+   / \
+  2   2
+ / \ / \
+3  4 4  3
+ 
+
+But the following [1,2,2,null,3,null,3] is not:
+
+    1
+   / \
+  2   2
+   \   \
+   3    3
+   
+*/
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    /**
+    Approach 1: Recursively
+    
+    Complexity Analysis
+    Time complexity : O(n). Because we traverse the entire input tree once, the total run time is O(n), where nn is the total number of nodes in the tree.
+    Space complexity : The number of recursive calls is bound by the height of the tree. In the worst case, the tree is linear and the height is in O(n). Therefore, space complexity due to recursive calls on the stack is O(n) in the worst case.
+    */
+    
+    public boolean isSymmetric1(TreeNode root)
+    {
+        if(root==null) return true;
+        
+        return isMirror(root.left, root.right);
+        
+    }
+    public boolean isMirror(TreeNode node1, TreeNode node2) {
+        if(node1==null && node2==null)
+            return true;
+        
+        if(node1==null || node2==null)
+            return false;
+        
+        if(node1.val!=node2.val)
+            return false;
+        
+        return isMirror(node1.left, node2.right) && isMirror(node1.right, node2.left);
+    }
+    
+    /*
+    Apprach 2: Iterative
+    
+    Complexity Analysis
+    Time complexity : O(n). Because we traverse the entire input tree once, the total run time is O(n), where nn is the total number of nodes in the tree.  
+    Space complexity : There is additional space required for the search queue. In the worst case, we have to insert O(n) nodes in the queue. Therefore, space complexity is O(n).
+    */
+    public boolean isSymmetric(TreeNode root)
+    {
+        Queue<TreeNode> que = new LinkedList<TreeNode>();
+        
+        que.add(root);
+        que.add(root);
+        
+        while(!que.isEmpty())
+        {
+            TreeNode n1 = que.poll();
+            TreeNode n2 = que.poll();
+            
+            if(n1==null && n2==null) continue;
+            if(n1==null || n2==null) return false;
+            if(n1.val != n2.val) return false;
+            
+            que.add(n1.left);
+            que.add(n2.right);
+            que.add(n1.right);
+            que.add(n2.left);
+        }
+        
+        return true;
+    }
+    
+}
