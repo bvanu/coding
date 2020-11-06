@@ -1,0 +1,111 @@
+/*
+LinkedIn
+
+You have n gardens, labeled from 1 to n, and an array paths where paths[i] = [xi, yi] describes the existence of a bidirectional path from garden xi to garden yi. In each garden, you want to plant one of 4 types of flowers.
+
+There is no garden that has more than three paths coming into or leaving it.
+
+Your task is to choose a flower type for each garden such that, for any two gardens connected by a path, they have different types of flowers.
+
+Return any such a choice as an array answer, where answer[i] is the type of flower planted in the (i+1)th garden.  The flower types are denoted 1, 2, 3, or 4.  It is guaranteed an answer exists.
+
+ 
+Example 1:
+
+Input: n = 3, paths = [[1,2],[2,3],[3,1]]
+Output: [1,2,3]
+Example 2:
+
+Input: n = 4, paths = [[1,2],[3,4]]
+Output: [1,2,1,2]
+Example 3:
+
+Input: n = 4, paths = [[1,2],[2,3],[3,4],[4,1],[1,3],[2,4]]
+Output: [1,2,3,4]
+
+TC: O(n^2)
+SC: O(n)
+
+*/
+
+
+class Garden
+{
+    public static final int[] FLOWER_TYPES = {1,2,3,4};
+    int flowerType = -1;
+    List<Garden> connectedGardens;
+    
+    public Garden()
+    {
+        flowerType = -1;
+        connectedGardens = new ArrayList<Garden>();
+    }
+    
+    public void setUniqueFlowerType()
+    {
+        Set<Integer> flowerTypeTakenByConnectedGarden = new HashSet<Integer>();
+        
+        // get flowerTypes taken by connectedGardens
+        for(Garden garden: connectedGardens)
+        {
+            if(garden.flowerType!=-1)
+            {
+                flowerTypeTakenByConnectedGarden.add(garden.flowerType);
+            }
+        }
+        
+        // set unique flowerType to the garden
+        for(int flowerType: FLOWER_TYPES)
+        {
+            if(!flowerTypeTakenByConnectedGarden.contains(flowerType))
+            {
+                this.flowerType = flowerType;
+            }
+        }
+    }
+}
+class Solution {
+    public int[] gardenNoAdj(int n, int[][]paths)
+    {
+        /*
+        instansiate N garden
+        connect the path
+        setUniqueFlowerType for each node
+        return int[] array of each garden's flower type
+        */
+        
+        // array of gardens
+        Garden[] graph = new Garden[n];
+        
+        // instansiate N garden
+        for(int i=0; i<n; i++)
+        {
+            graph[i] = new Garden();
+        }
+        
+        for(int[] path: paths)
+        {
+            // -1 because of 0-based index
+            int p1 = path[0]-1;
+            int p2 = path[1]-1;
+            
+            Garden garden1 = graph[p1]; 
+            Garden garden2 = graph[p2];
+            // when garden1's neighbor is garden2, then garden2's neighbor should also be garden1
+            garden1.connectedGardens.add(garden2);
+            garden2.connectedGardens.add(garden1);
+        }
+        
+        int idx = 0;
+        int[] flowerTypes = new int[n];
+        
+        //  setUniqueFlowerType for each node
+        for(Garden garden: graph)
+        {
+            garden.setUniqueFlowerType();
+            flowerTypes[idx++] = garden.flowerType;
+        }
+        
+        return flowerTypes;
+    }
+}
