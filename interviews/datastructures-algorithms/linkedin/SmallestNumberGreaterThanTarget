@@ -1,0 +1,70 @@
+/**
+LinkedIn
+
+Given a list of sorted characters letters containing only lowercase letters, and given a target letter target, find the smallest element in the list that is larger than the given target.
+
+Letters also wrap around. For example, if the target is target = 'z' and letters = ['a', 'b'], the answer is 'a'.
+
+Examples:
+Input:
+letters = ["c", "f", "j"]
+target = "a"
+Output: "c"
+
+Input:
+letters = ["c", "f", "j"]
+target = "k"
+Output: "c"
+**/
+
+class Solution {
+    /**
+    Approach1: Linear scan
+    
+    Time Complexity: O(N), where N is the length of letters. We scan every element of the array.
+    Space Complexity: O(1)O(1), as we maintain only pointers.
+    **/
+    
+    public char nextGreatestLetter1(char[] letters, char target) {
+        if(letters==null || letters.length<1)
+            return '1';
+        
+        for(char c: letters)
+        {
+            if((c>target))
+                return c;
+        }
+        
+        return letters[0];
+    }
+    
+    /**
+    Approach #2 Binary Search
+    Intuition and Algorithm
+
+    Like in Approach #2, we want to find something larger than target in a sorted array. This is ideal for a binary search: Let's find the rightmost position to insert target into letters so that it remains sorted.
+Our binary search (a typical one) proceeds in a number of rounds. At each round, let's maintain the loop invariant that the answer must be in the interval [lo, hi]. Let mi = (lo + hi) / 2. If letters[mi] <= target, then we must insert it in the interval [mi + 1, hi]. Otherwise, we must insert it in the interval [lo, mi].
+At the end, if our insertion position says to insert target into the last position letters.length, we return letters[0] instead. This is what the modulo operation does.
+
+    Complexity Analysis
+    Time Complexity: O(\log N)O(logN), where NN is the length of letters. We peek only at \log NlogN elements in the array.
+    Space Complexity: O(1)O(1), as we maintain only pointers.
+    **/
+    
+    public char nextGreatestLetter(char[] letters, char target)
+    {
+        int lo = 0, hi = letters.length;
+        
+        while(lo<hi)
+        {
+            int mid = (lo+hi)/2;
+            
+            if(letters[mid]<=target)
+                lo = mid+1;
+            else
+                hi = mid;
+        }
+        
+        return letters[lo%letters.length];
+    }
+}
