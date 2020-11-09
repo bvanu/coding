@@ -1,0 +1,92 @@
+/**
+LinkedIn
+
+Given a non-empty special binary tree consisting of nodes with the non-negative value, where each node in this tree has exactly two or zero sub-node. If the node has two sub-nodes, then this node's value is the smaller value among its two sub-nodes. More formally, the property root.val = min(root.left.val, root.right.val) always holds.
+
+Given such a binary tree, you need to output the second minimum value in the set made of all the nodes' value in the whole tree.
+
+If no such second minimum value exists, output -1 instead.
+**/
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    /* Approach #1:
+    Complexity Analysis
+
+    Time Complexity: O(N), where N is the total number of nodes in the given tree. We visit each node exactly once, and scan through the O(N) values in unique once.
+    Space Complexity: O(N), the information stored in uniques.
+    **/
+    public int findSecondMinimumValue(TreeNode root) {
+        Set<Integer> uniques = new HashSet<Integer>();
+        dfs(root, uniques);
+        
+        int min1 = root.val;
+        long ans = Long.MAX_VALUE;
+        
+        for(int v: uniques)
+        {
+            if(min1<v && v<ans)
+                ans = v;
+        }
+        
+        return ans<Long.MAX_VALUE? (int)ans : -1;
+    }
+    
+    // dfs, space complexity is O(n) for the recursion stack
+    public void dfs(TreeNode root, Set<Integer> set)
+    {
+        if(root!=null)
+        {
+            set.add(root.val);
+            dfs(root.left, set);
+            dfs(root.right, set);
+        }
+    }
+    
+    /* Approach #1:
+    Complexity Analysis
+
+    Time Complexity: O(NlogN), for sorting
+    Space Complexity: O(N), the information stored in list and que.
+    **/
+    public int findSecondMinimumValue2(TreeNode root) {
+        if(root==null) return -1;
+        
+        Queue<TreeNode> que = new LinkedList<TreeNode>();
+        ArrayList<Integer> list = new ArrayList<Integer>();
+        que.add(root);
+        
+        while(!que.isEmpty())
+        {
+            TreeNode node = que.remove();
+            list.add(node.val);
+            
+            if(node.left!=null) que.add(node.left);
+            if(node.right!=null) que.add(node.right);
+        }
+        
+        Collections.sort(list);
+        int max = list.get(0);
+        for(int i=1;i<list.size(); i++)
+        {
+            if(list.get(i)>max)
+                return list.get(i);
+        }
+        
+        return -1;
+    }
+}
