@@ -1,0 +1,75 @@
+/**
+Linkedin
+Write a program to find the node at which the intersection of two singly linked lists begins.
+*/
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    /**
+    Approach 1: Brute Force
+    For each node ai in list A, traverse the entire list B and check if any node in list B coincides with ai.
+
+    Complexity Analysis
+    Time complexity : O(mn)O(mn).
+    Space complexity : O(1)O(1).
+    **/
+    public ListNode getIntersectionNode1(ListNode headA, ListNode headB) {
+        ListNode a = headA;
+        ListNode b = headB;
+        
+        while(a!=null)
+        {
+            b = headB;
+            
+            while(b!=null)
+            {
+                if(a==b)
+                    return a;
+                b = b.next;
+            }
+            
+            a = a.next;
+        }
+        
+        return null;
+    }
+    
+    /**
+    Approach 2: Hash Table
+    Traverse list A and store the address / reference to each node in a hash set. Then check every node bi in list B: if bi appears in the hash set, then bi is the intersection node.
+
+    Complexity Analysis
+    Time complexity : O(m+n)O(m+n).
+    Space complexity : O(m)O(m) or O(n)O(n).
+    **/
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB)
+    {
+        Set<ListNode> set = new HashSet<ListNode>();
+        
+        while(headA!=null)
+        {
+            set.add(headA);
+            headA = headA.next;
+        }
+        
+        while(headB!=null)
+        {
+            if(set.contains(headB))
+                return headB;
+            
+            headB = headB.next;
+        }
+        
+        return null;
+    }
+}
