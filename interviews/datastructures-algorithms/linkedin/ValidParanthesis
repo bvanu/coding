@@ -1,0 +1,48 @@
+/**
+LinkedIn
+
+Complexity analysis
+
+Time complexity : O(n)O(n) because we simply traverse the given string one character at a time and push and pop operations on a stack take O(1)O(1) time.
+Space complexity : O(n)O(n) as we push all opening brackets onto the stack and in the worst case, we will end up pushing all the brackets onto the stack. e.g. ((((((((((.
+
+**/
+class Solution {
+    Map<Character, Character> map;
+    
+    public Solution()
+    {
+        map = new HashMap<Character, Character>();
+
+        map.put(')', '(');
+        map.put('}', '{');
+        map.put(']', '[');
+    }
+    
+    public boolean isValid(String s) {
+        if(s==null||s.length()<=1) return false;
+        
+        Stack<Character> stack = new Stack<Character>();
+        
+        for(int i=0; i<s.length(); i++)
+        {
+            char key = s.charAt(i);
+            
+            if(!map.containsKey(key))
+            {
+                stack.push(key);
+            }
+            else
+            {
+                // eg: }
+                if(stack.isEmpty())
+                    return false;
+                // eg: (}
+                if(stack.pop()!=map.get(key))
+                    return false;
+            }
+        }
+        
+        return stack.isEmpty()? true : false;
+    }
+}
