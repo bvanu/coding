@@ -1,0 +1,40 @@
+
+/**
+LinkedIn
+
+Given a positive integer num, write a function which returns True if num is a perfect square else False.
+Follow up: Do not use any built-in library function such as sqrt.
+
+Approach 1: Binary Search
+For \textrm{num} > 2num>2 the square root aa is always less than \textrm{num} / 2num/2 and greater than 1: 1 < x < \textrm{num} / 21<x<num/2. Since xx is an integer, the problem goes down to the search in the sorted set of integer numbers. Binary search is a standard way to proceed in such a situation.
+
+Complexity Analysis
+Time complexity : O(logN)
+Space complexity : O(1)
+
+**/
+
+class Solution {
+    public boolean isPerfectSquare(int num) {
+        if(num<2)
+          return true;
+        
+        long left = 2, right = num/2, mid, guessedNumber;
+        
+        while(left<=right)
+        {
+            mid = (left+right)/2;
+            guessedNumber = mid * mid;
+            
+            if(guessedNumber==num)
+                return true;
+            
+            if(guessedNumber>num)
+                right = mid-1;
+            else
+                left = mid+1;
+        }
+        
+        return false;
+    }
+}
