@@ -28,7 +28,7 @@ Constraints:
 nums1.length == m + n
 nums2.length == n
 
-TC: O(logn)
+TC: O(n+m)
 SC: O(1)
 **/
 
