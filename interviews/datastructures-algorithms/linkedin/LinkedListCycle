@@ -1,0 +1,39 @@
+/** 
+LinkedIn
+
+Time complexity : O(n). Let us denote nn as the total number of nodes in the linked list. To analyze its time complexity, we consider the following two cases separately.
+Space complexity : O(1)O(1). We only use two nodes (slow and fast) so the space complexity is O(1)O(1).
+**/
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    public boolean hasCycle(ListNode head) {
+        if(head==null)
+            return false;
+        
+        ListNode p1 = head, p2 = head;
+        
+        while(p2.next!=null)
+        {
+            p1 = p1.next;
+            p2 = p2.next.next;
+            
+            if(p2==null)
+                return false;
+            
+            if(p1==p2)
+                return true;
+        }
+        
+        return false;
+    }
+}
