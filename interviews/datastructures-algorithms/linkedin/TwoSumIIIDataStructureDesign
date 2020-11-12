@@ -1,0 +1,60 @@
+/*
+LinkedIn
+
+Design a data structure that accepts a stream of integers and checks if it has a pair of integers that sum up to a particular value.
+
+Implement the TwoSum class:
+TwoSum() Initializes the TwoSum object, with an empty array initially.
+void add(int number) Adds number to the data structure.
+boolean find(int value) Returns true if there exists any pair of numbers whose sum is equal to value, otherwise, it returns false.
+
+Time Complexity:
+For the add(number) function: \mathcal{O}(1)O(1), since it takes a constant time to update an entry in hashtable.
+For the find(value) function: \mathcal{O}(N)O(N), where NN is the total number of unique numbers. In the worst case, we would iterate through the entire table.
+Space Complexity: \mathcal{O}(N)O(N), where NN is the total number of unique numbers that we will see during the usage of the data structure.
+*/
+
+class TwoSum {
+    Map<Integer, Integer> map;
+    
+    // Initialize your data structure here. 
+    public TwoSum() {
+        map = new HashMap<Integer, Integer>();
+    }
+    
+    // Add the number to an internal data structure.
+    public void add(int number) {
+        // build a frequency table
+        map.put(number, map.getOrDefault(number, 0)+1);
+    }
+    
+    // Find if there exists any pair of numbers which sum is equal to the value
+    public boolean find(int value) {
+        Iterator it = map.keySet().iterator();
+        
+        while(it.hasNext())
+        {
+            int a = (int)it.next();
+            int b = value-a;
+            
+            if(map.containsKey(b))
+            {
+                if(a==b)
+                {
+                    if(map.get(a)<2)
+                        continue; // DON'T BREAK /RETURN HERE, verify the remaining keys
+                }
+                return true;
+            }
+        }
+        
+        return false;
+    }  
+}
+
+/**
+ * Your TwoSum object will be instantiated and called as such:
+ * TwoSum obj = new TwoSum();
+ * obj.add(number);
+ * boolean param_2 = obj.find(value);
+ */
