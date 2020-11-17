@@ -1,0 +1,57 @@
+/**
+LinkedIn
+
+Backtracking:
+
+Given an array nums of distinct integers, return all the possible permutations. You can return the answer in any order.
+Example 1:
+
+Input: nums = [1,2,3]
+Output: [[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
+Example 2:
+
+Input: nums = [0,1]
+Output: [[0,1],[1,0]]
+Example 3:
+
+Input: nums = [1]
+Output: [[1]]
+
+Source:
+https://leetcode.com/problems/permutations/discuss/18239/A-general-approach-to-backtracking-questions-in-Java-(Subsets-Permutations-Combination-Sum-Palindrome-Partioning)
+
+Complexity Analysis
+
+Time complexity : Initially we have N choices, and in each choice we have (N - 1) choices, and so on. Notice that at the end when adding the list to the result list, it takes O(N).
+Space complexity : O(N x N!) since we have N! solutions and each of them requires N space to store elements.
+
+**/
+
+class Solution {
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> list = new ArrayList<List<Integer>>();
+        backtrack(nums, new ArrayList<>(), list);
+        
+        return list;
+    }
+    
+    private void backtrack(int[] nums, List<Integer> tempList, List<List<Integer>> list)
+    {
+        if(nums.length == tempList.size())
+        {
+            list.add(new ArrayList<>(tempList)); // create a new ArrayList here
+        }
+        else
+        {
+            for(int i=0; i<nums.length; i++)
+            {
+                if(tempList.contains(nums[i])) continue; // number already exists in the list
+                
+                tempList.add(nums[i]);
+                backtrack(nums, tempList, list);
+                tempList.remove(tempList.size()-1);
+            }
+        }
+        
+    }
+}
