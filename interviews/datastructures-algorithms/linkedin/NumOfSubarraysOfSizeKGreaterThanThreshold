@@ -1,0 +1,79 @@
+/**
+LinkedIn
+
+Problem:
+Number of Sub-arrays of Size K and Average Greater than or Equal to Threshold
+
+Given an array of integers arr and two integers k and threshold.
+Return the number of sub-arrays of size k and average greater than or equal to threshold.
+
+Example 1:
+
+Input: arr = [2,2,2,2,5,5,5,8], k = 3, threshold = 4
+Output: 3
+Explanation: Sub-arrays [2,5,5],[5,5,5] and [5,5,8] have averages 4, 5 and 6 respectively. All other sub-arrays of size 3 have averages less than 4 (the threshold).
+Example 2:
+
+Input: arr = [1,1,1,1,1], k = 1, threshold = 0
+Output: 5
+Example 3:
+
+Input: arr = [11,13,17,23,29,31,7,5,2,3], k = 3, threshold = 5
+Output: 6
+Explanation: The first 6 sub-arrays of size 3 have averages greater than 5. Note that averages are not integers.
+Example 4:
+
+Input: arr = [7,7,7,7,7,7,7], k = 7, threshold = 7
+Output: 1
+Example 5:
+
+Input: arr = [4,4,4,4], k = 4, threshold = 1
+Output: 1
+
+**/
+
+class Solution {
+    /**
+    Approach #1: Sliding window
+    
+    TC: O(n)
+    SC: O(1)
+    **/
+    public int numOfSubarrays1(int[] arr, int k, int threshold) {
+        int sum = 0, count = 0;
+        
+        for(int i=0; i<k; i++)
+            sum += arr[i];
+        
+        for(int i=0; i<=arr.length-k; i++)
+        {
+            if(i != 0)
+            {
+                sum += arr[i+k-1] - arr[i-1];
+            }
+            
+            if(sum/k >= threshold)
+                count++;
+        }
+            
+        return count;
+    }
+    
+    public int numOfSubarrays(int[] arr, int k, int threshold)
+    {
+        int s = 0;
+        int t = threshold * k;
+        int count = 0;
+        
+        for(int i=0; i<arr.length; i++)
+        {
+            s += arr[i];
+            
+            if(i<k-1) continue;
+            if(i>k-1) s -= arr[i-k]; // substract the first element from the window
+            if(s>=t) count++;
+        }
+        
+        return count;
+    }
+}
