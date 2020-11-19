@@ -79,11 +79,11 @@ class Solution {
             if(node.right!=null) que.add(node.right);
         }
         
-        Collections.sort(list);
-        int max = list.get(0);
+        Collections.sort(list); // sorts in ascending order
+        int min = list.get(0);
         for(int i=1;i<list.size(); i++)
         {
-            if(list.get(i)>max)
+            if(list.get(i)>min)
                 return list.get(i);
         }
         
