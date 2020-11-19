@@ -1,0 +1,45 @@
+/*
+Linkedin
+
+Find distance between 2 words in the given list of strings
+
+TC: O(n^2) worst case if list contains only word1's and word2's
+SC: O(n) for the Hash Map
+*/
+class WordDistance {
+    Map<String, List<Integer>> map = new HashMap<String, List<Integer>>();
+    
+    public WordDistance(String[] words) {
+        int idx = 0;
+        for(String word: words)
+        {
+            List<Integer> tempList = map.getOrDefault(word, new ArrayList<Integer>());
+            tempList.add(idx++);
+            map.put(word, tempList);
+        }
+    }
+    
+    public int shortest(String word1, String word2) {
+        List<Integer> word1Indices = map.getOrDefault(word1, new ArrayList<Integer>());
+        List<Integer> word2Indices = map.getOrDefault(word2, new ArrayList<Integer>());
+        
+        int shortestDistance = Integer.MAX_VALUE;
+        
+        for(int i1: word1Indices)
+        {
+           for(int i2: word2Indices)
+           {
+                if(Math.abs(i1-i2)<shortestDistance)
+                    shortestDistance = Math.abs(i1-i2);
+           } 
+        }
+        
+        return shortestDistance;
+    }
+}
+
+/**
+ * Your WordDistance object will be instantiated and called as such:
+ * WordDistance obj = new WordDistance(words);
+ * int param_1 = obj.shortest(word1,word2);
+ */
