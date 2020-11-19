@@ -31,8 +31,6 @@ LinkedIn
  * }
  */
 class Solution {
-    int sum = 0;
-    
     public int depthSum(List<NestedInteger> nestedList) { 
         int depth = 1;
         
@@ -41,24 +39,14 @@ class Solution {
     
     
     public int depthSum(List<NestedInteger> nestedList, int depth) {      
+        int sum = 0;
         
-        //for(NestedInteger ni: nestedList)
-        for(int i=0; i<nestedList.size(); i++)
+        for(NestedInteger ni : nestedList)
         {   
-            //System.out.println("i:" + i);
-            NestedInteger ni = nestedList.get(i);
-            
             if(ni.isInteger())
-            {
-                //System.out.println("in if() ni = " + ni.getInteger() + " depth= " + depth);
                 sum += ni.getInteger()*depth;
-                //System.out.println("in if() sum = " + sum);
-            }
             else
-            {
-                //System.out.println("in else()" + " depth= " + depth);
-                depthSum(ni.getList(), depth+1);
-            }
+                sum += depthSum(ni.getList(), depth+1);
         }
         
         return sum; // return statements should be outside the loop otherwise it breaks the the loop and returns back
