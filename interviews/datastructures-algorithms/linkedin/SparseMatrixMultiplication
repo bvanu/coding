@@ -1,0 +1,36 @@
+/*
+Linkedin
+
+Given two sparse matrices A and B, return the result of AB.
+You may assume that A's column number is equal to B's row number.
+
+TC: O(n^3)
+SC: O(1)
+*/
+class Solution {
+    public int[][] multiply(int[][] A, int[][] B) {
+        if(A==null || B==null || A.length<1 || B.length<1 || A[0].length!=B.length)
+            return null;
+        
+        int m = A.length; // #rows
+        int n = B[0].length; // #cols
+        int[][] C = new int[m][n];
+        
+        for(int i=0; i<m; i++) // iterate ove A's rows
+        {
+            for(int k=0; k< A[i].length; k++)
+            {
+                if(A[i][k] != 0)
+                {
+                    for(int j=0; j<n; j++) // iterate ove B's cols
+                    {
+                        if(B[k][j] != 0)
+                            C[i][j] += A[i][k] * B[k][j]; 
+                    }
+                }
+            }
+        }
+        
+        return C;
+    }
+}
