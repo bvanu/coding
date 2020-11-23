@@ -1,0 +1,48 @@
+/*
+Linkedin
+*/
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    /*
+    Approach #1: Max heap and BFS
+    
+    TC: O(n)
+    SC: O(n)
+    */
+    public int kthSmallest(TreeNode root, int k) {
+        PriorityQueue<Integer> pq = new PriorityQueue<Integer>((a,b) -> b-a); // Max Heap
+        Queue<TreeNode> que = new LinkedList<TreeNode>(); // BFS
+        
+        que.add(root);
+        
+        while(!que.isEmpty())
+        {
+            TreeNode node = que.poll();
+            
+            pq.add(node.val);
+            
+            if(pq.size()>k)
+                pq.poll();
+            
+            if(node.left!=null) que.add(node.left);
+            if(node.right!=null) que.add(node.right);            
+        }
+        
+        return pq.peek();
+    }
+}
