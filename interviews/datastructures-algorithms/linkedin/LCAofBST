@@ -8,9 +8,9 @@
  *     TreeNode(int x) { val = x; }
  * }
  *
- * Time Complexity: O(N)O(N), where NN is the number of nodes in the BST. In the worst case we might be visiting all the nodes of the BST.
+ * Time Complexity: O(N), where NN is the number of nodes in the BST. In the worst case we might be visiting all the nodes of the BST. Otherwise O(logN)
 
-* Space Complexity: O(N)O(N). This is because the maximum amount of space utilized by the recursion stack would be NN since the height of a skewed BST could be NN.
+* Space Complexity: O(N). This is because the maximum amount of space utilized by the recursion stack would be NN since the height of a skewed BST could be NN.
  */
 
 class Solution {
