@@ -1,0 +1,48 @@
+/**
+  Linkedin
+
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    /*
+    Approach #1: DFS
+    
+    root = [3,5,1,6,2,0,8,null,null,7,4]
+    (5,1), (5,4), (5, 10) represent several diff cases
+    
+    TC: O(n) 
+    SC: O(n) for the  recursion stack
+    */
+    
+    int count = 0;
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {        
+        TreeNode ans = dfs(root, p, q);
+        return count == 2 ? ans : null;
+    }
+    
+    private TreeNode dfs(TreeNode root, TreeNode p, TreeNode q)
+    {
+        if(root == null) return null;
+            
+        // finding p and/or q
+        TreeNode left = dfs(root.left, p, q);
+        TreeNode right = dfs(root.right, p, q);
+        
+        // must calling l and r to get deeper into tree to continue search
+        // cannot directly return
+        if(root == p || root == q) 
+        {
+            count++; // need this for (5,10) and (5,4) case
+            return root;
+        }
+        
+        if(left != null && right != null) return root;
+        return left != null ? left : right;
+    }
+}
