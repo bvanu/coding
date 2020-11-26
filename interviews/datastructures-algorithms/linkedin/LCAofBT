@@ -41,12 +41,16 @@ class Solution {
     
     private TreeNode dfs(TreeNode root, TreeNode p, TreeNode q)
     {
+        //System.out.println(root.val + " : " + p.val + " : " + q.val);
+            
         if(root == null) return null;
-        
-        if(root==p || root==q) return root;
         
         TreeNode left = dfs(root.left, p, q);
         TreeNode right = dfs(root.right, p, q);
+        
+        // this condition has to be here, otherwise the sub-tree below will not be checked for the other node
+        // if we assume both p and q are in tree, then we can keep this condition above the recursive calls
+        if(root==p || root==q) return root;
         
         if(left!=null && right!=null) return root;
         
