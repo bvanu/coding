@@ -22,7 +22,7 @@ https://leetcode.com/problems/permutations/discuss/18239/A-general-approach-to-b
 
 Complexity Analysis
 
-Time complexity : Initially we have N choices, and in each choice we have (N - 1) choices, and so on. Notice that at the end when adding the list to the result list, it takes O(N).
+Time complexity : O(N x N!).
 Space complexity : O(N x N!) since we have N! solutions and each of them requires N space to store elements.
 
 **/
