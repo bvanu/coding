@@ -39,7 +39,7 @@ class Solution {
     {
         if(nums.length == tempList.size())
         {
-            list.add(new ArrayList<>(tempList)); // create a new ArrayList here
+            list.add(new ArrayList<>(tempList)); // create a new ArrayList here or reference to tempList will be added and this value changes whenever tempList changes.
         }
         else
         {
