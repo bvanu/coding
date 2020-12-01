@@ -36,9 +36,8 @@ Output: [[1,1]]
 class Solution {
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
         List<List<Integer>> list = new ArrayList<List<Integer>>();
-        
+        Arrays.sort(nums);
         backtrack(candidates, new ArrayList<Integer>(), list, target, 0);
-        
         return list;
     }
     
