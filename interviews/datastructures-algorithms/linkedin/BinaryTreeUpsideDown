@@ -1,0 +1,69 @@
+/*
+Linkedin
+
+Given the root of a binary tree, turn the tree upside down and return the new root.
+You can turn a binary tree upside down with the following steps:
+
+The original left child becomes the new root.
+The original root becomes the new right child.
+The original right child becomes the new left child.
+
+
+Example1:
+[1,2,3,null,null,4,5]
+Output
+[2,3,1,4,5]
+
+Example2:
+[1,2,3,4,5]
+Output
+[4,5,2,null,null,3,1]
+
+Example3:
+[1,null,2]
+Invalid Input Tree, found a node with right child and without left child.
+*/
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    /**
+    Recursion:
+    TC: O(n)
+    SC: O(n) for the stack
+    **/
+    public TreeNode upsideDownBinaryTree(TreeNode root) {
+        if(root == null || root.left == null) return root;
+        
+        TreeNode rootLeft = root.left, rootRight = root.right;
+        root.left = null;
+        root.right = null;
+        
+        return upsideDownBinarySubTree(rootLeft, root, rootRight);
+    }
+    
+    private TreeNode upsideDownBinarySubTree(TreeNode rootLeft, TreeNode root, TreeNode rootRight)
+    {
+        if(rootLeft == null) return root;
+        
+        TreeNode rootLeftLeft = rootLeft.left, rootLeftRight = rootLeft.right;
+        
+        rootLeft.left = rootRight;
+        rootLeft.right = root;
+        
+        return upsideDownBinarySubTree(rootLeftLeft, rootLeft, rootLeftRight);
+    }
+}
