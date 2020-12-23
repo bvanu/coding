@@ -1,0 +1,97 @@
+class Solution {
+    /* Approach #1: Brute force
+    
+    TC: O(n^3)
+    SC: O(1)
+    **/
+    public int numTeams1(int[] rating) {
+        if(rating == null || rating.length <1) return 0;
+        
+        int count = 0;
+        int n = rating.length;
+        
+        for(int i=0; i<n-2; i++)
+        {
+            for(int j=i+1; j<n-1; j++)
+            {
+                for(int k=j+1; k<n; k++)
+                {
+                    if((rating[i] < rating[j]) &&  (rating[j] < rating[k]))
+                        count++;
+                    else if((rating[i] > rating[j]) && (rating[j] > rating[k]) )
+                        count++;
+                }
+            }
+        }
+        
+        return count;
+    }
+    
+    /* Approach #2: Optimized solution
+    
+    Example: [13, 3, 4, 10, 7, 8]
+    13:
+
+    for {arr[i] < arr[j] < arr[k]} tripplets, Nothing smaller from left side.
+    for {arr[i] > arr[j] > arr[k]} tripplets, Nothing larger from left side.
+    3:
+
+    for {arr[i] < arr[j] < arr[k]} tripplets, Nothing smaller from left side.
+    for {arr[i] > arr[j] > arr[k]} tripplets, Nothing smaller from right side.
+    4:
+
+    for {arr[i] < arr[j] < arr[k]} tripplets,1 number is smaller and 3 are larger, total = 1*3 = 3 tripplets => {3, 4, 10}, {3, 4, 7}, {3, 4, 8}
+    for {arr[i] > arr[j] > arr[k]} tripplets, Nothing smaller from right side.
+    10:
+
+    for {arr[i] < arr[j] < arr[k]} tripplets,Nothing larger from right side.
+    for {arr[i] > arr[j] > arr[k]} tripplets, 1 number is bigger and 2 numbers are smaller, total = 1*2 = 2 tripplets => {13, 10, 7}, {13, 10, 8}
+    7:
+
+    for {arr[i] < arr[j] < arr[k]} tripplets, 2 numbers are smaller and 1 is larger, total = 2*1 = 2 => {3, 7, 8}, {4, 7, 8}
+    for {arr[i] > arr[j] > arr[k]} tripplets, Nothing smaller from right side.
+    8:
+
+    for {arr[i] < arr[j] < arr[k]} tripplets, Nothing larger from right side.
+    for {arr[i] > arr[j] > arr[k]} tripplets, Nothing smaller from right side.
+
+    TC: O(n^2)
+    SC: O(1)
+    */
+    
+    public int numTeams(int[] rating)
+    {
+        if(rating == null || rating.length <1) return 0;
+                
+        int n = rating.length;
+        int count = 0;
+        
+        for(int j=0; j<n; j++)
+        {
+            int leftSmaller = 0, rightLarger = 0;
+            int leftLarger = 0, rightSmaller = 0;
+            
+            for(int i=0; i<j; i++)
+            {
+                if(rating[i] < rating[j])
+                    leftSmaller++;
+                
+                if(rating[i] > rating[j])
+                    leftLarger++;
+            }
+            
+            for(int k=j+1; k<n; k++)
+            {
+                if(rating[j] < rating[k])
+                    rightLarger++;
+                
+                if(rating[j] > rating[k])
+                    rightSmaller++;
+            }
+            
+            count += leftSmaller * rightLarger + leftLarger * rightSmaller;
+        }
+        
+        return count;
+    }
+}
