@@ -1,0 +1,93 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    /* Approach #1: Brute-force : BFS
+    
+    TC: O(n)
+    SC: O(n);
+    */
+    public int sumEvenGrandparent1(TreeNode root) {
+        // do bfs, if a node is even get it's grandchildren
+        int sum = 0;
+        TreeNode node;
+        
+        Queue<TreeNode> que = new LinkedList<TreeNode>();
+        que.add(root);
+        
+        while(!que.isEmpty())
+        {
+            node = que.remove();
+            
+            if(node.val%2 == 0)
+            {
+                sum += getGrandchildrenSum(node);
+            }
+            
+            if(node.left != null) que.add(node.left);
+            if(node.right != null) que.add(node.right);
+        }
+        
+        return sum;
+    }
+    
+    private int getGrandchildrenSum(TreeNode node)
+    {
+        int sum = 0;
+        
+        if(node != null)
+        {
+            if(node.left != null)
+            {
+                if(node.left.left != null) sum += node.left.left.val;
+                if(node.left.right != null) sum += node.left.right.val;
+            }
+            
+             if(node.right != null)
+            {
+                if(node.right.left != null) sum += node.right.left.val;
+                if(node.right.right != null) sum += node.right.right.val;
+            }
+        }
+        
+        return sum;
+    }
+    
+    /*
+    Approach #2: DFS + Recursion
+    
+    TC: O(n)
+    SC: O(n)
+    */
+    public int sumEvenGrandparent(TreeNode root)
+    {
+        return helper(root, null, null);
+    }
+    
+    private int helper(TreeNode current, TreeNode parent, TreeNode grandparent)
+    {
+        if(current == null) return 0;
+        
+        int sum = 0;
+        
+        if(grandparent != null && grandparent.val %2 == 0)
+            sum += current.val;
+        
+        sum += helper(current.left, current, parent);
+        sum += helper(current.right, current, parent);
+        
+        return sum;         
+    }
+}
