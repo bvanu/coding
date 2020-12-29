@@ -1,0 +1,45 @@
+/*
+Input: aabcc
+Output: 2a1b2c
+
+Input: aaaaa
+Output: 5a
+
+TC:O(n)
+SC: O(n)
+*/
+
+class Solution
+{
+  public String endode(String s)
+  {
+      if(s==null || s.length()<1)
+        return "";
+        
+      char[] charArr = s.toCharArray();
+      char prevChar = 0;
+      int counter = 0;
+      
+      StringBuilder sb = new StringBuilder();
+      
+      for(char c: charArr)
+      {
+        if(c==prevChar){
+          counter++;
+        }
+        else
+        {
+          if(prevChar!=0){
+            sb.append(counter).append(prevChar);
+          }
+            
+          prevChar = c;
+          counter =1;
+        }
+      }
+      
+      sb.append(counter).append(prevChar);
+      
+      return sb.toString();
+  }
+}
