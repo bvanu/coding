@@ -36,7 +36,7 @@ Return false.
  * }
  
  TC: O(n) - you go to each and every node in the tree
- SC: O(n)
+ SC: O(n) - for the recursive stack
  */
 class BalancedTree {
     public boolean isBalanced(TreeNode root) {
