@@ -1,5 +1,6 @@
 /*
-Question: You are given coins of different denominations and a total amount of money amount. Write a function to compute the fewest number of coins that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return -1.
+Question: You are given coins of different denominations and a total amount of money amount. Write a function to compute the fewest number of coins that you need to make up that
+amount. If that amount of money cannot be made up by any combination of the coins, return -1.
 
 Examples:
 
@@ -15,9 +16,8 @@ Output: -1
 Approach 1 (Brute Force)
 
 We can generate all sets of coin frequencies that end up summing to the total amount given the coins that we granted and then take the sequence with the least coins in it.
-
-This is not only harder to implement, but it entails an automatic exponential amount of work to compute all the sets of coin frequencies to only take the best answer (the set with the least coins) from.
-
+This is not only harder to implement, but it entails an automatic exponential amount of work to compute all the sets of coin frequencies to only take the best answer 
+(the set with the least coins) from.
 
 Approach 2 (Top Down Dynamic Programming)
 
@@ -25,12 +25,11 @@ Example:
 Input:: coins = [1, 2, 5], amount = 11
 Output 3
 
-The answer to the subproblem for amount 11 is the same thing as the MINIMUM of the answers to the sub problems with each currency deduced from the original sub problem (11) PLUS ONE since we are acting as if each coin we subtract from 11 is the last coin used to make change.
+The answer to the subproblem for amount 11 is the same thing as the MINIMUM of the answers to the sub problems with each currency deduced from the original sub problem (11) PLUS
+ONE since we are acting as if each coin we subtract from 11 is the last coin used to make change.
 Not all paths will yield an answer, some will yield an optimal answer.
 
-
 Complexities (Top Down)
-
 A is the amount to make change for.
 n is the total denominations avaliable to make change with.
 
