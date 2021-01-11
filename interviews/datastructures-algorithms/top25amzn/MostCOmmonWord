@@ -1,0 +1,95 @@
+/*
+Given a paragraph and a list of banned words, return the most frequent word that is not in the list of banned words.  It is guaranteed there is at least one word that isn't banned, and that the answer is unique.
+Words in the list of banned words are given in lowercase, and free of punctuation.  Words in the paragraph are not case sensitive.  The answer is in lowercase.
+
+Example:
+Input: 
+paragraph = "Bob hit a ball, the hit BALL flew far after it was hit."
+banned = ["hit"]
+Output: "ball"
+Explanation: 
+"hit" occurs 3 times, but it is a banned word.
+"ball" occurs twice (and no other word does), so it is the most frequent non-banned word in the paragraph. 
+Note that words in the paragraph are not case sensitive,
+that punctuation is ignored (even if adjacent to words, such as "ball,"), 
+and that "hit" isn't the answer even though it occurs more because it is banned.
+ 
+Note:
+1 <= paragraph.length <= 1000.
+0 <= banned.length <= 100.
+1 <= banned[i].length <= 10.
+The answer is unique, and written in lowercase (even if its occurrences in paragraph may have uppercase symbols, and even if it is a proper noun.)
+paragraph only consists of letters, spaces, or the punctuation symbols !?',;.
+There are no hyphens or hyphenated words.
+Words only consist of letters, never apostrophes or other punctuation symbols.
+
+TC: O(n) - #characters in string
+SC: O(m) - # banned words
+*/
+class Solution {
+    public String mostCommonWord(String paragraph, String[] banned) {
+        int n = paragraph.length();
+        if(paragraph == null || n<1) return null;
+        
+        // make list of banned words as a set
+        Set<String> bannedSet = new HashSet<String>();
+        for(String word: banned)
+            bannedSet.add(word);
+        
+        // make a set of punctional symbols
+        Set<Character> symbolSet = new HashSet<Character>();
+        symbolSet.add('!');
+        symbolSet.add('?');
+        symbolSet.add('\'');
+        symbolSet.add(',');
+        symbolSet.add(';');
+        symbolSet.add('.');
+        symbolSet.add(' ');
+
+        Map<String, Integer> map = new HashMap<String, Integer>();
+        
+        // iterate over paragraph
+        for(int i=0; i<n; i++)
+        {
+            String word = "";
+            
+            // get word
+            while(i<n && !symbolSet.contains(paragraph.charAt(i)))
+            {
+                word += Character.toLowerCase(paragraph.charAt(i));
+                i++;       
+            }
+            
+            // check if it is a banned word
+            if(word.length()<1  || bannedSet.contains(word)) continue;
+            
+            map.put(word, map.getOrDefault(word, 0) + 1);
+        }
+                      
+        // get the most frequent word
+        int max = 0;
+        String ans = null;
+        //System.out.println("size: " + map.size());
+        for(Map.Entry<String, Integer> entry : map.entrySet())
+        {
+            //System.out.println("Key: " + entry.getKey() + " Value: " + entry.getValue());
+            if(max < entry.getValue())
+            {
+                //System.out.println("in if- max: " + max + " val: " + entry.getValue());
+                max = entry.getValue();
+                ans = entry.getKey();
+            }
+        }
+         
+        return ans;
+    }                      
+}
+
+
+/* Another way to iterate map
+Iterator<Entry<String, String>> it = map.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<String, String> pair = (Map.Entry<String, String>) it.next();
+            System.out.println(pair.getKey() + " = " + pair.getValue());
+        }
+*/
