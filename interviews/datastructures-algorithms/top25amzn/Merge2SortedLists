@@ -42,3 +42,68 @@ class Solution {
         return dummyHead.next;
     }
 }
+
+
+// Follow-up question
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ *
+ * TC: O((m+n)logK) - k is #lists
+ * SC: O(logK) - for recursive stack
+ */
+class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+        int n = lists.length;
+        if(lists == null || n<1) return null;
+        
+        return mergeLists(lists, 0, n-1);
+    }
+    
+    private ListNode mergeLists(ListNode[] lists, int start, int end)
+    {
+        if(start<end)
+        {
+            int mid = (start+end)/2;
+            
+            return merge(mergeLists(lists, start, mid), mergeLists(lists, mid+1, end));
+        }
+        else
+            return lists[start]; // return the that listnode only
+    }
+    
+    // TC: O(m+n), SC: O(1) ; where m and n are the size of the lists 
+    private ListNode merge(ListNode l1, ListNode l2)
+    {
+        // no need of sanity check, the code handles it gracefully
+        ListNode dummyHead = new ListNode(0);
+        ListNode curr = dummyHead;
+        
+        while(l1!=null && l2!=null)
+        {
+            if(l1.val<l2.val) 
+            {
+                curr.next = l1;
+                l1 = l1.next;
+            }
+            else
+            {
+                curr.next = l2;
+                l2 = l2.next;
+            }
+            
+            curr = curr.next;
+        }
+        
+        if(l1!=null) curr.next = l1;
+        if(l2!=null) curr.next = l2;
+        
+        return dummyHead.next;
+    }
+}
