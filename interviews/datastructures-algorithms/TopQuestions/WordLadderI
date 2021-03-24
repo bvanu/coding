@@ -45,7 +45,7 @@ m - length of the word
         Set<String> set = new HashSet<String>();
         boolean isPresent = false;
         
-        // check if endWord is present in wordList or not
+        // 1. Check if endWord is present in wordList or not. If endWord is not present in the wordList, return 0, no transformation is possible
         for(String word :  wordList)
         {
             if(word.equals(endWord))
@@ -53,28 +53,32 @@ m - length of the word
             set.add(word);
         }
         
+        if(!isPresent)
+         return 0;
+        
+        // 2. Do BFS on Graph (asthis is polynomial but DFS on Graph is exponential) to find shortest distance to endWord
         Queue<String> que = new LinkedList<String>();
         que.add(beginWord);
         int depth = 0;
         
-        // do BFS on Graph, this is polynomial (DFS on Graph exponential)
+        // 2a. go level by level
         while(!que.isEmpty())
         {
             int levelSize = que.size();
             depth++;
             
-            // for each word in the queue, find the words with 1 edit distance
+            // 2b. For each word in the queue, find the words with 1 edit distance
             while(levelSize-->0)
             {
                 char[] currWord = que.poll().toCharArray();
                 //char[] currWord = wrd.toCharArray();
                 
-                // for each index, check for all possible 1 depth words
+                // 2c. For each index, check for all possible 1 depth words
                 for(int i=0; i<currWord.length; i++)
                 {
                     char item = currWord[i]; // actual letter
                     
-                    // change each letter in the currWord and check if equals to word
+                    // 2d. Change each letter in the currWord and check if equals to word
                     for(char c='a'; c<='z'; c++)
                     {  
                         if(item != c)
@@ -84,6 +88,7 @@ m - length of the word
                         
                         if(set.contains(newWord))
                         {
+                        // 2e. Return depth if you found endWord
                             if(newWord.equals(endWord))
                                 return depth+1;
                             
