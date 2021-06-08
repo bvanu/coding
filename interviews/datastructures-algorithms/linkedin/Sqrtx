@@ -22,13 +22,13 @@ class Solution {
         while(s<=e)
         {
             pivot = (s+e)/2;
-            num = (long) pivot*pivot;
+            num = (long) pivot*pivot; // DO THE CASTING
             
             if(num == x) return pivot;
             if(num<x) s = pivot+1;
             else e = pivot-1;
         }
         
-        return e;
+        return e; // RETURN END
     }
 }
