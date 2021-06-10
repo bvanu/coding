@@ -15,6 +15,19 @@ Input:
 letters = ["c", "f", "j"]
 target = "k"
 Output: "c"
+
+
+
+letters =  ["c", "f", "j"]
+
+target  output
+a       c
+c       f
+f       j
+j       c
+h       j
+k       c
+
 **/
 
 class Solution {
