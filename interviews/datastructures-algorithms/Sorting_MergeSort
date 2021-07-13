@@ -1,0 +1,61 @@
+/**
+Given a list of numbers, your task is to sort it using Merge Sort algorithm.
+
+Example:
+Input: [ 5, 8, 3, 9, 4, 1, 7 ]
+Output: [ 1, 3, 4, 5, 7, 8, 9 ]
+
+Notes:
+Constraints:
+
+1 <= Length of the array <= 4*105.
+-109 <= Any number in the array <= 109.
+
+TC: O(nlogn)
+SC: O(n) auxillary space while merging    
+**/
+    
+  public ArrayList<Integer> merge_sort(ArrayList<Integer> arr) {
+      // Write your code here.
+      merge_sort_helper(arr, 0, arr.size()-1);
+      return arr;
+  }
+
+
+  private void merge_sort_helper(ArrayList<Integer> arr, int start, int end)
+  {
+      if(start >= end)
+          return;
+
+      // 1. Divide and Conquer
+      int mid = start + (end-start)/2;
+
+      merge_sort_helper(arr, start, mid);
+      merge_sort_helper(arr, mid+1, end);
+
+      // 2. Combine
+      int i = start;
+      int j = mid+1;
+      int k = 0;
+      int[] aux = new int[end-start+1];
+
+      while(i<=mid && j<=end)
+      {
+          if(arr.get(i)<=arr.get(j)) // put = for stability
+              aux[k++] = arr.get(i++);
+          else
+              aux[k++] = arr.get(j++);
+      }
+
+      while(i<=mid)
+          aux[k++] = arr.get(i++);
+
+      while(j<=end)
+          aux[k++] = arr.get(j++);
+
+      // 3. Copy elements in aux array to original arr
+      for(int m = start; m<=end; m++)
+      {
+          arr.set(m, aux[m-start]);
+      }
+  }
