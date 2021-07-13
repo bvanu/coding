@@ -1,0 +1,63 @@
+/**
+Dutch National Flag
+
+Given some balls of three colors arranged in a line, rearrange them such that all the red balls go first, then green and then blue ones.
+Do rearrange the balls in place. A solution that simply counts colors and overwrites the array is not the one we are looking for.
+This is an important problem in search algorithms theory proposed by Dutch computer scientist Edsger Dijkstra. Dutch national flag has three colors (albeit different from ones used in this problem).
+
+Example
+Input: [G, B, G, G, R, B, R, G]
+Output: [R, R, G, G, G, G, B, B]
+
+There are a total of 2 red, 4 green and 2 blue balls. In this order they appear in the correct output.
+
+Notes
+Input Parameters: An array of characters named balls, consisting of letters from {‘R’, ‘G’, ‘B’}.
+Output: Return type is void. Modify the input character array by rearranging the characters in-place.
+
+Constraints:
+1 <= n <= 100000
+Do this in ONE pass over the array - NOT TWO passes, just one pass.
+Solution is only allowed to use constant extra memory.
+
+
+TC: O(n)
+SC: O(1)
+
+**/
+
+class Result {
+  
+    public static void dutch_flag_sort(char[] balls) {
+        int green_index = -1;
+        int red_index = -1;
+        int i = 0;
+        int n = balls.length;
+        
+        while(i<n)
+        {
+            if(balls[i] == 'G')
+            {
+                green_index++;
+                swap(balls, i, green_index);
+            }
+            
+            if(balls[i] == 'R')
+            {
+                green_index++;
+                swap(balls, i, green_index);
+                red_index++;
+                swap(balls, red_index, green_index);
+            }
+            
+            i++;
+        }
+    }
+    
+    private static void swap(char[] balls, int m , int n)
+    {
+        char temp = balls[m];
+        balls[m] = balls[n];
+        balls[n] = temp;
+    }
+}
