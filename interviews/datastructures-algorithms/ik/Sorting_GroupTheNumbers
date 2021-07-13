@@ -1,0 +1,63 @@
+/**
+You are given an integer array arr of size n. Group and rearrange them (in-place) into evens and odds in such a way that group of all even integers appears on the left side and group of all odd integers appears on the right side. 
+
+
+Example
+Input: [1, 2, 3, 4]
+Output: [4, 2, 1, 3]
+
+Order does not matter. Other valid solutions are: 
+[2, 4, 1, 3]
+[2, 4, 3, 1]
+[4, 2, 3, 1]
+**/
+
+// Lumuto's partitioning
+public int[] solve(int[] arr) {
+      if(arr == null || arr.length <1)
+          return null;
+
+      int odd = -1;
+      int even = -1;
+      int n = arr.length;
+        
+      for(int i = odd+1; i<n; i++)
+      {
+          if(arr[i]%2==0) // if even swap it to the front,else if odd leave it there as it is the end of the arr we have seen so far
+          {
+              int tmp = arr[i];
+              even++;
+              arr[i] = arr[even];
+              arr[even] = tmp;
+          }
+      }
+
+      return arr;
+}
+    
+// Hoarse's paritioning
+public int[] solve(int[] arr) {
+      int n = arr.length;
+      int start = 0;
+      int end = n-1, tmp;
+
+      // Hoarse parition
+      while(start < end)
+      {
+          while(start<end && arr[end]%2!=0) // if odd, move odd pointer to left
+          {
+              end--;
+          }
+          while(start<end && arr[start]%2==0) // if even, move odd pointer to right
+          {
+              start++;
+          }
+
+          // now swap, stat and end can become equal but not over cross
+          tmp = arr[start];
+          arr[start] = arr[end];
+          arr[end] = tmp;
+      }
+
+      return arr;
+ }
