@@ -1,0 +1,65 @@
+
+/*
+Attend Meetings
+
+Given a list of meeting intervals where each interval consists of a start and an end time, check if a person can attend all the given meetings such that only one meeting can be attended at a time.
+
+Example One
+Input = [[1, 5], [5, 8], [10, 15]]
+Output = 1
+
+As the above intervals are non-overlapping intervals, it means a person can attend all these meetings.
+
+Example Two
+Input = [[1, 5], [4, 8]]
+Output = 0
+
+Time 4 - 5 is overlapping in the first and second intervals.
+
+Notes
+A new meeting can start at the same time the previous one ended.
+Constraints:
+
+1 <= number of intervals <= 10^5
+0 <= start time < end time <= 10^9
+
+Approach:
+First sort all start_times and all end_times in ascending order, takes O(nlogn).
+Then, compare second_meeeting start_time < first_meeting start_time, if this is the case person can't attend the meeting. This takes O(n).
+
+TC: O(nlogn)
+SC: O(1)
+*/
+public static int can_attend_all_meetings(List<List<Integer>> intervals) {
+    if(intervals == null || intervals.size()<1)
+        return 0;
+
+    int n = intervals.size();
+    int[] start_times = new int[n];
+    int[] end_times = new int[n];
+
+    for(int i=0; i<n ; i++)
+    {
+        start_times[i] = intervals.get(i).get(0);
+        end_times[i] = intervals.get(i).get(1);
+    }
+
+    Arrays.sort(start_times); // O(nlogn)
+    Arrays.sort(end_times); // O(nlogn)
+
+    int i = 1;
+    int j = 0;
+
+    while(i<n && j<n)
+    {
+        // Here we are comparing 2nd meeitng start time with 1st meeting end time.
+        // A person can attend a meeting only if the first_meeting_end_time <= second_meeting_start_time
+        if(start_times[i] < end_times[j]) 
+            return 0;
+
+        i++;
+        j++;
+    }
+        
+        return 1;
+    }
