@@ -1,3 +1,33 @@
+/**
+Given an integer array and a number k, find the k most frequent elements in the array. 
+
+Example One:
+Input: [1, 2, 3, 2, 4, 3, 1], 2
+Output: [3, 1]
+
+Example Two:
+Input: [1, 2, 1, 2, 3, 1], 1
+Output: [1]
+
+Notes
+If multiple answers exist, return any.
+The order of numbers in the output array does not matter.
+
+Constraints:
+1 <= Array Length <= 3*105.
+1 <= k <= Unique elements in the input array.
+0 <= Any element in the input array <= 3*105.
+
+Approach:
+1. First store all the elements with their frequeicies in HashMap <Number, Frequencies>. Takes TC: O(n) and SC: O(n)
+2. Convert this HashMap in to tuples of Pair<I, I> datastructure. Takes TC: O(n) and SC: O(n)
+3. Store these tuple Pairs into PriorityQueue (minHeap) of size K based on the frequencies. Takes TC: O(nlogk) and SC: O(k)
+4. The k elements in PriorityQueue are the k most frequent elemnts. TC: O(k) and SC: O(k)
+
+TC: O(nlogk)
+SC: O(2n+2k)
+
+**/
 class Solution {
     public int[] topKFrequent(int[] arr, int k) {
         if(arr == null || arr.length < 1)
