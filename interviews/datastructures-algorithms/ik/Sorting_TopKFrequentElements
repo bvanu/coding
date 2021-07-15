@@ -45,10 +45,18 @@ class Solution {
         
         for(int key: ht.keySet())
         {
-            minHeap.add(new Pair<Integer, Integer>(key, ht.get(key)));
-            if(minHeap.size() > k)
+            if(minHeap.size() < k)
             {
-                minHeap.poll();
+                minHeap.add(new Pair<Integer, Integer>(key, ht.get(key)));    
+            }
+            else 
+            {
+                // if we see a high freq number than the one in heap, then insert
+                if(minHeap.peek().getValue() < ht.get(key)) 
+                {
+                    minHeap.add(new Pair<Integer, Integer>(key, ht.get(key)));
+                    minHeap.poll();
+                }
             }
         }
         
