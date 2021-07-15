@@ -20,9 +20,8 @@ Constraints:
 
 Approach:
 1. First store all the elements with their frequeicies in HashMap <Number, Frequencies>. Takes TC: O(n) and SC: O(n)
-2. Convert this HashMap in to tuples of Pair<I, I> datastructure. Takes TC: O(n) and SC: O(n)
-3. Store these tuple Pairs into PriorityQueue (minHeap) of size K based on the frequencies. Takes TC: O(nlogk) and SC: O(k)
-4. The k elements in PriorityQueue are the k most frequent elemnts. TC: O(k) and SC: O(k)
+2. Store these tuple Pairs into PriorityQueue (minHeap) of size K based on the frequencies. Takes TC: O(nlogk) and SC: O(k)
+3. The k elements in PriorityQueue are the k most frequent elemnts. TC: O(k) and SC: O(k)
 
 TC: O(nlogk)
 SC: O(2n+2k)
@@ -41,34 +40,20 @@ class Solution {
             ht.put(e, ht.getOrDefault(e, 0)+1);
         }
         
-        List<Pair<Integer, Integer>> pairs = new ArrayList<Pair<Integer, Integer>>();
+        // 2. Create  a PrioirtyQueue (minHeap) of size k based on frequencies
+        PriorityQueue<Pair<Integer, Integer>> minHeap = new PriorityQueue<Pair<Integer, Integer>>((a,b) -> a.getValue()-b.getValue());
+        
         for(int key: ht.keySet())
         {
-            pairs.add(new Pair<Integer, Integer>(key, ht.get(key)));
-        }
-        
-        // 2. Create  a PrioirtyQueue (minHeap) of size k based on frequencies
-        PriorityQueue<Pair<Integer, Integer>> minHeap = new PriorityQueue<Pair<Integer, Integer>>((a,b) -> a.getValue()-b.getValue());  // O(nlogk) to insert k elements to heap iterating over n elements
-        
-        for(int i=0; i<pairs.size(); i++)
-        {
-            minHeap.add(new Pair<Integer, Integer>(pairs.get(i).getKey(), pairs.get(i).getValue()));
+            minHeap.add(new Pair<Integer, Integer>(key, ht.get(key)));
             if(minHeap.size() > k)
             {
                 minHeap.poll();
             }
         }
         
-        /** Printing the PriorityQueue
-        PriorityQueue<Pair<Integer, Integer>> pqCopy = new PriorityQueue<Pair<Integer, Integer>>(minHeap);
-        while(!pqCopy.isEmpty()){
-            Pair<Integer, Integer> obj = pqCopy.poll();
-            System.out.println(obj.getKey() + " " + obj.getValue());
-        }
-        **/
-        
         // 3. Copy elements in PQ to ArrayList
-        int[] result = new int[minHeap.size()];                                          
+        int[] result = new int[minHeap.size()];
         int i = 0;
         while(!minHeap.isEmpty())
         {
