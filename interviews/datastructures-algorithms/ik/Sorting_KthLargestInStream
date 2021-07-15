@@ -1,0 +1,73 @@
+/**
+Given an initial list along with another list of numbers to be appended with the initial list and an integer K, return an array consisting of the Kth largest element after adding each element from the first list to the second list.
+
+Example
+Input: [ 2, [4, 6], [5, 2, 20] ]
+Output: [5, 5, 6]
+
+Append    Stream              Sorted_Stream       2nd largest
+5         [4, 6, 5]           [4, 5, 6]           5
+2         [4, 6, 5, 2]        [2, 4, 5, 6]        5
+20        [4, 6, 5, 2, 20]    [2, 4, 5, 6, 20]    6
+
+Constraints:
+1 <= length of both lists <= 10^5.
+1 <= K <= length of initial list + 1.
+0 <= any value in the list <= 10^9.
+The stream can contain duplicates.
+
+Approach:
+1. As arrays are Not Sorted use the approach of adding elements from 1 st list to Heap and then while adding 2nd lists to minHeap, get keth largest element each time.
+2. Don't use Quick select on Stream or Unsorted array. QuickSelect makes sense when we need to find Kth Largest/Smallest element in single Sorted list.
+
+
+TC: O(nlogk) - n times we insert k elements into heap
+SC: O(k) - for the minHeap
+**/
+public static List<Integer> kth_largest(int k, List<Integer> initial_stream, List<Integer> append_stream) {
+
+    // 1. Put all elements in initial_stream into PriorityQueue (minHeap) of size k
+    // This minHeap stores Top k largest elements of initial_stream
+    PriorityQueue<Integer> minHeap = new PriorityQueue<Integer>((a,b) -> a-b);
+    for(int e: initial_stream)
+    {
+        // Check if heapSize < k then insert, if not check with the top element in the heap an then insert
+        // only if e > minHeap.peek()
+        if(minHeap.size() < k)
+        {
+            minHeap.add(e);
+        }
+        else
+        {
+            if(e >minHeap.peek())
+            {
+                minHeap.add(e);
+                minHeap.poll(); // This is to maintain heapSize at K
+            }
+        }
+    }
+
+    // 2. Now add each elemnt from append_stream and return Kth largest elemtns at each stage
+    List<Integer> ans = new ArrayList<Integer>();
+    for(int e: append_stream)
+    {
+        // Check if heapSize < k then insert, if not check with the top element in the heap an then insert
+        // only if e > minHeap.peek()
+        if(minHeap.size() < k)
+        {
+            minHeap.add(e);
+        }
+        else
+        {
+            if(e > minHeap.peek())
+            {
+                minHeap.poll(); // This is to maintain heapSize at K
+                minHeap.add(e);
+            }
+        }
+
+        ans.add(minHeap.peek()); 
+    }
+
+    return ans;
+}
