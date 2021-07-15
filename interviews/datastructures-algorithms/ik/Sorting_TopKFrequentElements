@@ -1,0 +1,51 @@
+class Solution {
+    public int[] topKFrequent(int[] arr, int k) {
+        if(arr == null || arr.length < 1)
+            return null;
+            
+            
+        // 1. Create a HashTable and fill it with frequencies and it to nodes[]
+        Map<Integer, Integer> ht = new HashMap<Integer, Integer>();
+        for(int e: arr)
+        {
+            ht.put(e, ht.getOrDefault(e, 0)+1);
+        }
+        
+        List<Pair<Integer, Integer>> pairs = new ArrayList<Pair<Integer, Integer>>();
+        for(int key: ht.keySet())
+        {
+            pairs.add(new Pair<Integer, Integer>(key, ht.get(key)));
+        }
+        
+        // 2. Create  a PrioirtyQueue (minHeap) of size k based on frequencies
+        PriorityQueue<Pair<Integer, Integer>> minHeap = new PriorityQueue<Pair<Integer, Integer>>((a,b) -> a.getValue()-b.getValue());  // O(nlogk) to insert k elements to heap iterating over n elements
+        
+        for(int i=0; i<pairs.size(); i++)
+        {
+            minHeap.add(new Pair<Integer, Integer>(pairs.get(i).getKey(), pairs.get(i).getValue()));
+            if(minHeap.size() > k)
+            {
+                minHeap.poll();
+            }
+        }
+        
+        /** Printing the PriorityQueue
+        PriorityQueue<Pair<Integer, Integer>> pqCopy = new PriorityQueue<Pair<Integer, Integer>>(minHeap);
+        while(!pqCopy.isEmpty()){
+            Pair<Integer, Integer> obj = pqCopy.poll();
+            System.out.println(obj.getKey() + " " + obj.getValue());
+        }
+        **/
+        
+        // 3. Copy elements in PQ to ArrayList
+        int[] result = new int[minHeap.size()];                                          
+        int i = 0;
+        while(!minHeap.isEmpty())
+        {
+            result[i] = minHeap.poll().getKey();
+            i++;
+        }
+        
+        return result;
+    }
+}
