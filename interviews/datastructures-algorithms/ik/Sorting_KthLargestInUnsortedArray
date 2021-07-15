@@ -1,0 +1,51 @@
+
+/**
+Kth Largest In An Array
+
+Given an array of integers and a number k, find the number that will be at the kth index after sorting the array in non-increasing order.
+
+Example One:
+Input: [5, 1, 10, 3, 2], 2
+Output: 5
+
+Example Two:
+Input: [4, 1, 2, 2, 3], 4
+Output: 2
+
+Constraints: 
+1 <= Array Size <= 3*105. 
+-109 <= Array Elements <= 109.
+1 <= k <= Array Size.
+
+Approach:
+1. Push elements into minHeap of size k until fill
+2. Then if num > minHEap.peek() then remove 1 element from minHeap and insert num.
+3. Top element on heap is the Kth largest
+
+TC: O(nlogk) - atmost n times we insert element into minHeap
+Sc: O(k)
+
+**/
+public static int kth_largest_in_an_array(List<Integer> numbers, int k) {
+    if(numbers == null || numbers.size() < 1) return -1;
+
+    PriorityQueue<Integer> minHeap = new PriorityQueue<Integer>((a,b) -> a-b);
+
+    for(int num: numbers)
+    {
+        if(minHeap.size() < k)
+        {
+            minHeap.add(num);
+        }
+        else
+        {
+            if(minHeap.peek() < num)
+            {
+                minHeap.poll();
+                minHeap.add(num);
+            }
+        }
+    }
+
+    return minHeap.peek();
+}
