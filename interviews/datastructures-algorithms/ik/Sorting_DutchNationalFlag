@@ -20,6 +20,8 @@ Constraints:
 Do this in ONE pass over the array - NOT TWO passes, just one pass.
 Solution is only allowed to use constant extra memory.
 
+Approach: 
+At any point green_index or red_index or i (blue_index) points to end index of that color so far.
 
 TC: O(n)
 SC: O(1)
