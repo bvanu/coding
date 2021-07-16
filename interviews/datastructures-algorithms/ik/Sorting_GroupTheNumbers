@@ -17,7 +17,7 @@ TC: O(n)
 SC: O(1)
 **/
 
-// Lumuto's partitioning
+// Lomuto's partitioning
 public int[] solve(int[] arr) {
       if(arr == null || arr.length <1)
           return null;
@@ -40,7 +40,7 @@ public int[] solve(int[] arr) {
       return arr;
 }
     
-// Hoarse's paritioning
+// Hoare's paritioning
 public int[] solve(int[] arr) {
       int n = arr.length;
       int start = 0;
