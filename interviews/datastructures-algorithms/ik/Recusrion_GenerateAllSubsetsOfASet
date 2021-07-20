@@ -1,0 +1,11 @@
+/**
+Generate All Subsets Of A Set:
+Generate ALL possible subsets of a given set. The set is given in the form of a string s containing distinct lowercase characters 'a' - 'z'.
+
+Example
+Input: "xy" 
+Output: ["", "x", "y", "xy"] 
+
+Approach:
+
+**/
