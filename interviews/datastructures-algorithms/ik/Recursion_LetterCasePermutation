@@ -1,0 +1,91 @@
+/**
+Letter Case Permutation"
+
+Return the set of strings which can be generated from a given string by changing the case of a group of letter(s).
+Return all the possible strings in lexicographic order.
+
+Example One:
+Input: “a1z”
+Output: [“A1Z”, “A1z”, “a1Z”, “a1z”]
+
+Example Two:
+Input: “123”
+Output: [“123”]
+
+Constraints:
+1 <= Length of the input string <= 12
+The string may contain the following ASCII characters only: ‘a’..’z’, ‘A’..’Z’, ‘0’..’9’
+Custom Input:
+
+Input Format:
+The first line contains the input string.
+Input from “Example One” above would be:
+a1z
+
+Output Format:
+The output contains the different letter case permutations of the input string in lexicographic order, each in a separate line.
+The output from “Example One” above would be:
+A1Z
+A1z
+a1Z
+a1z
+
+Approach:
+1. Start with size n and empty slate.  At each stage you reduce problem size by 1. You send i)Partial solution and  ii) Subproblem def in recursion.
+2. At each level make an option to  convert letter to upper or lower case if character , otherwqise make only one option.
+3. Choose your base case.
+
+TC: O(n*2^n) - 2 options for each space character can be upper case or lower case and n for the recursive stack
+SC: O(n*2^n) - if slate is array . If slate is String (as they are immutable, can't be changed, every time you append a char to string, whole String gets created and copied over), then TC would be O(n^2*2^n).
+**/
+public static List<String> letter_case_permutations(String str) {
+    if(str == null || str.length() <1)
+        return new ArrayList<String>();
+
+    List<String> result = new ArrayList<String>();
+    List<Character> slate = new ArrayList<Character>();
+    int n = str.length();
+    int i = 0;
+
+    helper(str, slate, n , i, result); // 1. slate is the partial sol 2. n is the subproblem
+
+    return result;
+}
+
+private static void helper(String s, List<Character> slate, int n, int i, List<String> result)
+{
+    // Base case
+    if(n == 0)
+    {//System.out.println(s + " " + slate.toString()
+     //                   .substring(1, 3 * slate.size() - 1)
+     //                   .replaceAll(", ", "") + " " + n + " " + i + " "); // + result.toArray().toString());
+
+        String res = "";
+        for(char c: slate)
+            res += c;
+
+        result.add(res);
+    }
+    else
+    {
+        if(s.charAt(i)-'0' >= 0 && s.charAt(i)-'0' <= 9)
+        {
+            //System.out.println(s.charAt(i));
+            slate.add(s.charAt(i));
+            helper(s, slate, n-1, i+1, result);
+            slate.remove(slate.size()-1);
+        }
+        else
+        {
+            // uppercase
+            slate.add(Character.toUpperCase(s.charAt(i)));
+            helper(s, slate, n-1, i+1, result);
+            slate.remove(slate.size()-1);
+
+            // lowercase
+            slate.add(Character.toLowerCase(s.charAt(i)));
+            helper(s, slate, n-1, i+1, result);
+            slate.remove(slate.size()-1);
+        }
+    }
+}
