@@ -1,0 +1,78 @@
+/**
+Permutions, repitions allowed. 
+No duplicates in input.
+
+Input: {1,2,3}
+Output: (3^3) = 27
+1 1 1
+1 1 2
+1 1 3
+1 2 1
+1 2 2
+1 2 3
+1 3 1
+1 3 2
+1 3 3
+2 1 1
+2 1 2
+2 1 3
+2 2 1
+2 2 2
+2 2 3
+2 3 1
+2 3 2
+2 3 3
+3 1 1
+3 1 2
+3 1 3
+3 2 1
+3 2 2
+3 2 3
+3 3 1
+3 3 2
+3 3 3
+
+Approach:
+1. Similar to repetitions allowed case except there is no need of sub_arr because repetitions are allowed
+2. So at ever place, we have n choices.
+
+TC: O(n^n * n)
+SC: O(n^n * n)
+**/
+
+
+public static List<List<Integer>> get_permutations(List<Integer> arr) {
+    if(arr == null || arr.size() <1)
+        return  new ArrayList<>();  //new ArrayList<List<Integer>>();
+
+    int n = arr.size();
+    List<Integer> slate = new ArrayList<Integer>();
+    List<List<Integer>> result = new ArrayList<>();
+
+    helper(arr, n, slate, result);
+
+    return result;
+}
+
+private static void helper(List<Integer> arr, int n , List<Integer> slate, List<List<Integer>> result)
+{
+    //System.out.println("Arr: " + arr.toString() + " n: " + n + " sub_arr: " + sub_arr.toString() + " slate: " + slate.toString());
+    // 1. Base case
+    if(n==0)
+    {
+        result.add(new ArrayList<Integer>(slate));
+        return;
+    }
+    // 2. Recursive case
+    else
+    {
+        // i. Recurse over arr from i to end and make recursive calls
+        for(int i = 0; i<arr.size(); i++)
+        {
+            // slate sandwich
+            slate.add(arr.get(i));
+            helper(arr, n-1, slate, result);
+            slate.remove(slate.size()-1);
+        }
+    }
+}
