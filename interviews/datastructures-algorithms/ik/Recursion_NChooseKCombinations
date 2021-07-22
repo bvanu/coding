@@ -58,6 +58,7 @@ private static void helper(List<Integer> arr, int n, int i, int k, List<Integer>
     if(slate.size() == k)
     {
         result.add(new ArrayList<Integer>(slate));
+        return;
     }
     // 1. Base case
     else if(n == 0)
