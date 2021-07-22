@@ -1,0 +1,115 @@
+
+/*
+Permute Array Of Integers Duplicates Allowed: Repetitions not allowed
+Given an array of numbers with possible duplicates, return all of its permutations in any order.
+
+Example:
+Input: [1, 2, 2]
+Output: [ [1, 2, 2], [2, 1, 2], [2, 2, 1] ]
+
+Constraints:
+0 <= Size of the array <= 9
+0 <= Array elements <= 9
+Custom Input
+
+Approach:
+1. Sort teh given array to get all duplicates together
+2. For i=0 create sub problem, if i> 0 compare adjacent elements until you hit a non duplicate.
+3. Genreate subproblem with that non duplicate element.
+
+TC: O(n * n!) - O(nlonn for sorting)
+SC: O(n * n!) - we are creating so many lists, sets etc which take space
+ */
+static List<List<Integer>> get_permutations(List<Integer> arr) {
+    if(arr == null || arr.size() <1)
+        return  new ArrayList<>();  //new ArrayList<List<Integer>>();
+        
+    int n = arr.size();
+    //int i = 0;
+    List<Integer> slate = new ArrayList<Integer>();
+    List<List<Integer>> result = new ArrayList<>();
+    List<Integer> sub_arr = new ArrayList<Integer>();
+    
+    // 1. Convert List<I> to int[]
+    int[] temp = new int[arr.size()];
+    int k = 0;
+    for(int v: arr)
+        temp[k++] = v;
+    
+    // 2. Sort the arr    
+    Arrays.sort(temp);
+    //System.out.println(Arrays.toString(temp));
+    
+    // 3. Convert back int[] to List<Integer>
+    List<Integer> arr_ = new ArrayList<>();
+    for(int i = 0; i<temp.length; i++)
+        arr_.add(temp[i]);
+   // System.out.println(arr_.toString());
+    
+    // Insert arr in to set
+    for(int val: arr_)
+     sub_arr.add(val);
+    
+    helper(arr_, n, sub_arr, slate, result);
+    
+    return result;
+}
+
+// n is the sub problem
+// 'i' tells which element in arr to use  _ _ _ ith element gets filled in with remaning elemnts in array except i 
+// slate is the partial solution
+private static void helper(List<Integer> arr, int n , List<Integer> sub_arr, List<Integer> slate, List<List<Integer>> result)
+{
+    //System.out.println("Arr: " + arr.toString() + " n: " + n + " sub_arr: " + sub_arr.toString() + " slate: " + slate.toString());
+    // 1. Base case
+    if(n==0)
+    {
+        result.add(new ArrayList<Integer>(slate));
+        return;
+    }
+    // 2. Recursive case
+    else
+    {
+        // i. Recurse over sub_arr from i to end and make recursive calls
+        for(int i = 0; i<sub_arr.size(); i++)
+        {
+            // First time we go ahead and use the element, from next time we check if it is a duplicate
+            if( i == 0)
+            {
+                //System.out.println("i: " + i + " sub_arr size: " + sub_arr.size());
+                // slate sandwich
+                slate.add(sub_arr.get(i));
+                helper(arr, n-1, getSubArrExcludingi(sub_arr, i), slate, result);
+                slate.remove(slate.size()-1);
+            }
+            else
+            {
+                 while(i<sub_arr.size() && sub_arr.get(i-1) == sub_arr.get(i))
+                    i++;
+                    
+                if(i<sub_arr.size())
+                {
+                    // slate sandwich
+                    slate.add(sub_arr.get(i));
+                    helper(arr, n-1, getSubArrExcludingi(sub_arr, i), slate, result);
+                    slate.remove(slate.size()-1);
+                }
+            }
+        }
+    }
+}
+
+private static List<Integer> getSubArrExcludingi(List<Integer> arr, int index)
+{
+    List<Integer> res = new ArrayList<Integer>();
+    
+    for(int i=0; i<arr.size(); i++)
+    {
+        if(i!=index)
+        {
+            res.add(arr.get(i));
+        }
+    }
+    
+    return res;
+}
