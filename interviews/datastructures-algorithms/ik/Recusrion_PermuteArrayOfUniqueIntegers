@@ -1,0 +1,114 @@
+/**
+Permute Array Of Unique Integers
+
+Given an array of unique numbers, return in any order all its permutations.
+
+Example One
+
+Input: [1, 2, 3]
+
+Output: 
+
+[
+
+[1, 2, 3], [1, 3, 2],
+
+[2, 1, 3], [2, 3, 1],
+
+[3, 2, 1], [3, 1, 2]
+
+]
+
+Notes
+
+Input is an array of integers. 
+
+Return a two-dimensional integer array.
+
+Constraints:
+
+0 <= n <= 9
+0 <= any array element <= 99
+Custom Input
+
+Input Format: 
+
+First line: length of the array, n.
+
+Next n lines, the input numbers.
+
+Example:
+3
+1
+2
+3
+
+Output Format:
+Each permutation gets its own line in the output. Numbers in each permutation are separated by one space character. Example:
+1 2 3
+1 3 2
+2 1 3
+2 3 1
+3 2 1
+
+Approach:
+1. Start with (1)Subproblem definition and (2) Partal solution (slate)
+2. Define base case where n = 0;
+
+TC: T(n * n!) - n to form string and n! permutations will come
+SC: T(n * n!) - Recursive stack height will be n
+**/
+
+publicstatic List<List<Integer>> get_permutations(List<Integer> arr) {
+    if(arr == null || arr.size() <1)
+        return  new ArrayList<>();  //new ArrayList<List<Integer>>();
+
+    // 1. Partial solution
+    List<Integer> slate = new ArrayList<Integer>(); 
+    // 2. Sub problem definition
+    int n = arr.size();
+    List<Integer> sub_arr = new ArrayList<>(arr); 
+    List<List<Integer>> result = new ArrayList<>();
+
+    helper(arr, n, sub_arr, slate, result);
+
+    return result;
+}
+
+private static void helper(List<Integer> arr, int n , List<Integer> sub_arr, List<Integer> slate, List<List<Integer>> result)
+{
+    // 1. Base case
+    if(n==0) // or slate.size()==arr.size(), using n=0 here to be consistent with other recursion problems
+    {
+        result.add(new ArrayList<Integer>(slate));
+        return;
+    }
+    // 2. Recursive case
+    else
+    {
+        // i. Recurse over sub_arr make recursive calls
+        for(int i = 0; i<sub_arr.size(); i++)
+        {
+            // slate sandwich
+            slate.add(sub_arr.get(i));
+            helper(arr, n-1, getSubArrExcludingi(sub_arr, i), slate, result);
+            slate.remove(slate.size()-1);
+        }
+    }
+}
+
+// This is used to form sub_arr, as in our permuttions repetitions are not allowed, so we need to remove already used element.
+private static List<Integer> getSubArrExcludingi(List<Integer> arr, int index)
+{
+    List<Integer> res = new ArrayList<Integer>();
+
+    for(int i=0; i<arr.size(); i++)
+    {
+        if(i!=index)
+        {
+            res.add(arr.get(i));
+        }
+    }
+
+    return res;
+}
