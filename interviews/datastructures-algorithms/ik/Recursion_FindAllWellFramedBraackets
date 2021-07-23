@@ -1,0 +1,88 @@
+/*
+Find All Well Formed Brackets:
+Given a positive integer n, return ALL strings of length 2*n with well formed round brackets.
+
+Example
+Input: 3
+Output:
+[
+    "((()))",
+    "(()())",
+    "(())()",
+    "()(())",
+    "()()()"
+]
+Any array containing these five strings in any order is a correct output.
+
+Notes
+Input Parameters: Function has one argument, integer n.
+Output: Return array of strings containing all possible well formed round brackets string of length 2*n. Order of strings in the returned array is insignificant, e.g. for n=2 both ["(())", "()()"] and ["()()", "(())"] will be accepted.
+
+Constraints:
+
+1 <= n <= 13
+Only use round brackets. '(' and ')'.
+TC: O(k*2^k) , where k = 2n
+SC: (i) O(k) for recursive stack
+    (ii) Auxillary space: O(k*2^k)
+*/
+ 
+static String[] find_all_well_formed_brackets(int n) {
+    int lb = n;
+    int rb = n;
+    List<Character> slate = new ArrayList<>();
+    List<String> res = new ArrayList<>();
+
+    helper(lb, rb, slate, res);
+
+    // Gerenrate output arr
+    String[] result = new String[res.size()];
+    int i = 0;
+    for(String str: res)
+    {
+        result[i++] = str;
+    }
+
+    return result;
+}
+
+static void helper(int lb, int rb, List<Character> slate, List<String> res)
+{
+    //System.out.println("lb: " + lb + " rb: " + rb + " slate: " + slate.toString() + " res: " + res.toString());
+    // 1. Base case
+    if(lb == 0 && rb == 0)
+    {
+        String s = "";
+        for(char c: slate)
+            s += c;
+
+        res.add(s);
+        return;
+    }
+    // 2. Recursive case
+    // 2i. Use lb, otherwise we can't form valid paranthesis 
+    if(lb == rb) 
+    {
+        // Use lb (left brace)
+        slate.add('(');
+        helper(lb-1, rb, slate, res);
+        slate.remove(slate.size()-1);
+    }
+    // 2ii. Make recursive call using both lb and rb
+    else
+    {
+        if(lb>0)
+        {
+            // Use lb (left brace)
+            slate.add('(');
+            helper(lb-1, rb, slate, res);
+            slate.remove(slate.size()-1);
+        }
+
+        // Use rb (right brace)
+        slate.add(')');
+        helper(lb, rb-1, slate, res);
+        slate.remove(slate.size()-1);
+    }
+
+}
