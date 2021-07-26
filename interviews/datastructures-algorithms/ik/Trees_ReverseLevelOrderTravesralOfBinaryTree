@@ -1,0 +1,83 @@
+/*
+Reverse Level Order Traversal Of A Binary Tree
+Given a binary tree, return the bottom-up level order traversal of the node’s labels listing each level from left to right.
+Example One
+Input: 
+Input:
+      1
+  2       3
+4   5   6   7 
+
+
+Output: [ [ 3, 4 ],
+          [ 1, 2 ],
+          [ 0 ] ]
+private static class TreeNode{
+    public int label;
+    public TreeNode left_ptr;
+    public TreeNode right_ptr;
+}
+
+Approach:
+1. Level order traversal, do it inIterative fashion, NOT in recursive fashion (this is not interviewer is looking for).
+2. Use Queue and store root
+3. If wqueue not empty, get size of the Queue, this gives all the elements at that leevel.
+4. Loop over Queue count and add that to subList. During popping each node from queue, add its childre to Queue
+5. At end of for loop, add subList to result list
+6. Do Collections.reerse(result) at end
+
+TC: O(n) - we need to traverse all nodes in binary tree
+SC: O(n) - O(n) for storing output and aux space o(n) for stroring subList
+*/
+
+
+public static List<List<Integer>> reverse_level_order_traversal(TreeNode root) {
+    List<List<Integer>> result = new ArrayList<>();
+
+    // Empty tree case
+    if(root == null)
+        return result;
+
+    level_order_traversal_helper(root, result);
+
+    return result;
+}
+
+private static void level_order_traversal_helper(TreeNode root, List<List<Integer>> result)
+{
+    // 1. Basic null check fro empty tree (this is double checking as we already checked in above method)
+    if(root == null)
+        return;
+
+    // 2. Iterative approach
+    Queue<TreeNode> que = new LinkedList<TreeNode>();
+    que.add(root);
+    int qSize;
+    TreeNode temp;
+    List<Integer> subList;
+    // int level = getTreeHeight(root); // For this I need to get height of the tree, which takes O(n)  ??
+
+    while(!que.isEmpty())
+    {
+        qSize = que.size();
+        subList = new ArrayList<Integer>();
+
+        for(int i=0; i<qSize; i++)
+        {
+            temp = que.remove();
+            subList.add(temp.label);
+
+            if(temp.left_ptr != null)
+                que.add(temp.left_ptr);
+
+            if(temp.right_ptr != null)
+                que.add(temp.right_ptr);
+        }
+
+        // level++;
+
+        result.add(subList);
+    }
+
+    Collections.reverse(result);
+}
