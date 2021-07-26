@@ -5,10 +5,8 @@ private static class TreeNode{
     public TreeNode right_ptr;
 }
 
-Diameter Of Binary Tree
-Given a binary tree, find its diameter.
-
-Example One:
+Diameter Of Binary Tree: Diameter is defined by number of edges between start node and end node. LEafnode diameter is 0 as tehre is no node below it. For a node just above 
+leaf node, diameter is 1.
 Input:
           0
     1          2
