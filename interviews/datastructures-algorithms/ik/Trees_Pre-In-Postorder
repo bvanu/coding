@@ -1,0 +1,99 @@
+/**
+Given a binary tree, find the preorder traversal of its nodes’ labels.
+Input:
+     0
+  1     2
+3    4
+Output: [ 0, 1, 3, 4, 2 ]
+
+Approach:
+Preorder traversal mans we print left procustion first.
+
+TC: O(n)
+SC: O(height) for recursive stack and auxillary space of O(n) = so total O(n)
+    Height = logn for balanced tree
+    Height = n for left skewed or right skewed tree - worst case
+**/
+
+// PRE-ORDER (left procustion)
+static ArrayList<Integer> preorder(TreeNode root) {
+    ArrayList<Integer> result = new ArrayList<Integer>();
+
+    if(root == null)
+        return result;
+
+    preorderHelper(root, result);
+
+    return result;
+}
+
+static void preorderHelper(TreeNode root, ArrayList<Integer> result)
+{
+    // 1. Base case. If leaf node left or right, return, nothing to add or traverse further down
+    if(root == null)
+        return;
+
+    // 2. Recurvie case
+    // Pre order
+    result.add(root.label);
+
+    // I am not checking for root.left == null or root.right == null, as it will be handled in base case
+    preorderHelper(root.left_ptr, result);
+    preorderHelper(root.right_ptr, result);
+}
+
+
+// IN-ORDER (bottom procustion)
+static ArrayList<Integer> inorder(TreeNode root) {
+ArrayList<Integer> result = new ArrayList<Integer>();
+
+  if(root == null)
+      return result;
+
+ inorderHelper(root, result);
+
+  return result;
+}
+
+static void inorderHelper(TreeNode root, ArrayList<Integer> result)
+{
+  // 1. Base case. If leaf node left or right, return, nothing to add or traverse further down
+  if(root == null)
+      return;
+
+  // 2. Recurvie case
+  // I am not checking for root.left == null or root.right == null, as it will be handled in base case
+  inorderHelper(root.left_ptr, result);
+
+  // In order
+  result.add(root.label);
+
+  inorderHelper(root.right_ptr, result);
+}
+
+
+// POST-ORDER (right procustion)
+static ArrayList<Integer> postorder(TreeNode root) {
+  ArrayList<Integer> result = new ArrayList<Integer>();
+
+  if(root == null)
+      return result;
+
+ postorderHelper(root, result);
+
+  return result;
+}
+
+static void postorderHelper(TreeNode root, ArrayList<Integer> result)
+{
+  // 1. Base case. If leaf node left or right, return, nothing to add or traverse further down
+  if(root == null)
+      return;
+
+  // 2. Recurvie case
+  // I am not checking for root.left == null or root.right == null, as it will be handled in base case
+  postorderHelper(root.left_ptr, result);
+  postorderHelper(root.right_ptr, result);
+  // Post order
+  result.add(root.label);
+}
