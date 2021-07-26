@@ -1,0 +1,63 @@
+/*
+private static class TreeNode{
+    public int label;
+    public TreeNode left_ptr;
+    public TreeNode right_ptr;
+}
+
+Diameter Of Binary Tree
+Given a binary tree, find its diameter.
+
+Example One:
+Input:
+          0
+    1          2
+ 3      4
+Output: 3    , Path passes through 3 -> 1 -> 0 -> 2
+
+TC: O(n) - need to go through each node
+SC: O(n) - as we are not stroing any data in aux space, but O(height of tree) for recursive stack.
+*/
+
+static int maxDiameter = 0;
+static Integer binary_tree_diameter(TreeNode root) {
+    // Empty tree ?
+    if(root == null)
+        return (Integer) maxDiameter;
+
+    binary_tree_diameter_helper(root);
+
+    return (Integer) maxDiameter;
+}
+
+private static int binary_tree_diameter_helper(TreeNode root)
+{
+    // 1. Base case. Is leaftnode, return 0 as no edges
+    if(root.left_ptr == null && root.right_ptr == null)
+        return 0;
+
+    // 2. Recursive case
+    int leftDiameter = 0;
+    int rightDiameter = 0;
+
+    // 2i. Get left diameter
+    if(root.left_ptr != null)
+    {
+        leftDiameter = binary_tree_diameter_helper(root.left_ptr) + 1; // If not leafNode, we need to ad in that element edge to the below node, hence + 1
+    }
+
+    // 2ii. Get right diameter
+    if(root.right_ptr != null)
+    {
+        rightDiameter = binary_tree_diameter_helper(root.right_ptr) + 1;
+    }
+
+    // 2iii. Am I the diameter?
+    if((leftDiameter + rightDiameter) > maxDiameter)
+    {
+        maxDiameter = leftDiameter + rightDiameter;
+    }
+
+    // Return max of diameter of left and right subTree
+    return Math.max(leftDiameter, rightDiameter);
+}
