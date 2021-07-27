@@ -1,0 +1,71 @@
+
+/*
+private static class TreeNode{
+    public int label;
+    public TreeNode left_ptr;
+    public TreeNode right_ptr;
+}
+
+Right Side View Of A Binary Tree
+Given a binary tree, imagine yourself standing on the right side of it and return a list of the node labels that you can see from the top to the bottom. 
+Input:
+      0
+  1       2
+3   4
+Output: [0, 2, 4]
+
+Appraoh:
+1. Do level order traversal, add right child first and then left child
+2. While iterating over qSize, print i=0 (first) element.
+
+TC: O(n) - need ot traverse all nodes
+SC: O(n) - recursive stack and output
+*/
+
+
+static ArrayList<Integer> right_view(TreeNode root) {
+    ArrayList<Integer> result = new ArrayList<>();
+
+    // Empty tree case
+    if(root == null)
+        return result;
+
+    helper(root, result);
+
+    return result;
+}
+
+private static void helper(TreeNode root, ArrayList<Integer> result)
+{
+    // 1. Basic null check fro empty tree (this is double checking as we already checked in above method)
+    if(root == null)
+        return;
+
+    // 2. Iterative approach
+    Queue<TreeNode> que = new LinkedList<TreeNode>();
+    que.add(root);
+    int qSize;
+    TreeNode temp;
+
+    while(!que.isEmpty())
+    {
+        qSize = que.size();
+
+        for(int i=0; i<qSize; i++)
+        {
+            temp = que.remove();
+
+            // Get right most element
+            if(i==0)
+            {
+                result.add(temp.label);
+            }
+
+            if(temp.right_ptr != null)
+                que.add(temp.right_ptr);
+
+            if(temp.left_ptr != null)
+                que.add(temp.left_ptr);
+        }
+    }
+}
