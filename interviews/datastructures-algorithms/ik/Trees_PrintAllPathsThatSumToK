@@ -1,0 +1,85 @@
+/*
+Print All Paths That Sum To K:
+Given a Binary Tree and an integer k, find all the root to leaf paths that sum to k.
+Input:
+        10
+   25         30
+45    null  40    50  
+Output: [[10, 25, 45], [10, 30, 40]].
+
+private static class TreeNode{
+    public int val;
+    public TreeNode left_ptr;
+    public TreeNode right_ptr;
+}
+
+
+TC: O(nlogn) 
+(n+1)/2 * logn, there will be (n+1)/2 nodes at the bottom of the binary tree and copyign slate to result takes logn (or n in case of skwed tree) time
+SC: O(nlogn) - we need to store result which contains (n+1)/2 sublists and each sublist contains logn items in case of balanced tree and n items in case of skewed tree. If skewed tree there might not be (n+1)/2 (~50%) items at the leaf node.
+*/
+
+static List<List<Integer>> all_paths_sum_k(TreeNode root, int k){
+    List<List<Integer>> res = new ArrayList<>();
+
+    // Is empty tree?
+    if(root == null)
+    {
+        return  res;
+    }
+
+    int sum = 0;
+    List<Integer> slate = new ArrayList<>();
+
+    helper(root, k, sum , slate, res);
+
+    if(res.size() == 0)
+    {
+        res.add(new ArrayList<Integer>(Arrays.asList(-1)));
+    }
+    return res;
+}
+
+static void helper(TreeNode node, int k, int sum , List<Integer> slate, List<List<Integer>> res)
+{
+    // sandwich pattern start
+    sum += node.val; // node can't be null , as we are already checking for it in above fun and while making recursive call
+    slate.add(node.val); // sandwich pattern, we need this val to be added to sum whetehr we go left or right in sub tree
+
+    // 1. Base case if leaf node
+    if(node.left_ptr == null && node.right_ptr == null)
+    {
+        if(k == sum)
+        {
+            // This takes logn time, as teh slate contains logn nodes
+            res.add(new ArrayList<Integer>(slate)); // DON'T do res.add(slate) as slate is being changed all time, slate points to ref, so create a new space for slate and add to res
+            // (I) This sand wich -end if we found the target sum
+            sum -= node.val;
+            slate.remove(slate.size()-1);
+            return; // Nothing to do further, so retrun *IMPORTANT*
+        }
+        else
+        {
+            // (II) This sand wich -end if we don't find the target sum
+            sum -= node.val;
+            slate.remove(slate.size()-1);
+            return;
+        }
+    }
+
+    // 2. Recursive case, if not leaf node
+    // 2i. Go left
+    if(node.left_ptr != null)
+    {
+        helper(node.left_ptr, k, sum , slate, res);
+    }
+    // 2ii. Go right
+    if(node.right_ptr != null)
+    {
+        helper(node.right_ptr, k, sum , slate, res);
+    }
+
+    // (III) This sandwich - end for non-leaft nodes
+    sum -= node.val;
+    slate.remove(slate.size()-1);
+}
