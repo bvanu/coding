@@ -1,0 +1,58 @@
+/*
+Root To Leaf Path Sum Equal To K
+Given a binary tree and an integer k, check whether the tree has a root to leaf path with a sum of values equal to k.
+
+Input: 
+k = 4 
+      0
+  1       2
+3    4
+Output: True
+Path 0 -> 1 -> 3 has the sum of node values equal to 4.
+
+private static class TreeNode{
+    public int val;
+    public TreeNode left_ptr;
+    public TreeNode right_ptr;
+}
+
+ Appraach:
+ 1. No need of doing andwich pattern for sum as it is just a 1 vairable.
+ 2. Keep going down and subtract curr node val from target and go left and go right
+ 3. Backtracking case, when you found the answer retrun true, no need to go further and check the whole tree.
+ 
+ TC: O(n) - worst case we travese all the nodes in tree
+ SC: O(height) - for recursive stack. Height of the tree is n for skewed tree and logn for blanced tree
+*/
+
+static Boolean path_sum(TreeNode root, int k){
+    // Is empty tree?  NULL CHECK
+    if(root == null) return false;
+
+    return helper(root, k);
+}
+
+static Boolean helper(TreeNode node, long k)  // We need to make long k, as there are both positive and negative values, the sum might go beyond int range
+{
+    // 1. Base case, is node a leaf?
+    if(node.left_ptr == null && node.right_ptr == null)
+    {
+        return k-node.val == 0;
+    }
+
+    // 2. Recursive case, go down left and right to find their respective pathSum++3+
+    if(node.left_ptr != null) // NULL CHECK
+    {
+        // *** Backtracking case, no need to check rest of the tree
+        if(helper(node.left_ptr, k-node.val))
+            return true;
+    }
+
+    if(node.right_ptr != null) // NULL CHECK
+    {
+        if(helper(node.right_ptr, k-node.val))
+            return true;
+    }
+
+    return false;
+}
