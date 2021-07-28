@@ -1,0 +1,85 @@
+/*
+Single Value Tree
+Given a binary tree, find the number of unival subtrees. An unival tree is a tree that has the same value in every node.
+
+Example One
+Input:
+           5
+    5            5
+5       5   null    5
+
+Output: 6
+The input tree has a total of 6 nodes. Each node is a root of a subtree. All those 6 subtrees are unival trees.
+All leaf nodes are unival subtrees. (=3)
+Left subtree, one level above leaf level forms one Uni val tree. (=1)
+On right side, 5 -> 5 (R) is uni val (=1)
+Total tree is uni val, as the val of node is 5 through out. (=1)
+
+Example Two
+Input:
+           5
+    5            5
+5       5    4       5
+Output: 5
+
+The input tree has a total of 7 nodes, so there are 7 subtrees. Of those 7, all but two subtrees are unival. The two non-unival subtrees are:
+the one rooted in the root node and
+the one rooted in the root’s right child.
+
+private static class TreeNode{
+    public int val;
+    public TreeNode left_ptr;
+    public TreeNode right_ptr;
+}
+
+TC: O(n)
+SC: O(height) - for recursive stack
+*/
+
+static int uValCounter = 0;
+
+static int findSingleValueTrees(TreeNode root){
+    // Empty tree?
+    if(root == null)
+        return 0;
+
+    helper(root);
+
+    return uValCounter;
+}
+
+static boolean helper(TreeNode node)
+{
+    // 1. Base case, leaf node is always uniVal tree
+    if(node.left_ptr == null && node.right_ptr == null)
+    {
+        uValCounter++;
+        return true;
+    }
+
+    // 2. Recursive case
+    // Settign below variables to true, to handle single value trees. I n case if node doesn't have left node I want to return true for node.left
+    boolean isLeftUval = true;
+    boolean isRightUval = true;
+
+    // 2i. Is left uVal?
+    if(node.left_ptr != null)
+    {
+        isLeftUval = helper(node.left_ptr) && (node.val == node.left_ptr.val); // *** this second condition checks if including this node with leftSubTree is Uval?
+    }
+
+    // 2i. Is right uVal?
+    if(node.right_ptr != null)
+    {
+        isRightUval = helper(node.right_ptr) && (node.val == node.right_ptr.val); // *** this second condition checks if including this node with rightSubTree is Uval?
+    }
+
+    // 2iii. Am I uVal?
+    if(isLeftUval && isRightUval)
+    {
+        uValCounter++;
+        return true;
+    }
+
+    return false;  
+}
