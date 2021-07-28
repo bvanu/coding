@@ -1,9 +1,35 @@
 /*
+Is It A BST
+Given a binary tree, check if it is a binary search tree (BST). A valid BST does not have to be complete or balanced.
+
+Consider the below definition of a BST:
+All nodes values of left subtree are less than or equal to parent node value
+All nodes values of right subtree are greater than or equal to parent node value
+Both left subtree and right subtree must be a BST
+By definition, NULL tree is a BST
+By definition, trees having a single node or leaf nodes are BST.
+
+Example One:
+Input:
+        100
+   200       300
+Output: false
+Left child value 200 is greater than the parent node value 100; violates the definition of BST.
+
+Example Two:
+Input:
+        200
+   100       300
+Output: true
+
 private static class TreeNode{
     public int val;
     public TreeNode left_ptr;
     public TreeNode right_ptr;
 }
+
+TC: O(n) - we need to traverse all nodes and check if it holds BST property
+SC: O(height of tree) - for recursive stack.
 */
 
 static boolean isBST(TreeNode root){
@@ -35,6 +61,9 @@ static boolean isBST_helper(TreeNode node, int min, int max)
 
 /**
 Brute-force algorithm
+
+TC: O(n * logn) - n for travesing all nodes and logn to getMin() and getMax()
+SC: O(height * height) - at each recursive stack we either getMin() or getMax()
 **/
 
 static boolean isBST(TreeNode root){
