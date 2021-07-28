@@ -1,0 +1,100 @@
+/*
+private static class TreeNode{
+    public int val;
+    public TreeNode left_ptr;
+    public TreeNode right_ptr;
+}
+*/
+
+static boolean isBST(TreeNode root){
+    if(root == null)
+        return true;
+
+    return isBST_helper(root, Integer.MIN_VALUE, Integer.MAX_VALUE);
+}
+
+static boolean isBST_helper(TreeNode node, int min, int max)
+{
+    // 1. Base case, validation
+    if(node.val < min || node.val > max)
+        return false;
+
+    // 2. Recursive case
+    // 2i. Is left subTree a BST?
+    boolean isLeftBST = (node.left_ptr == null) ? true : isBST_helper(node.left_ptr, min, node.val);
+
+    // Baktracking case, so that if subTree is not a BST, then no need to go furhter down or to right subTree
+    if(!isLeftBST)
+        return false;
+
+    // 2ii. Is right subTree a BST?
+    return (node.right_ptr == null) ? true : isBST_helper(node.right_ptr, node.val, max);
+}
+
+
+
+/**
+Brute-force algorithm
+**/
+
+static boolean isBST(TreeNode root){
+    if(root == null) 
+        return true;
+
+    return helper(root);
+}
+
+private static boolean helper(TreeNode node)
+{
+    // 1. Base case if leaf and breaking case
+    if(node.left_ptr == null && node.right_ptr == null)
+        return true;
+
+    if(node.val < getMax(node.left_ptr) || node.val > getMin(node.right_ptr)) // Here left_ptr or right_ptr might be null. Above we checked for if both are null case only.
+    {
+        return false;
+    }
+
+    // 2. Recursive case
+    // 2i. Left and backtracking case
+    if(node.left_ptr != null)
+    { 
+        boolean isLeftBST = helper(node.left_ptr);
+
+        if(!isLeftBST)
+            return false;
+    }
+
+    if(node.right_ptr != null)
+    {
+        return helper(node.right_ptr);
+    }
+
+    return true; // This handles the case if either of left or right node is null
+}
+
+private static int getMin(TreeNode node)
+{
+    if(node == null)
+        return Integer.MAX_VALUE;  // This is called by rightSubTree, so min value is set to inf
+
+    while(node.left_ptr != null)
+    {
+        node = node.left_ptr;
+    }
+
+    return node.val;
+}
+
+private static int getMax(TreeNode node)
+{
+    if(node == null)
+        return Integer.MIN_VALUE; // This is called by leftSubTree, so max value is se to -inf
+
+    while(node.right_ptr != null)
+    {
+        node = node.right_ptr;
+    }
+
+    return node.val;
+}
