@@ -1,0 +1,65 @@
+/**
+Given a binary search tree (BST), find the lowest common ancestor (LCA) of two given nodes in the BST.
+According to the definition of LCA on Wikipedia: “The lowest common ancestor is defined between two nodes p and q as the lowest node in T that has both p and q as descendants (where we allow a node to be a descendant of itself).”
+
+Example 1:
+Input: root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 8
+Output: 6
+
+Explanation: The LCA of nodes 2 and 8 is 6.
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * } 
+ 
+ TC: O(n) worst case, best case is O(logn) you traverse 1 path 
+ SC: O(height) for recursive stack
+ */
+
+class Solution {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if(root == null)
+            return null;
+        
+        System.out.println(p.val + " " + q.val);
+        int n1, n2;
+        
+        if(p.val > q.val)
+        {
+            n1 = q.val;
+            n2 = p.val;
+        }
+        else
+        {
+            n1 = p.val;
+            n2 = q.val;
+        }
+        
+        System.out.println(n1 + " " + n2);
+        
+        return helper(root, n1, n2);
+    }
+    
+    private TreeNode helper(TreeNode node, int p, int q)
+    {
+        // Case 1: p and q fall on either side of the node
+        if(p < node.val && q > node.val)
+        {
+            return node;
+        }
+        
+        // Case 2: Either p or q is the lca itself
+        if(p == node.val) return node;
+        if(q == node.val) return node;
+        
+        // Case 3: If p and q fall on left side of the tree
+        if(q < node.val)
+            return helper(node.left, p, q);
+        
+        // Case 4: If p and q fall on right side of the tree
+        return helper(node.right, p, q);
+    }
+}
