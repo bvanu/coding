@@ -1,0 +1,63 @@
+
+/* 
+Least Common Ancestor:
+Find the lowest common ancestor (LCA) of two nodes in a binary tree of n nodes. Given references to the root node and nodes a and b of the tree, return the value from the LCA node of a and b.
+The LCA of nodes a and b in a tree is defined as the shared ancestor node of a and b that is located farthest from the root.
+Example
+Input: a=8, b=9.
+       1
+  2         3
+4   5     6   7
+   8  9
+Output: LCA(8, 9)=5
+There are three shared parents of 8 and 9 in this tree: 5, 2, 1. Of those three, the farthest from the root is 5.
+
+Other examples:
+LCA(2,5) = 2
+LCA(2,3) = 1
+  
+Node is defined as  
+class Node {
+  int data;
+  Node left;
+  Node right;
+}
+we need to find the lca for two nodes a, and b!! 
+
+TC: O(n) worst case we need to traverse all nodes.
+SC: O(height) for storing recursive stack.
+*/
+
+int lca(Node head, Node a, Node b)
+{
+    if(head == null)
+        return -1;
+
+    return helper(head, a, b); 
+}
+
+int helper(Node node, Node a, Node b)
+{
+    // 1. Base case. No ancestor can be found further below leftNode
+    if(node == null)
+        return -1;
+
+    // 2. Recursive case
+    // Case 1: if parent is the ancestor, nodes falls one below the other
+    if(node.data == a.data || node.data == b.data)
+        return node.data; // This is the answer, no need of search down
+
+    int left = helper(node.left, a, b);
+    int right = helper(node.right, a, b);
+
+    // case 3: If left and right exist on either side of curr node, retrun curr node
+    if(left != -1 && right != -1)
+        return node.data;
+
+    // Case 3: If we don't find either a or b in left or right subTree, return -1
+    if(left == -1 && right == -1)
+        return -1;
+
+    // Case 4: If either of a or b is found, retrun the found one    
+    return left != -1 ? left : right;
+}
