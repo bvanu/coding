@@ -1,6 +1,5 @@
 /*
 Merge Two BSTs
-
 Given two Binary Search Trees (BSTs), your task is to merge them into a single height-balanced BST. 
 
 Example One
@@ -11,7 +10,6 @@ Output:
               2
       1           3
 null      2   null    3  
-
 
 Notes:
 A node having value equal to the value of the root node can be inserted in any of its left or right subtree.
@@ -27,6 +25,9 @@ private static class TreeNode{
     public TreeNode left_ptr;
     public TreeNode right_ptr;
 }
+
+TC: O(nlogn) we need to traverse through all nodes and logn for sorting the 2 input arrays at first
+SC: O(n) - to store sorted arr and to store tree
 */
 
 static TreeNode merge_two_BSTs(TreeNode root1, TreeNode root2){
