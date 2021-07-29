@@ -24,6 +24,9 @@ class Node {
 }
 we need to find the lca for two nodes a, and b!! 
 
+Approach:
+Bottomup or DFS approach.
+
 TC: O(n) worst case we need to traverse all nodes.
 SC: O(height) for storing recursive stack.
 */
