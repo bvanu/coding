@@ -1,0 +1,47 @@
+/*
+For your reference:
+
+static class TreeNode
+{
+    Vector<TreeNode> children = new Vector<TreeNode>(0);
+    TreeNode()
+    {
+        children.clear();
+    }
+};
+
+Approach: Recursive
+CAn be done iteratively as well.
+TC: O(n)
+SC: O(height)
+*/
+
+static int maxHeight = Integer.MIN_VALUE;
+
+static int find_height(TreeNode root)
+{
+    if(root == null)
+        return 0;
+
+    return helper(root);
+}
+
+// Thsi function returns height at that node.
+static int helper(TreeNode node)
+{
+    // 1. Base case, if leaf node return 0.
+    if(node.children.size() == 0)
+        return 0;
+
+    // 2. Recursive case
+    int currHeight = 0;
+    for(TreeNode n: node.children)
+    {
+        currHeight = Math.max(currHeight, helper(n));
+    }
+
+    currHeight++; // add that node value
+    maxHeight = Math.max(maxHeight, currHeight);
+
+    return currHeight;
+}
