@@ -1,0 +1,68 @@
+/*
+Balanced BST From A Sorted Array:
+Given N distinct integers in a sorted array, build a balanced binary search tree (BST).
+A BST is called balanced if the number of nodes in the left and right subtrees of every node differs by at most one.
+
+Example:
+Input: [8 10 12 15 16 20 25]
+Output:
+
+
+
+Notes
+Input Parameters: There is only one argument denoting array a. 
+Output: You have to return the root root of the balanced BST that you created. There can be multiple balanced BST for given input. So, you are free to return any of the valid one.
+Only thing you have to consider is that it is a valid balanced BST of a.
+
+Constraints:
+a is sorted.
+a contains distinct integers.
+-2 * 10^9 <= a[i] <= 2 * 20^9 
+1 <= N <= 10^5
+
+Approach:
+Recursive, dive and conquer
+
+TC: O(n) - traverse all nodes
+SC: O(n) - recursive stack
+
+static class TreeNode
+{
+    int val;
+    TreeNode left_ptr;
+    TreeNode right_ptr;
+
+    TreeNode(int _val)
+    {
+        val = _val;
+        left_ptr = null;
+        right_ptr = null;
+    }
+};
+*/
+
+static TreeNode build_balanced_bst(int[] a) 
+{
+    if(a== null || a.length <1)
+        return null;
+
+    return helper(a, 0, a.length-1);
+}
+
+static TreeNode helper(int[] a, int start, int end)
+{
+    // 1. Base case
+    if(start > end) // Consider s==e case as you need to add that node to tree
+        return null;
+
+    // 2. Recursive case, build left and right sub trees
+    // Get root Index
+    int rootIndex = start + (end-start)/2;
+    // Create root node
+    TreeNode root = new TreeNode(a[rootIndex]);
+
+    root.left_ptr = helper(a, start, rootIndex-1);
+    root.right_ptr = helper(a, rootIndex+1, end);
+
+    return root;
+}
