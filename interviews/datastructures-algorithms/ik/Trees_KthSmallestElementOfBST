@@ -1,0 +1,79 @@
+/*
+   Kth Smallest Element Of BST
+
+Given a binary search tree (BST) and an integer k, find k-th smallest element.
+
+Example
+
+Input:
+
+BST:
+    2
+1       3
+k=3
+Output: 3
+The 3rd smallest element is 3.
+
+Notes
+Input Format: There are two arguments in the input. First one is the root of the BST and second one is an integer k.
+Output: Return an integer, the k-th smallest element of the BST.
+
+Constraints:
+1 <= number of nodes in the BST <= 6000
+1 <= k <= number of nodes
+-2 * 10^9 <= value stored in any node <= 2 * 10^9
+You are not allowed to alter the given BST in any way.
+
+static class TreeNode
+{
+    int val;
+    TreeNode left_ptr;
+    TreeNode right_ptr;
+
+    TreeNode(int _val)
+    {
+        val = _val;
+        left_ptr = null;
+        right_ptr = null;
+    }
+};
+*/
+
+/** ### 1. ITERATIVE APPROACH
+TC: O(n) - worst case, tree is skewed
+SC: O(height of tree) - for recursive stack
+**/
+
+static int kth_smallest_element(TreeNode root, int k) {
+    if(root == null)
+        return 0;
+
+    // Iterative approach
+    Stack<TreeNode> nodeStack = new Stack<>();
+    TreeNode node = root;
+
+    while(node != null || nodeStack.size() > 0)
+    {
+        // 1. Traverse through left first
+        while(node != null)
+        {
+            nodeStack.push(node);
+            node = node.left_ptr;
+        }
+
+        node = nodeStack.pop();
+        k--;
+
+        if(k == 0)
+            return node.val;
+
+        // 2. Traverse right side of the tree
+        node = node.right_ptr;
+    }
+
+    return 0;
+}
+
+/** ### 2. RECURSIVE APPROACH
+
+**/
