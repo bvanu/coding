@@ -1,0 +1,113 @@
+
+/*
+Count Islands
+Given a two-dimensional boolean matrix, find the number of islands.
+An island is a group of connected 1s or a standalone 1. A cell in the matrix can be connected to up to 8 neighbors: 2 vertical, 2 horizontal and 4 diagonal.
+
+Example
+Input:
+[
+    [1, 1, 0, 0, 0],
+    [0, 1, 0, 0, 1],
+    [1, 0, 0, 1, 1],
+    [0, 0, 0, 0, 0],
+    [1, 0, 1, 0, 1]
+]
+Output: 5
+(0 0), (0 1), (1 1) and (2 0) make an island.
+(1 4), (2 4) and (2 3) make an island. 
+(4 0) makes an island.
+(4 2) makes an island.
+(4 4) makes an island.
+
+Notes
+Input Format: Function has one argument, a two-dimensional integer matrix. All the values in the matrix are either 0 or 1.
+Output Format: Return an integer, the number of islands of 1s.
+
+Constraints:
+1 <= rows <= 450
+1 <= columns <= 450
+Values in the matrix are either 0 or 1.
+Use as little extra memory as possible.
+
+Solve the problem without allocating a “visited” matrix.
+
+TC: 
+SC: 
+*/
+class Result {
+
+    public static int count_islands(List<List<Integer>> matrix) {
+        if(matrix == null || matrix.size() < 1)
+            return 0;
+            
+        // 1. Iterate over the matrix and do BFS/DSF for that node if not visited.
+        // 2. Num of Island == number of items you call BFS.
+        // Suppose if there is only one island, then all the nodes will be covered in first BFS and hence the Numislands == 1
+        int m = matrix.size();
+        int n = matrix.get(0).size();
+        int numIslands = 0;
+        int[][] visited = new int[m][n];
+        
+        for(int i=0; i<m; i++)
+        {
+            for(int j=0; j<n; j++)
+            {
+                if(matrix.get(i).get(j) == 1 && visited[i][j] != 1)
+                {
+                    bfs(matrix, visited, i, j);
+                    numIslands++;
+                }
+            }
+        }
+
+        return numIslands;
+    }
+    
+    
+    private static void bfs(List<List<Integer>> matrix, int[][] visited, int i, int j)
+    {
+        if(matrix == null || matrix.size() < 1)
+            return ;
+            
+        Queue<List<Integer>> que = new LinkedList<>();
+        que.add(new ArrayList<Integer>(Arrays.asList(i, j)));
+        visited[i][j] = 1;
+        
+        while(!que.isEmpty())
+        {
+            List<Integer> curr = que.remove();
+            List<List<Integer>> neighbours = getNeighbours(matrix, curr.get(0), curr.get(1));
+            
+            for(List<Integer> neighbour: neighbours)
+            {
+                // Because of time and space optimization in getNeighbours, no need to check this, (matrix.get(neighbour.get(0)).get(neighbour.get(1)) == 1 && ... )
+                if(visited[neighbour.get(0)][neighbour.get(1)] != 1)
+                {
+                    visited[neighbour.get(0)][neighbour.get(1)] = 1;
+                    que.add(new ArrayList<Integer>(Arrays.asList(neighbour.get(0),neighbour.get(1))));
+                }
+            }
+        }
+    }
+
+    private static List<List<Integer>> getNeighbours(List<List<Integer>> matrix, int i, int j)
+    {
+        int m = matrix.size();
+        int n = matrix.get(0).size();
+        List<List<Integer>> neighbours = new ArrayList<>();
+        
+        // *** Optimization. Add neigbours only if it is a LAND.
+        if(i-1>=0 && j-1>=0 && matrix.get(i-1).get(j-1) != 0) neighbours.add(new ArrayList<Integer>(Arrays.asList(i-1, j-1)));
+        if(i-1>=0 && matrix.get(i-1).get(j) != 0) neighbours.add(new ArrayList<Integer>(Arrays.asList(i-1, j)));
+        if(i-1>=0 && j+1<n && matrix.get(i-1).get(j+1) != 0) neighbours.add(new ArrayList<Integer>(Arrays.asList(i-1, j+1)));
+        if(j-1>=0 && matrix.get(i).get(j-1) != 0) neighbours.add(new ArrayList<Integer>(Arrays.asList(i, j-1)));
+        if(j+1<n && matrix.get(i).get(j+1) != 0) neighbours.add(new ArrayList<Integer>(Arrays.asList(i, j+1)));
+        if(i+1<m && j-1>=0 && matrix.get(i+1).get(j-1) != 0) neighbours.add(new ArrayList<Integer>(Arrays.asList(i+1, j-1)));
+        if(i+1<m && matrix.get(i+1).get(j) != 0) neighbours.add(new ArrayList<Integer>(Arrays.asList(i+1, j)));
+        if(i+1<m && j+1<n && matrix.get(i+1).get(j+1) != 0) neighbours.add(new ArrayList<Integer>(Arrays.asList(i+1, j+1)));
+        
+        return neighbours;
+    }
+
+}
