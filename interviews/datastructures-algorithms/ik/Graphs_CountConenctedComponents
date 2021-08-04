@@ -14,42 +14,39 @@ edges = [
 ]
 Output: 2
 
-TC:
-SC:
- */
-public static int number_of_connected_components(int n, List<List<Integer>> edges) {
-    if(edges == null || edges.size()<1)
-        return 0;
+//1. Build graph
+ 0 -> [1,2]
+ 1 -> [0,2]
+ 2 -> [1,0]
+ 3 -> [4]
+ 4 -> [3]
 
-    /** 1. Build graph
-     0 -> [1,2]
-     1 -> [0,2]
-     2 -> [1,0]
-     3 -> [4]
-     4 -> [3]
-    **/
+TC: O(m) for builiding the graph
+    O(n) for bfs ?? in worst case each vertex is independent
+SC: O(n+2m) for adjacency list
+    O(degree of Vertex) for Queue in bfs
+    = O(n+m) total
+ */
+ 
+public static int number_of_connected_components(int n, List<List<Integer>> edges) {
+    // ** Edge case: If there is single node and no edges tehn retrun 1
+    if(edges == null || edges.size()<1)
+        return n;
+
+    // 1. Build graph
     List<List<Integer>> adjList= new ArrayList<>();
     for(int i=0; i<n; i++)
     {
-        adjList.add(i, new ArrayList<>());
+        adjList.add(new ArrayList<>());
     }
 
     for(List<Integer> edge: edges)
     {
-        List<Integer> temp1 = adjList.get(edge.get(0));
-        temp1.add(edge.get(1));
-        adjList.set(edge.get(0), temp1);
-        List<Integer> temp2 = adjList.get(edge.get(1));
-        temp2.add(edge.get(0));
-        adjList.set(edge.get(1), temp2);
+        adjList.get(edge.get(0)).add(edge.get(1));
+        adjList.get(edge.get(1)).add(edge.get(0));
     }
 
-    /*
-    for(List<Integer> list: adjList)
-    {
-        System.out.println(list.toString());
-    }
-    */
+    /* for(List<Integer> list: adjList) { System.out.println(list.toString());} */
 
     // 2. Traverse unvisited nodes and do bfs/dfs. How many times bfs/dfs is calles, those many connected components exist.
     //n is the number of vertics and they are from 0 to 4, other wise we can usea  list to store the vertex objects
@@ -88,3 +85,4 @@ private static void bfs(int source, List<List<Integer>> adjList, int[] visited)
         }
     }
 }
+
