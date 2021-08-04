@@ -1,0 +1,113 @@
+/*
+Is It A Tree
+Given an undirected graph of node_count nodes and edge_count edges, find whether it is a tree or not. The undirected edges are described by two arrays edge_start and edge_end of size edge_count each. There exists an undirected edge between the node labeled edge_start[i] and the node labeled edge_end[i] for all valid i. 
+
+Example: One
+Input: 
+node_count = 4, edge_start = [0, 0, 0], edge_end = [1, 2, 3]
+Output: true
+This graph is a valid tree because all the nodes are connected and it does not have any cycle. 
+
+Example: Two
+Input: node_count = 4, edge_start = [0, 0], edge_end = [1, 2]
+Output: false
+This graph is not a valid tree because node 3 is disconnected from others.
+
+Example: Three
+Input: 
+node_count = 4, edge_start = [0, 0, 1, 2], edge_end = [3, 1, 2, 0]
+Output: false
+This graph is not a valid tree because the nodes with labels 0, 1 and 2 form a cycle. 
+
+Example: Four
+Input: 
+node_count = 4, edge_start = [0, 0, 0, 1], edge_end = [1, 2, 3, 0]
+Output: false
+This graph is a not valid tree because the multi-edges between the 0th node and 1st node creates a cycle.  
+
+Notes
+A tree is an undirected connected acyclic graph. By another definition, a tree is a connected undirected graph having n nodes and n - 1 edges. 
+The nodes are labeled from 0 to node_count - 1. 
+
+Constraints:
+1 <= node_count <= 100000
+1 <= edge_count <= 100000
+0 <= edge_start[i], edge_end[i] < n
+
+TC: O(m) for creating adjList, O(n) for initializing parent array and visited arr
+    O(m+n)
+SC: O(2m+n) for adjList, O(n) for parent array, O(n) for visited arr, O(degreeOfVertex) for recursive stack
+    O(m+n)
+*/
+    
+// Complete the function below
+static List<List<Integer>> adjList;
+static int[] visited;
+static int[] parent;
+
+public static boolean is_it_a_tree(int node_count, List<Integer> edge_start, List<Integer> edge_end) {
+    if(edge_start.size() != edge_end.size())
+        return false;
+
+    // 1. Build graph. Cosntruct adjacency list
+    adjList = new ArrayList<>();
+    for(int i=0; i<node_count; i++)
+    {
+        adjList.add(new ArrayList<>());
+    }
+
+    for(int i=0; i<edge_start.size(); i++)
+    {
+        adjList.get(edge_start.get(i)).add(edge_end.get(i));
+        adjList.get(edge_end.get(i)).add(edge_start.get(i));
+    }
+
+    visited = new int[node_count];
+    parent = new int[node_count];
+
+    for(int i=0; i<node_count; i++)
+    {
+        visited[i] = -1;
+        parent[i] = -1; // By default these values are 0
+    }
+
+
+    // 2. OUTER LOOP: Find number of connected components and find if there is a loop?
+    int components = 0;
+
+    for(int i=0; i<node_count; i++)
+    {
+        if(visited[i] != 1)
+        {
+            components++;
+
+            if(components > 1 || !dfsIsThereALoop(i))
+                return false;
+        }
+    }
+
+    return true;
+}
+
+private static boolean dfsIsThereALoop(int s)
+{
+    visited[s] = 1;
+
+    for(int neighbour: adjList.get(s))
+    {
+        // 1. If not visited, recurse
+        if(visited[neighbour] != 1)
+        {
+            parent[neighbour] = s;
+            dfsIsThereALoop(neighbour);
+        }
+        // 2. If already visited, check parent of(node) == neighbour , as it is undirected graph this is possible
+        else
+        {
+            if(parent[s] != neighbour)
+                return false; // there is a loop
+        }
+    }
+
+    return true;
+}
