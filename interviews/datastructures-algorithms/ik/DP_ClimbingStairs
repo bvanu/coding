@@ -21,7 +21,7 @@ Explanation: There are three ways to climb to the top.
 **/
 class Solution {
     /**
-    DP: Bottom up
+    Approach #1: Dynamic Programming (Bottom up)
     
     TC: O(n)
     SC: O(1)
@@ -43,7 +43,7 @@ class Solution {
     
     
     /** 
-    Approach 1: Recursion with Memoization
+    Approach #2: Recursion with Memoization
     
     Complexity Analysis
     Time complexity : O(n). Size of recursion tree can go upto n.
@@ -71,7 +71,7 @@ class Solution {
     }
     
     /**
-    Approach 2: Fibonacci Number
+    Approach 3: Same as Dynamic Programming
     
     Algorithm:
     In the above approach we have used dpdp array where dp[i]=dp[i-1]+dp[i-2]dp[i]=dp[i−1]+dp[i−2]. It can be easily analysed that dp[i]dp[i] is nothing but ith fibonacci number.
