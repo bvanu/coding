@@ -81,6 +81,13 @@ public class Codec {
     2. When longUrl comes, convert Counter to BASE X and store that value as KEY in the MAP.
     3. When shortUrl comes, extract that BASE X from shortUrl and search for that in MAP.
     
+    Pros:
+    1. No collisions
+    2. Short url is truly short.
+    
+    Cons:
+    1. Predictable
+    
     TC: O(1) for adding to list
         O(1) for retreiving from list
     SC: O(n) to store the map    
