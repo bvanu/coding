@@ -1,0 +1,131 @@
+/**
+Note: This is a companion problem to the System Design problem: Design TinyURL.
+TinyURL is a URL shortening service where you enter a URL such as https://leetcode.com/problems/design-tinyurl and it returns a short URL such as http://tinyurl.com/4e9iAk. Design a class to encode a URL and decode a tiny URL.
+
+There is no restriction on how your encode/decode algorithm should work. You just need to ensure that a URL can be encoded to a tiny URL and the tiny URL can be decoded to the original URL.
+
+Implement the Solution class:
+
+Solution() Initializes the object of the system.
+String encode(String longUrl) Returns a tiny URL for the given longUrl.
+String decode(String shortUrl) Returns the original long URL for the given shortUrl. It is guaranteed that the given shortUrl was encoded by the same object.
+
+Example 1:
+Input: url = "https://leetcode.com/problems/design-tinyurl"
+Output: "https://leetcode.com/problems/design-tinyurl"
+
+Explanation:
+Solution obj = new Solution();
+string tiny = obj.encode(url); // returns the encoded tiny url.
+string ans = obj.decode(tiny); // returns the original url after deconding it.
+ 
+
+Constraints:
+1 <= url.length <= 104
+url is guranteed to be a valid URL.
+**/
+
+public class Codec {
+
+    /** Approach #1. Simple counter method
+    1. Kepp an Map of urls
+    2. Whenever urls come in increment the the counter and store the url in that counter position.
+    
+    Pros:
+    1. No collisisons
+    
+    Cons:
+    1. When number of urls becoem billions, the tinyUrl might not be tiny anymore.
+    2. Predictable
+    
+    TC: O(1) for adding to list
+        O(1) for retreiving from list
+    SC: O(n) to store the array
+    **/
+    // Approach #1
+    List<String> arrList;  
+    int counter;
+    
+    // Approach #2
+    Map<String, String> map; 
+    int base;
+    char[] baseDigits = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'}; // Intialization of this kind should happend here itself
+    
+    public Codec()
+    {
+        arrList = new ArrayList<>();
+        map = new HashMap<String, String>();
+        
+        // Start counter from -1, as you're increemtning the counter in encode
+        // Otherwise you get IndexOutOfBounds
+        counter = -1; 
+        base = 10; // can be extended to 64;
+    }
+    // Encodes a URL to a shortened URL.
+    public String encode1(String longUrl) {
+        counter++;        
+        arrList.add(longUrl);
+        
+        return "http://tinyurl.com/" + counter;
+    }
+
+    // Decodes a shortened URL to its original URL.
+    public String decode1(String shortUrl) {
+        String[] str = (shortUrl.split("//"))[1].split("/");
+        
+        return arrList.get(Integer.parseInt(str[1]));
+    }
+    
+    /** Approach #2: Sophisticated counter (Base 64)
+    1. Counter value is converted into BASE X and then stored in Map (can't use list here as the sequence is not from 0,1, 2...9...)
+    2. When longUrl comes, convert Counter to BASE X and store that value as KEY in the MAP.
+    3. When shortUrl comes, extract that BASE X from shortUrl and search for that in MAP.
+    
+    TC: O(1) for adding to list
+        O(1) for retreiving from list
+    SC: O(n) to store the map    
+    **/
+    
+    public String encode(String longUrl)
+    {
+        counter++;
+        
+        int currVal = counter;
+        int quotient, reminder;
+        List<Character> baseVal = new ArrayList<>();
+        
+        while(currVal >= base)
+        {
+            quotient = currVal/base;
+            reminder = currVal%base;
+            
+            baseVal.add(baseDigits[reminder]);
+            
+            currVal = quotient;
+        }
+        
+        if(currVal > 0){
+            baseVal.add(baseDigits[currVal]);
+        }
+        
+        Collections.reverse(baseVal);
+        
+        String key = baseVal.toString();
+        map.put(key, longUrl);
+        
+        return "http://tinyurl.com/" + key;
+        
+    }
+    
+    public String decode(String shortUrl)
+    {
+        String[] split = shortUrl.split("//")[1].split("/");
+        
+        return map.get(split[1]);
+    }
+    
+}
+
+// Your Codec object will be instantiated and called as such:
+// Codec codec = new Codec();
+// codec.decode(codec.encode(url));
