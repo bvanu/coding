@@ -1,0 +1,67 @@
+/**
+62. Unique Paths
+
+A robot is located at the top-left corner of a m x n grid (marked 'Start' in the diagram below).
+The robot can only move either down or right at any point in time. The robot is trying to reach the bottom-right corner of the grid (marked 'Finish' in the diagram below).
+How many possible unique paths are there?
+
+ 
+Example 1:
+Input: m = 3, n = 7
+Output: 28
+
+Example 2:
+Input: m = 3, n = 2
+Output: 3
+Explanation:
+From the top-left corner, there are a total of 3 ways to reach the bottom-right corner:
+1. Right -> Down -> Down
+2. Down -> Down -> Right
+3. Down -> Right -> Down
+
+Example 3:
+Input: m = 7, n = 3
+Output: 28
+
+Example 4:
+Input: m = 3, n = 3
+Output: 6
+ 
+Constraints:
+1 <= m, n <= 100
+It's guaranteed that the answer will be less than or equal to 2 * 109.
+
+TC: O(m*n) we need to fill in all the elements in the grid
+SC: O(m*n) to store the 2D matrix
+**/
+class Solution {
+    public int uniquePaths(int m, int n) {
+        // 1. Identify DP table
+        int[][] table = new int[m][n];
+        
+        //  2. Initialize DP table
+        // Fill first row and first column with ones as there is only one way we can go from one cell to next cell in that row or column
+        // Because we can go either DOWN or RIGHT
+        // Initialize rows
+        for(int j=0 ; j<n; j++){
+            table[0][j] = 1;
+        }
+        
+        // Intialize columns
+        for(int i=0 ; i<m; i++){
+            table[i][0] = 1;
+        }
+        
+        // 3. Identify traversal direction
+        // 4. Fill int he DP table
+        // Value in CELL denotes how many ways we can go from (0,0) to that Cell (i,j). Suppose (1,1) the value 2 says, thre are 2 ways we can go from (0,0) to (1,1)
+        // One way is through (0,1) and other way through (1,0)
+        for(int i=1; i<m; i++) {
+            for(int j=1; j<n; j++) {
+                table[i][j] = table[i-1][j] + table[i][j-1];
+            }
+        }
+        
+        return table[m-1][n-1];
+    }
+}
