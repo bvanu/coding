@@ -1,0 +1,214 @@
+/**
+Design a data structure that follows the constraints of a Least Recently Used (LRU) cache.
+
+Implement the LRUCache class:
+
+LRUCache(int capacity) Initialize the LRU cache with positive size capacity.
+int get(int key) Return the value of the key if the key exists, otherwise return -1.
+void put(int key, int value) Update the value of the key if the key exists. Otherwise, add the key-value pair to the cache. If the number of keys exceeds the capacity from this operation, evict the least recently used key.
+The functions get and put must each run in O(1) average time complexity.
+
+ 
+
+Example 1:
+
+Input
+["LRUCache", "put", "put", "get", "put", "get", "put", "get", "get", "get"]
+[[2], [1, 1], [2, 2], [1], [3, 3], [2], [4, 4], [1], [3], [4]]
+Output
+[null, null, null, 1, null, -1, null, -1, 3, 4]
+
+Explanation
+LRUCache lRUCache = new LRUCache(2);
+lRUCache.put(1, 1); // cache is {1=1}
+lRUCache.put(2, 2); // cache is {1=1, 2=2}
+lRUCache.get(1);    // return 1
+lRUCache.put(3, 3); // LRU key was 2, evicts key 2, cache is {1=1, 3=3}
+lRUCache.get(2);    // returns -1 (not found)
+lRUCache.put(4, 4); // LRU key was 1, evicts key 1, cache is {4=4, 3=3}
+lRUCache.get(1);    // return -1 (not found)
+lRUCache.get(3);    // return 3
+lRUCache.get(4);    // return 4
+ 
+
+Constraints:
+
+1 <= capacity <= 3000
+0 <= key <= 104
+0 <= value <= 105
+At most 2 * 105 calls will be made to get and put.
+
+TC: O(1)
+SC: O(n)
+**/
+
+class LRUCache {
+    class DLLNode
+    {
+        int key;
+        int value;
+        DLLNode prev, next;
+
+        public DLLNode(int key, int value)
+        {
+            this.key = key;
+            this.value = value;
+            this.prev = null;
+            this.next = null;
+        }
+    }
+    
+    int capacity, currSize;
+    Map<Integer, DLLNode> map;
+    DLLNode head, tail;
+
+    public LRUCache(int capacity) {
+        this.capacity = capacity;
+        this.currSize = 0;
+        map = new HashMap<Integer, DLLNode>();
+        this.head = null;
+        this.tail = null;
+    }
+    
+    public int get(int key) {
+        //System.out.println("get(" + key + ")");
+        //printDLL(head); printMap();
+        
+        // 1. CACHE MISS
+        if(!map.containsKey(key))
+        {
+            return -1;
+        }
+        
+        // 2. KEY EXISTS
+        extractAndPushToBeginning(key);
+        return head.value;
+    }
+    
+    public void put(int key, int value) {
+        // 1. UPDATE
+        if(map.containsKey(key))
+        {
+            // 1.1. Update the value of the node
+            //map.get(key).value = value;
+            DLLNode node = map.get(key);
+            node.value = value;
+            map.put(key, node);
+            
+            // 1.2 As this node is recently accessed, push extract and push it to the beginiing of the DLL
+            //System.out.println("BEFORE:"); printDLL(head); printMap();
+            extractAndPushToBeginning(key);
+            //System.out.println("AFTER:"); printDLL(head); printMap();
+        }           
+        
+        // 2. INSERT
+        else
+        {
+            // Create a new node
+            DLLNode newNode = new DLLNode(key, value);
+
+            // Update the Map
+            map.put(key, newNode);
+
+            // 2.1. If Cache Capacity is full. Remove least recently used element from Cache, which is the tail
+            if(this.capacity == this.currSize)
+            {
+                DLLNode penultimate = tail.prev;
+                map.remove(tail.key); // Do this first as you will loose reference to tail after next steps when yu point penultimate.next to null.
+
+                // 2.1.1. If penultimate is null, that means Cache capacity is 1. Remove that one Node inorder to insert newNode
+                if(penultimate == null)
+                {
+                    head = null;
+                    tail = null;
+                }
+                // 2.1.2. If penultimate exists, make it tail and remove tail from the map
+                else
+                {
+                    penultimate.next = null;
+                    tail = penultimate;
+                }
+
+                // Decrease the curr capcaity of the Cache
+                currSize--;
+            }
+
+            // 2.2. If Cache is empty
+            if(head == null)
+            {
+                head = newNode;
+                tail = newNode;
+
+                currSize++;
+            }
+            // 2.3. Put the node at the beginning of the DLL
+            else
+            {
+                newNode.next = head;
+                head.prev = newNode;
+                head = newNode;
+
+                currSize++;
+            }
+        }
+    }
+    
+    private void extractAndPushToBeginning(int key)
+    {
+        DLLNode node = map.get(key);
+        DLLNode prevNode = node.prev;
+        DLLNode nextNode = node.next;
+        
+        // I. EXTRACTION of Node
+        // 1. If this node is already head. No need to extract the Node and put it in the beginning of DLL, because Node is already head
+        if(prevNode == null)
+            return;
+        prevNode.next = nextNode;
+        
+        // 2. If no tail node, make prevNode the tail, because prev node was tail and we are extracting it
+        if(nextNode == null)
+        {
+            tail = prevNode;
+        }
+        else
+        {
+            nextNode.prev = prevNode;
+        }
+    
+        // II. PUSH Node to beginning of DLL
+        node.next = head;
+        node.prev = null;
+        head.prev = node;
+        
+        head = node;
+    }
+    
+    private void printDLL(DLLNode head)
+    {
+        DLLNode curr = head;
+        while(curr != null)
+        {
+            System.out.println(curr.key + ", " + curr.value);
+            curr = curr.next;
+        }
+    }
+    
+    private void printMap()
+    {
+        Iterator it = map.keySet().iterator();
+        
+        while(it.hasNext())
+        {
+            int o = (int) it.next();
+            System.out.println(o + " : " + map.get(o).value);
+        }
+    }
+    
+}
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache obj = new LRUCache(capacity);
+ * int param_1 = obj.get(key);
+ * obj.put(key,value);
+ */
