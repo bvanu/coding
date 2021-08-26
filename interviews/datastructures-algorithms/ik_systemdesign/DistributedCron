@@ -1,0 +1,20 @@
+Sources:
+https://leetcode.com/discuss/general-discussion/1082786/System-Design%3A-Designing-a-distributed-Job-Scheduler-or-Many-interesting-concepts-to-learn
+https://sre.google/sre-book/distributed-periodic-scheduling/
+
+1. Functional requirements:
+  i.   Job can be scheduled to run once or mutliple times. Option to retry job if fails in specified time.
+       scheduleJob(WorkFlow, TimeToExecut, OneTime, CronJob, Retry, RetryInterval)
+  ii.  Query job execution results.
+  
+2. Non functional requirements:
+  i.   Scalability - Thoussands or millions of jobs can be schduled and run per day.
+  ii.  Availability - Always be abe to schedule and execute jobs, even if one server dies. -> (dynamical) horizontal scaling. If all jobs on one server and that server dies, avaliabiltiy is lost.
+  iii. Reliability - Jobs must not be executed much later or dropped -> we need fault tolerant system
+  iv.  Durability - Jobs must not get lost -> we need to persist jobs.
+  v.   Jobs must not be executed multiple times or such occurrences should be kept to minimum.
+  
+ 3. Define microservices
+  i.   JobScheduler Service (Master-Worker replication, 1 Worker consistent/synchronous replication (this will be next Master if current Master dies) and other workers eventual/ asynchronous replication)
+  ii.  JobExecutor Service
+  iii. Result Handler Service
