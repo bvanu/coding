@@ -1,0 +1,151 @@
+/**
+Write a program to solve a Sudoku puzzle by filling the empty cells.
+
+A sudoku solution must satisfy all of the following rules:
+
+Each of the digits 1-9 must occur exactly once in each row.
+Each of the digits 1-9 must occur exactly once in each column.
+Each of the digits 1-9 must occur exactly once in each of the 9 3x3 sub-boxes of the grid.
+The '.' character indicates empty cells.
+
+Example 1:
+Input: board = [["5","3",".",".","7",".",".",".","."],["6",".",".","1","9","5",".",".","."],[".","9","8",".",".",".",".","6","."],["8",".",".",".","6",".",".",".","3"],["4",".",".","8",".","3",".",".","1"],["7",".",".",".","2",".",".",".","6"],[".","6",".",".",".",".","2","8","."],[".",".",".","4","1","9",".",".","5"],[".",".",".",".","8",".",".","7","9"]]
+Output: [["5","3","4","6","7","8","9","1","2"],["6","7","2","1","9","5","3","4","8"],["1","9","8","3","4","2","5","6","7"],["8","5","9","7","6","1","4","2","3"],["4","2","6","8","5","3","7","9","1"],["7","1","3","9","2","4","8","5","6"],["9","6","1","5","3","7","2","8","4"],["2","8","7","4","1","9","6","3","5"],["3","4","5","2","8","6","1","7","9"]]
+Explanation: The input board is shown above and the only valid solution is shown below:
+
+
+Constraints:
+board.length == 9
+board[i].length == 9
+board[i][j] is a digit or '.'.
+It is guaranteed that the input board has only one solution.
+
+
+Apprach#1: Bruteforce:
+Each cell has 9 possiblities to fill in 1 to 9. There are 9*9 81 cells. So 9 * 9 *... (81 times) = 9^81 operations
+TC: O(9^81)
+
+Approach#2: Backtracking
+TC: O(9!)^9 - First cell has 9  possibilities, second cell has 8 possibilities.... which is 9! and 9 rows  (or cols if you go col wise) to fill in.
+SC: O(81)
+**/
+
+class Solution {
+    boolean sudokuSolved = false;
+    int[][] rows;
+    int[][] cols;
+    int[][] grids;
+    char[][] board;
+    int n;
+    int N;
+    
+    public Solution()
+    {
+        n = 3;
+        N = n * n;
+        rows = new int[N][N+1]; // * NOTE
+        cols = new int[N][N+1];
+        grids = new int[N][N+1];
+    }
+    
+    public void solveSudoku(char[][] board) {
+        this.board = board;
+        
+        if(board == null || board.length == 0)
+            return;       
+        
+        // 1. Intiliaze row, col and grid matrices with the intial cell values int he sudoku
+        for(int i=0; i<N; i++)
+        {
+            for(int j=0; j<N; j++)
+            {
+                if(board[i][j] != '.')
+                {
+                    int d = board[i][j]-'0';
+                    //System.out.println("solveSudoku: d: " + d + "::" + board[i][j]);
+                    placeNumber(d, i, j);
+                } else
+                {
+                    board[i][j] = '.';
+                }
+            }
+        }
+        
+        // 2. Call backtract method
+        backtrack(0,0);
+    }
+    
+    private void backtrack(int row, int col)
+    {
+        // 1. If cell is not filled, fill it with possible number checking its corresponding row, col and grdi matrice(s)
+        if(board[row][col] == '.')
+        {
+            // 1.1. Itereate 1 to 9 and fill in with possible number
+            for(int d=1; d<10; d++)
+            {
+                if(couldPlace(d, row, col))
+                {
+                    placeNumber(d, row, col);
+                    placeNextNumbers(row, col);
+                    
+                    // 1.2. If sudoku not solved backtrack. We come here if next recursive call doesn't find any number from 1 to 9 to fil in that cell. So we backtrack to the previous call and try placing nextElement and continue and see if there is a possibility to get valid sudoku. We repeat this preocess until we find valid sudoku
+                    if(!sudokuSolved)
+                    {
+                        removeNumber(d, row, col);
+                    }
+                }
+            }
+        }
+        // 2. Otherwise move to next cell
+        else
+        {
+            placeNextNumbers(row, col);
+        }
+    }
+    
+    private boolean couldPlace(int d, int row, int col)
+    {
+        int index = (row/n)*n + (col/n);
+        return (rows[row][d] + cols[col][d] + grids[index][d]) == 0;
+    }
+    
+    private void placeNumber(int d, int row, int col)
+    {
+        // System.out.println("d: " + d);
+        rows[row][d]++;
+        cols[col][d]++;
+        
+        int index = (row/n)*n + (col/n);
+        grids[index][d]++;
+        board[row][col] = (char) (d + '0');
+    }
+    
+    private void placeNextNumbers(int row, int col)
+    {
+        // 1. If cell is last cell, then sudoku is solved
+        if(row == N-1 && col == N-1)
+        {
+            sudokuSolved = true;
+        } else
+        {
+            // 2. Check if it is the last col in the row, tehn go to the starting of the next row
+            if(col == N-1)
+            {
+                backtrack(row+1, 0);
+            } else
+            {
+                backtrack(row, col+1);
+            }
+        }
+    }
+    
+    private void removeNumber(int d, int row, int col)
+    {
+        rows[row][d]--;
+        cols[col][d]--;
+        
+        int index = (row/n)*n + (col/n);
+        grids[index][d]--;
+        this.board[row][col] = '.';
+    }
+} 
