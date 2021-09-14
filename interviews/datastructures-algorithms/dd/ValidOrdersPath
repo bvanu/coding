@@ -1,0 +1,76 @@
+/**
+Given a set list of pickups and deliveries for order, figure out if the given list is valid or not.
+A delivery cannot happen for an order before pickup.
+
+Examples below:
+[P1, P2, D1, D2]==>valid
+[P1, D1, P2, D2]==>valid
+[P1, D2, D1, P2]==>invalid
+[P1, D2]==>invalid
+[P1, P2]==>invalid
+[P1, D1, D1]==>invalid
+[]==>valid
+[P1, P1, D1]==>invalid
+[P1, P1, D1, D1]==>invalid
+[P1, D1, P1]==>invalid
+[P1, D1, P1, D1]==>invalid
+
+TC: O(n) iterate over all teh orders
+SC: O(n) for hash sets
+**/
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+public class Main {
+
+
+    public boolean isValid(List<String> orders){        
+        Set<Character> pSet = new HashSet<Character>();
+        Set<Character> dSet = new HashSet<Character>();
+        
+        for(String order: orders) {
+            char taskType = order.charAt(0);
+            char taskNum = order.charAt(1);
+            
+            if(taskType == 'P') {
+                // We shouldn't pickup same order twice
+                if(pSet.contains(taskNum)) {
+                    return false;
+                }
+                
+                pSet.add(taskNum);
+            }
+            else if(taskType == 'D') {
+                // We shouldn't deliver same order tiwce and there should be correspong pickup order prev
+                if(dSet.contains(taskNum) || !pSet.contains(taskNum)) {
+                    return false;
+                }
+                
+                dSet.add(taskNum);
+            }
+        }
+         
+        return pSet.size() == dSet.size();
+    }
+
+
+    public static void main(String[] args){
+
+        Main obj = new Main();
+        System.out.println(obj.isValid(Arrays.asList("P1", "P2", "D1", "D2")));
+        System.out.println(obj.isValid(Arrays.asList("P1", "D1", "P2", "D2")));
+        System.out.println(obj.isValid(Arrays.asList("P1", "D2", "D1", "P2")));
+        System.out.println(obj.isValid(Arrays.asList("P1", "D2")));
+        System.out.println(obj.isValid(Arrays.asList("P1", "P2")));
+        System.out.println(obj.isValid(Arrays.asList("P1", "D1", "D1")));
+        System.out.println(obj.isValid(Arrays.asList()));
+        System.out.println(obj.isValid(Arrays.asList("P1", "P1", "D1")));
+        System.out.println(obj.isValid(Arrays.asList("P1", "P1", "D1", "D1")));
+        System.out.println(obj.isValid(Arrays.asList("P1", "D1", "P1")));
+        System.out.println(obj.isValid(Arrays.asList("P1", "D1", "P1", "D1")));
+
+    }
+}
