@@ -59,3 +59,49 @@ private static int binary_tree_diameter_helper(TreeNode root)
     // Return max of diameter of left and right subTree
     return Math.max(leftDiameter, rightDiameter);
 }
+
+
+/**
+ Variation:
+ Return the maxDiamter sum which is from lafNode to leafNode but doesn't necesarily go throught the root
+ */
+class Solution {
+    int maxDiameter = Integer.MIN_VALUE;
+    
+    public int maxPathSum(TreeNode root) {
+        if(root == null) {
+            return maxDiameter;
+        }
+        
+        helper(root);
+        
+        return maxDiameter == Integer.MIN_VALUE ? root.val : maxDiameter; // ** to handle single node case
+    }
+    
+    private int helper(TreeNode node) {
+        // 1. Base case leaf node, return node val
+        if(node.left == null && node.right == null) {
+            return node.val;
+        }
+        
+        // 2. Recursive case. 
+        // Compute maxLeftPathSum & maxRightPathSum.
+        // See if maxPath Sum goes through this node
+        // If so, make this maxDiameter and then return max(maxLeftPathSum, maxRightPathSum)
+        
+        int maxLeftPathsum = 0, maxRightPathSum = 0;
+        
+        if(node.left != null) {
+            maxLeftPathsum = helper(node.left);
+        }
+        
+        if(node.right != null) {
+            maxRightPathSum = helper(node.right);
+        }
+        
+        // 2.1. See if maxDiameter goes through me?
+        maxDiameter = Math.max(maxDiameter, maxLeftPathsum + maxRightPathSum + node.val);
+        
+        return node.val + Math.max(maxLeftPathsum, maxRightPathSum);
+    }
+}
