@@ -37,12 +37,12 @@ SC: O(heightOfTree) - for recursive stack
  * }
  */
 class Solution {
-    int maxDiameter = Integer.MIN_VALUE;
+    int maxPathSum = Integer.MIN_VALUE;
     
     public int maxPathSum(TreeNode root) { 
         if(root == null) return maxDimater;
         helper(root);
-        return maxDiameter;
+        return maxPathSum;
     }
     
     private int helper(TreeNode node) {
@@ -56,7 +56,7 @@ class Solution {
         int maxRightPathSum = Math.max(helper(node.right), 0);
         
         // 2.1. See if maxDiameter goes through me?
-        maxDiameter = Math.max(maxDiameter, maxLeftPathsum + maxRightPathSum + node.val);
+        maxPathSum = Math.max(maxPathSum, maxLeftPathsum + maxRightPathSum + node.val);
         
         return node.val + Math.max(maxLeftPathsum, maxRightPathSum);
     }
