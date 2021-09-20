@@ -107,10 +107,10 @@ class Solution {
                     int d = board[i][j]-'0';
                     //System.out.println("solveSudoku: d: " + d + "::" + board[i][j]);
                     placeNumber(d, i, j);
-                } else
+                }/* else
                 {
                     board[i][j] = '.';
-                }
+                }*/ // not required as we intitilize board in line 95
             }
         }
         
