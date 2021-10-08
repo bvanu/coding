@@ -1,0 +1,110 @@
+/*
+We will be modeling a biological world, represented by a grid of cells.
+Each cell is either dead or alive:
+
+x x - - x x
+x - - - x x
+- - - x - -
+
+x = alive
+- = dead
+
+The world updates itself at each timestep according to the following rules:
+
+  For alive cells:
+    < 2 alive neighbors -> cell dies of isolation
+    > 3 alive neighbors -> cell dies of overcrowding
+    (otherwise) -> cell remains alive
+    
+  For dead cells:
+    = 3 alive neighbors -> cell becomes alive
+    (otherwise) -> cell remains dead
+    
+If we apply the rules to the board above, we get:
+
+x x - - x x
+x x - x - x
+- - - - x -
+    
+Write a function that takes in a world as input, and returns the world after
+one timestep as output. You may represent the world however you wish, as long
+as the input and output share consistent formats.
+
+TC: O(m*n*k) = O(m*n)
+SC: O(m*n)
+*/
+
+Class Solution 
+{
+  public static void main(String[] args)
+  {
+  
+  }
+  
+  public char[][] getWorldState(char[][] world)
+  {
+    // 1. Null checks
+    if(world == null || world.size() <1)
+      return null;
+      
+    // 2. Iterate over the grid and change the state
+    int m = world.length;
+    int n = world[0].length;
+    char[][] result = new char[m][n];
+    
+    
+    for(int i=0; i<m; i++)
+    {
+      for(int j=0; j<n; j++)
+      {
+          char cell = world[i][j];
+          int numNeighbours = getAliveNeighbours(world, i, j);
+          
+          // 2.1 Cell is alive and neighbours are 2 or 3 , then cell is still alive
+          if(cell == 'x' && ( numNeighbours == 2 || numNeighbours == 3)) 
+          {
+            result[i][j] = 'x';
+          }
+          
+          // 2.2 Cell is dead and neighbours are 3, then make cell alive
+          if(cell == '-' && numNeighbours == 3) 
+          {
+            result[i][j] = 'x';
+          }
+          
+          // 2.3 Cell is alive, but neigbours are !=2 or !=3, tehn make cell dead
+          if(cell == 'x' && ( numNeighbours != 2 || numNeighbours != 3)) 
+          {
+            result[i][j] = '-';
+          }
+          
+          // 2.4 Cell is dead and neigbours are !=3  theam keep the cell dead
+          if(cell == '-' && numNeighbours == 3) 
+          {
+            result[i][j] = '-';
+          }
+      }
+    }
+    
+    return result;
+  }
+
+  
+  private int getAliveNeighbours(char[][] world, int i, int j)
+  {
+    int numNeighbours = 0;
+     
+    for(int m=i-1; m<=i+1; m++)
+    {
+      for(int n=j-1; n<=j+1; n++)
+      {
+          if(m>=0 && n>=0 && m<world.length && world[0].length && (i!=m && j!=n) && world[m][n]=='x')
+          {
+            numNeighbours++;
+          }
+      }
+    }    
+    
+    return numNeighbours;
+  }
+}
