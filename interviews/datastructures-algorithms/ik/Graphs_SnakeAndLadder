@@ -1,0 +1,149 @@
+/**
+Snakes and Ladders Matrix
+
+Find the minimum number of die rolls necessary to reach the final cell of the given Snakes and Ladders board game.
+
+Rules are as usual. Player starts from cell one, rolls a die and advances 1-6 (a random number of) steps at a time. Should they land on a cell where a ladder starts, the player immediately climbs up that ladder. Similarly, having landed on a cell with a snake’s mouth, the player goes down to the tail of that snake before they roll the die again. Game ends when the player arrives at the last cell.
+
+Example One
+
+Input: A board with 20 cells, two ladders 2->19 and 12->15 and a snake 9->2.
+The two-dimensional view is for our visual convenience only: there are really just 20 cells, one after another, linearly. See below in the Notes how such a board is represented in the Input Parameters.
+Output: 2
+
+Having started from cell 1, player rolls 1 and moves to cell 2. The stair takes them from cell 2 to cell 19. They then roll 1 to arrive at the last, 20th cell. The player reached the end of the board in two rolls; that’s the fewest rolls possible.
+
+Example Two:
+Input: A board with eight cells, no snakes and no ladders:
+Output: 2
+There are several ways to reach the last cell from the first cell in two rolls: 6+1, 5+2, 4+3, 3+4, 2+5, 1+6. No way to reach it with any fewer rolls though.
+
+Notes
+Input Parameters: Function has two arguments:
+n, size of the board, and
+moves, array of integers defining the snakes and ladders:
+moves[i] = -1: no ladder or snake starts at i-th cell
+moves[i]  <  i: snake from i down to moves[i]
+moves[i]  >  i: ladder from i up to moves[i]
+The indices and values in moves array are zero-based, for example moves[1]=18 means there is a ladder from cell 2 up to cell 19. moves for “Example One” above looks like this:
+[-1, 18, -1, -1, -1, -1, -1, -1, 2, -1, -1, 15, -1, -1, -1, -1, -1, -1, -1, -1]
+Output: Function must return an integer, the minimum number of dice rolls required to reach the last cell from the first. Return -1 if the last cell cannot be reached.
+
+Constraints:
+1 <= n <= 10^5
+0 <=  moves[i] <= n-1
+No snake starts from the last cell and no ladder starts from the first cell.
+No snake or ladder starts from a cell where another snake or ladder arrives.
+Custom Input 
+
+Input Format:
+First line of input contains n (number of cells on the board).
+Second line also contains n (size of array moves).
+Next n lines contain values from moves[0] to moves[n-1].
+For n = 20 and moves = [-1, 18, -1, -1, -1, -1, -1, -1, 2, -1, -1, 15, -1, -1, -1, -1, -1, -1, -1, -1] input would be as follows:
+
+Complexity Analysis:
+TC: O(nlogn) - go over n nodes and bfs on it
+SC: O(6n) for board grpah and O(n) for queue worst case a flat grapg
+**/
+    // Complete the minNumberOfRolls function below.
+    static int minNumberOfRolls(int n, List<Integer> moves) {
+        // 0. Null checks
+        if( n<=0 || n==1 || moves == null ||  (n != moves.size()))
+            return 0;
+            
+        // 1. Build graph - assumption is we start at 1, source is 1.
+        // Idea is to build a graph and each cell is a vertex, from each cell i, there are 6 ways i+1 to i+6.
+        // If there is a snake or ladder say at i+1, then make the cell i point directly to where i+1 leads to say x(but not i+1)
+        // Because for going to x in case above , we still nedd only one dice roll
+        // Later on while using BFS to find min dice rolls, we can directly get the destination level and return
+        // How graph looks like
+        // 0
+        // 1 - [v2, v3, ... v7]
+        // ..
+        // 99 - [v100]
+        // 100 
+        List<List<Integer>> boardGraph = new ArrayList<>(); // int[101][6]; // As the vertexes reange from 1 to 100.
+        boardGraph.add(0, new ArrayList<Integer>());
+        
+        for(int i=1; i<=n; i++)
+        {
+            List<Integer> ngbs = new ArrayList<>();
+            
+            for(int dice=1; dice<=6; dice++)
+            {
+                int index = i+dice;   
+                if(index<=n)
+                {
+                    if(moves.get(index-1) == -1)
+                    {
+                        ngbs.add(index);
+                    }
+                    else
+                    {
+                        ngbs.add(moves.get(index-1)+1);
+                    }
+                }
+            }
+            boardGraph.add(i, ngbs);
+        }
+        
+        // print(boardGraph);
+        
+        // 2. Do BFS to find min die rolls
+        return bfs(1, n, boardGraph);
+    }
+    
+    private static int bfs(int source, int destination, List<List<Integer>> boardGraph)
+    {
+        int level = 1;
+        Queue<Integer> que = new LinkedList<Integer>();
+        boolean[] visited = new boolean[destination+1];
+        que.add(source);
+        
+        
+        while(!que.isEmpty())
+        {
+            // Getting que size here, gives the number of elements in that level
+            int n = que.size();
+            
+            // Iterate over all the elelemnts in that level, this helps us keep track of level number
+            for(int i=0; i<n; i++)
+            {
+                int cell = que.remove();
+                
+                if(!visited[cell])
+                {                                                                   
+                    visited[cell] = true;
+                
+                    // Get all the cells that you can go from this cell, and see if you find destination
+                    List<Integer> ngb = boardGraph.get(cell);
+                    for(int v: ngb)
+                    {
+                        if(v==destination)
+                        {
+                            return level;
+                        }
+                        
+                        que.add(v);
+                    }
+                }
+            }
+            
+            level++;
+        }
+        
+        return -1;
+    }
+    
+    private static void print(List<List<Integer>> boardGraph)
+    {
+        for(List<Integer> subList: boardGraph)
+        {
+            for(int val: subList)
+            {
+                System.out.print(val + "\t");
+            }
+            System.out.println();
+        }
+    }
