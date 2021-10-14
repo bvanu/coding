@@ -1,0 +1,5 @@
+// cat, c*t -> true
+// dogcat, *c*t -> true
+// cat, *t*c*a -> false
+// dog, c*t -> false
+
