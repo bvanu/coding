@@ -1,0 +1,82 @@
+/**
+Flood Fill
+One pixel on a grayscale image changes color. Recolor all the adjacent pixels of the same color to the same new color.
+Grayscale colors are simply numbers.
+
+Example One:
+{"pixel_row": 0,
+"pixel_column": 1,
+"new_color": 2,
+"image": [
+[0, 1, 3],
+[1, 1, 1],
+[1, 5, 4]]}
+I.e. the pixel at row 0 and column 1 changes to color 2.
+Output:
+[[0, 2, 3],
+[2, 2, 2],
+[2, 5, 4]]
+
+Example Two
+{
+"pixel_row": 1,
+"pixel_column": 0,
+"new_color": 9,
+
+"image": [
+[0, 2, 1],
+[1, 1, 2],
+[2, 5, 4]]}
+I.e. the pixel at row 1 and column 0 changes to color 9.
+
+Output:[
+[0, 2, 1],
+[9, 9, 2],
+[2, 5, 4]]
+
+Notes
+Two pixels are considered adjacent if they share a side; sharing a diagonal is not enough.
+
+Constraints:
+1 <= image width <= 1000
+1 <= image height <= 1000
+0 <= pixel color <= 1000
+
+Complexity Analysis:
+TC: O(n), worst case, I need to traverse through all the nodes
+SC: O(heightOfTree), for recurison stack
+**/
+
+
+static int[][] directions = {{1,0}, {0,1}, {-1,0}, {0,-1}};
+
+static ArrayList<ArrayList<Integer>> flood_fill(Integer pixel_row, Integer pixel_column, Integer new_color, ArrayList<ArrayList<Integer>> image) {
+    // 1. Null checks
+    if(image == null || image.size() <1 
+    || new_color == image.get(pixel_row).get(pixel_column) // If new_color is same as old_color, return image
+    || pixel_row <0 || pixel_row >=image.size() || pixel_column <0 || pixel_column >= image.get(0).size())
+        return image;
+
+    // 2. Do dfs at the pixel and change all the neigbouring pixels
+    dfs((int)pixel_row, (int)pixel_column, image.get(pixel_row).get(pixel_column), (int)new_color, image);
+
+    return image;
+}
+
+private static void dfs(int x, int y, int old_color, int new_color, ArrayList<ArrayList<Integer>> image)
+{
+    // 2.1. First update this pixel with new_color
+    image.get(x).set(y, new_color);
+
+    // 2.2. Iterate over all the neigbours of the current pixel
+   for(int[] dir: directions)
+   {
+       int x1 = x + dir[0];
+       int y1 = y + dir[1];
+
+       if(x1>=0 && x1<image.size() && y1>=0 && y1<image.get(0).size() && image.get(x1).get(y1) == old_color)
+       {
+           dfs(x1, y1, old_color, new_color, image);
+       }
+   }
+}
