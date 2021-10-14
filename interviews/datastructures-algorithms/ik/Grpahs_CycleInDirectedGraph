@@ -1,0 +1,155 @@
+/*
+Detect Cycle In Directed Graph
+
+Given a directed graph, find out whether it includes a cycle.
+
+Example
+Input:
+Given graph has 5 vertices and 7 edges: [[0, 1], [0, 3], [1, 3], [1, 2], [2, 3], [4, 0], [2, 4]].
+Output: true
+
+Given graph has one cycle: 0→1→2→4→0.
+Notes
+
+Function has three arguments: 1) number of vertices, 2) number of directed edges and 3) specification of the edges in the form of a two-dimensional array: each inner array has two elements: zero based “from” and “to” vertices.
+
+Output: Return true if at least one cycle exists in the given graph, otherwise return false.
+
+Constraints:
+2 <= number or vertices <= 100000
+1 <= number of edges <= 100000
+Vertices are implicitly indexed: 0, 1, ..., N-1.
+No multiple edges between the same vertices in the graph, i.e. if u→v edge is present, another u→v won’t be.
+The graph can have multiple components, in other words, it might not be a connected graph.
+Custom Input
+
+Input Format: The first line of input should contain an integer N, denoting the number of nodes. The second line should contain an integer M, denoting the number of edges. In the next M lines, each line should contain 2 space-separated (<fromNode><space><toNode>) integers denoting an edge. For the above-mentioned example, the input should be:
+
+5
+6
+0 1
+1 3
+2 3
+1 2
+4 1
+0 4
+Output Format: There will be only one line containing 0 (if false was returned) or 1 (if true was returned).
+* Complete the 'hasCycle' function below.
+*
+* The function accepts INTEGER N, INTEGER M and 2D_INTEGER_ARRAY edges as parameter.
+* The function is expected to return a BOOLEAN.
+
+Complexity analysis:
+TC: O(n) - need to go over all nodes
+SC: O(n) for storing adjList and O(heightOfTree) - for dfs recursive stack
+*/
+	 
+	static int time = 0;
+	static int[] arrivalTime;
+	static int[] departureTime;
+	static boolean[] visited;
+	static List<List<Integer>> adjList;
+
+    public static boolean hasCycle(int N, int M, List<List<Integer>> edges) {
+    	// 1. Null check.
+    	// There can be vertices, but no edges which means N connected components in the forest, so essentailly edges can be null
+    	// There can be more edges than vertices M>N, as forward, backward and cross edges are possible
+    	// I can't think of any null checks here
+    	// But if no edges that means no possibility of cycle
+    	if(edges == null || edges.size() <1)
+    	{
+    	    return false;
+    	}
+    	
+    	arrivalTime = new int[N];
+    	departureTime = new int[N];
+    	visited = new boolean[N];
+    	adjList = new ArrayList<>();
+    	
+    	// 2. Build Adjacency list from edges
+    	// We need outdegree, so that we can start rom vertex whose outdegree !=0 else, we can't traverse the graph
+    	int[] outDegree = new int[N]; //num of vertices
+    	
+    	// Initialize adjList
+    	for(int i=0; i<N; i++)
+    	{
+    	    adjList.add(new ArrayList<>());
+    	}
+    	
+    	// Go over edge list and fill in adjList
+    	for(List<Integer> edge: edges)
+    	{
+    	    // System.out.println("Edge:(" + edge.get(0) + ", " + edge.get(1) + ")");
+    	    int idx = edge.get(0);
+    	    List<Integer> tmpList = adjList.get(idx);
+    	    tmpList.add(edge.get(1));
+    	    
+    	    adjList.set(idx, tmpList);
+    	    
+    	    // print(adjList);
+    	    outDegree[idx]++;
+    	}
+    	// print(adjList);
+    	
+    	// 3. Do dfs to find if there is a cycle
+    	for(int i=0; i<N; i++)
+    	{
+    	    if(!visited[i] && outDegree[i]!=0)
+    	    {
+    	        // 3.1. If there are n conencted components, we need to check all of them to see if cycles exist
+    	        if(dfs(i))
+    	        {
+    	            return true;
+    	        }
+    	    }
+    	}
+    	
+    	// 4. If no vertext with outDegree!=0, then no cycle
+    	return false;
+    
+    }
+    
+    private static boolean dfs(int source)
+    {
+        arrivalTime[source] = time++;
+        visited[source] = true;
+        
+        // 3.1.1. Loop over the adjList of source
+        for(int ngb: adjList.get(source))
+        {
+            // 3.1.1.1 If node is not visited, do dfs
+            if(!visited[ngb])
+            {
+                if(dfs(ngb))
+                {
+                    return true;
+                }
+            }
+            // 3.1.1.2. If node is visited, and destination is not set then it is a backedge
+            else if( departureTime[ngb] == 0)
+            {
+                return true;
+            }
+        }
+        
+        
+        departureTime[source] = time++;
+        
+        return false;
+    }
+
+
+    private static void print(List<List<Integer>> boardGraph)
+    {
+        int i = 0;
+        for(List<Integer> subList: boardGraph)
+        {
+            System.out.print(i + ": \t");
+            i++;
+            for(int val: subList)
+            {
+                System.out.print(val + "\t");
+            }
+            System.out.println();
+        }
+    }
