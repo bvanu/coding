@@ -1,0 +1,115 @@
+import java.io.*;
+import java.util.*;
+import java.lang.*;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.JsonProcessingException;
+
+/*
+  Create a function that compares two hashmaps. A hashmap is identical 
+  to another if both the keys and values are identical. A key is always
+  of type string and values can be of type integer, null or hashmap.
+  
+  Examples:
+
+  are_identical({'k': 1}, {'k': 1})
+  Returns: True
+  
+  are_identical({'k': {'nk': None}}, {'k': {'nk': None}})
+  Returns: True
+  
+  are_identical({'k': 1}, {'k': 1, 'k2': 2})
+  Returns: False
+  
+  are_identical({'k': {'nk': 1}}, {'k': {'nk': 2}})
+  Returns: False
+  
+  are_identical({'k': {'nk': 1}, 'k2': 2}, {'k': {'nk': 1}})
+  Returns: False
+*/
+
+
+// Main class should be named 'Solution'
+class Solution {
+    public static void main(String[] args) {
+        // System.out.println("Hello, World");
+        
+        Solution sol = new Solution();
+        
+        Map<String, Object> map1 = new HashMap<>();
+        map1.put("k", 1);
+        Map<String, Object> map2 = new HashMap<>();
+        map2.put("k", 1);
+        //System.out.println(sol.areIdentical(map1, map2) + " -> true");
+        
+        
+        Map<String, Object> map3 = new HashMap<>();
+        Map<String, Object> map31 = new HashMap<>();
+        map31.put("nk", null);
+        map1.put("k", map31);
+        Map<String, Object> map4 = new HashMap<>();
+        Map<String, Object> map41 = new HashMap<>();
+        map41.put("nk", null);
+        map4.put("k", map41);
+        System.out.println(sol.areIdentical(map3, map4) + " -> true");
+        
+        Map<String, Object> map5 = new HashMap<>();
+        map5.put("k1", 1);
+        map5.put("k2", 2);
+        //System.out.println(sol.areIdentical(map1, map5) + " -> false");
+  
+  
+        Map<String, Object> map6 = new HashMap<>();
+        Map<String, Object> map61 = new HashMap<>();
+        map61.put("nk", 1);
+        map6.put("k", map61);
+        Map<String, Object> map7 = new HashMap<>();
+        Map<String, Object> map71 = new HashMap<>();
+        map71.put("nk", 2);
+        map7.put("k", map71);
+        //System.out.println(sol.areIdentical(map6, map7) + " -> false");
+  
+    }
+    
+    public boolean areIdentical(Map<String, Object> map1, Map<String, Object> map2)
+    {
+        // 1. Null checks
+        if(map1 == null && map2 == null) return true;
+        if(map1 == null || map2 == null) return false;
+        if(map1.size() != map2.size() ) return false;
+        if(map1.size() == 0 ) return true;
+             
+        for(String key: map1.keySet())
+        {
+            if(!map2.containsKey(key)) return false;
+            
+            Object o1 = map1.get(key); // Integer : 1 or  Map<S,I> : {"One", 1} {"Two", 3} or Integer : null
+            Object o2 = map2.get(key); // Integer: 2 or Map<S,I> : {"One", 1} {"Two", 2} or Integer : null
+            
+            // i. Null
+            if((o1 == null && o2!=null) || (o1 != null && o2==null)) return false;
+            if(o1 == null && o2 == null) continue;
+            
+            if(o1.getClass() !=  o2.getClass())
+            { 
+                System.out.println("Checking datatypes: " + o1.getClass() + " " + o2.getClass());
+                return false; // This compares the data types - shallow check
+            }
+            
+            // o1.getClass() == Integer
+            // o1 instanceof Integer
+            
+            // ii. Integer
+            if(o1.getClass() == Integer.class)
+            {
+                if((int)o1 != (int)o2) return false;
+            }
+            // iii. Map
+            else {
+                if(!areIdentical((Map<String, Object>) o1, (Map<String, Object>)o2)) return false;
+            }   
+        }
+        
+        return true;
+    }
+}
