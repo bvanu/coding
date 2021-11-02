@@ -21,7 +21,7 @@ class Solution {
     Time complexity: O(n^2). For each element of array, we iterate the left and right parts.
     Space complexity: O(1) extra space.
     **/
-    public int trap(int[] height) {
+    public int trap_bf(int[] height) {
         int trappedWater = 0;
         int left_max = 0, right_max = 0;
         int n = height.length;
@@ -51,7 +51,7 @@ class Solution {
     }
     
     
-    /** Approach#2: DP
+    /** Approach#2: DP two pass
     Intuition
 
     In brute force, we iterate over the left and right parts again and again just to find the highest bar size upto that index. But, this could be stored. Voila, dynamic programming.
@@ -97,6 +97,68 @@ class Solution {
         }
         
         return trappedWater;        
+    }
+    
+    
+    /** Approach #4: DP single pass
+    Intuition
+
+    As in Approach 2, instead of computing the left and right parts seperately, we may think of some way to do it in one iteration. From the figure in dynamic programming approach, notice that as long as right_max[i]>left_max[i] (from element 0 to 6), the water trapped depends upon the left_max, and similar is the case when left_max[i]>right_max[i] (from element 8 to 11). So, we can say that if there is a larger bar at one end (say right), we are assured that the water trapped would be dependant on height of bar in current direction (from left to right). As soon as we find the bar at other end (right) is smaller, we start iterating in opposite direction (from right to left). We must maintain left_max and right_max during the iteration, but now we can do it in one iteration using 2 pointers, switching between the two.
+
+    Algorithm
+
+    Initialize \text{left}left pointer to 0 and \text{right}right pointer to size-1
+    While left<right, do:
+        If height[left] is smaller than height[right]
+            If \text{height[left]} \geq \text{left\_max}height[left]≥left_max, update \text{left\_max}left_max
+            Else add \text{left\_max}-\text{height[left]}left_max−height[left] to \text{ans}ans
+             Add 1 to \text{left}left.
+        Else
+                If \text{height[right]} \geq \text{right\_max}height[right]≥right_max, update \text{right\_max}right_max
+                Else add \text{right\_max}-\text{height[right]}right_max−height[right] to \text{ans}ans
+                Subtract 1 from \text{right}right.
+
+    Complexity analysis
+
+    Time complexity: O(n). Single iteration of O(n).
+    Space complexity: O(1) extra space. Only constant space required for left, right, left_max and right_max.
+    **/
+    public int trap(int[] height)
+    {
+        int n = height.length;
+        int left_max = 0, right_max = 0;
+        int left = 0, right = n-1;
+        int trappedCount = 0;
+        
+        while(left<right)
+        {
+            // Update left
+            if(height[left]<height[right])
+            {
+               if( height[left] >= left_max)
+               {    
+                   left_max = height[left];
+               } else
+               {
+                    trappedCount += left_max-height[left];
+               }
+                
+                left++;
+            } 
+            // Update right
+            else
+            {
+                if(height[right] >= right_max){
+                    right_max = height[right];
+                } else{
+                    trappedCount += right_max-height[right];
+                }
+                
+                right--;
+            }
+        }
+        
+        return trappedCount;
     }
     
 }
