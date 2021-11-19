@@ -1,0 +1,72 @@
+
+
+    public String addCommaSeparated(String a, String b)
+    {
+        a = a.replace(",", "");
+        System.out.println(a);
+        b = b.replace(",", "");
+        System.out.println(b);
+
+        String str = add(a, b);
+        StringBuilder result = new StringBuilder();
+
+        for(int i=str.length()-1; i>0; i--)
+        {
+            result.append(str.charAt(i));
+
+            if(i%3==1 )
+            {                
+                result.append(",");
+            }
+        }        
+        result.append(str.charAt(0));
+        return result.reverse().toString();
+    }
+
+    public String add(String a, String b)
+    {
+        StringBuilder result = new StringBuilder();
+
+        int alen = a.length()-1;
+        int blen = b.length()-1;
+        int sum, carry = 0;
+
+        while(alen>=0 || blen>=0)
+        {
+            sum = 0;
+
+            if(alen>=0)
+            {
+                //System.out.println(a.charAt(alen));
+                sum += a.charAt(alen--) -'0';
+                //System.out.println(sum);
+            }
+
+            if(blen>=0)
+            {
+                //System.out.println(b.charAt(blen));
+                sum += b.charAt(blen--) - '0';
+                //System.out.println(sum);
+
+            }
+
+            sum += carry;
+            //System.out.println(sum + " " + carry);
+
+            result.append(sum%10);
+            //System.out.println(result.toString());
+
+            carry = sum/10;
+        }
+
+        if(carry>0)
+        {
+            result.append(carry);
+        }
+
+        result.reverse();
+        //System.out.println(result.toString());
+
+        return result.toString(); 
+    }
+}
