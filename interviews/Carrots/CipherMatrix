@@ -1,8 +1,28 @@
 /* Code: https://www.online-java.com/1RNpXuGFzZ
+Eg:
+Input:
+JINGLEBELLS
+Output:
+I N G L E
+B S A C D
+F H K M O
+P Q R T U
+V W X Y Z
+ 
+
 TC: O(5*5)
 SC: O(5*5) + O(26) which is O(1)
 */
 
+import java.lang.*;
+import java.util.*;
+
+
+/*
+Online Java - IDE, Code Editor, Compiler
+
+Online Java is a quick and easy tool that helps you to build, compile, test your programs online.
+*/
 import java.lang.*;
 import java.util.*;
 
@@ -12,7 +32,8 @@ public class Main
         System.out.println("Welcome to Online IDE!! Happy Coding :)");
         
         Main m = new Main();
-        m.cipherMatrix("INSTACART");
+        // m.cipherMatrix("INSTACART");
+        m.cipherMatrix("JINGLEBELLS");
     }
     
     public char[][] cipherMatrix(String word)
@@ -23,7 +44,7 @@ public class Main
         Set<Character> visitedChars = new HashSet<>();
         int k = 0;
         char alph = 'A';
-        boolean setAlph = false;
+        boolean setAlph = false; /*** imp ***/
         
         nestedLoop:    
         for(int i=0; i<n; i++)
@@ -37,11 +58,16 @@ public class Main
                     while(k<wordArr.length && visitedChars.contains(wordArr[k])) { k++; }
                     
                     if(k<wordArr.length) { c = wordArr[k++]; }
-                    else { setAlph = true; }
-                } 
+                    else { setAlph = true; } /*** imp ***/
+                }
+                else
+                {
+                    setAlph = true; /*** imp ***/
+                }
                 
                 if(setAlph)
                 {
+                    System.out.println("alph: " + alph);
                     while(visitedChars.contains(alph)){ alph++; }
                     c = alph++;
                 }
@@ -72,3 +98,4 @@ public class Main
         return encodedMatrix;
     }
 }
+
