@@ -1,0 +1,74 @@
+/* Code: https://www.online-java.com/1RNpXuGFzZ
+TC: O(5*5)
+SC: O(5*5) + O(26) which is O(1)
+*/
+
+import java.lang.*;
+import java.util.*;
+
+public class Main
+{
+    public static void main(String[] args) {
+        System.out.println("Welcome to Online IDE!! Happy Coding :)");
+        
+        Main m = new Main();
+        m.cipherMatrix("INSTACART");
+    }
+    
+    public char[][] cipherMatrix(String word)
+    {
+        int n = 5;
+        char[] wordArr = word.toCharArray();
+        char[][] encodedMatrix = new char[n][n];
+        Set<Character> visitedChars = new HashSet<>();
+        int k = 0;
+        char alph = 'A';
+        boolean setAlph = false;
+        
+        nestedLoop:    
+        for(int i=0; i<n; i++)
+        {
+            for(int j=0; j<n; j++)
+            {
+                char c = '0';
+                 
+                if(k<wordArr.length)
+                {
+                    while(k<wordArr.length && visitedChars.contains(wordArr[k])) { k++; }
+                    
+                    if(k<wordArr.length) { c = wordArr[k++]; }
+                    else { setAlph = true; }
+                } 
+                
+                if(setAlph)
+                {
+                    while(visitedChars.contains(alph)){ alph++; }
+                    c = alph++;
+                }
+                
+                if(c == 'J' || c == 'I') 
+                {
+                    visitedChars.add('J');
+                    visitedChars.add('I');
+                    encodedMatrix[i][j] = 'I';
+                }
+                else 
+                {
+                    visitedChars.add(c);
+                    encodedMatrix[i][j] = c;
+                }
+            }
+        }
+        
+        for(int i=0; i<n; i++)
+        {
+            for(int j=0; j<n; j++)
+            {
+                System.out.print(encodedMatrix[i][j] + "\t");
+            }
+            System.out.println();
+        }
+        
+        return encodedMatrix;
+    }
+}
