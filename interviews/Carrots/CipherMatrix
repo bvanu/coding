@@ -29,11 +29,11 @@ class Main
     {
         Main cm = new Main();
         
-        cm.encodeString("instacart", 'j', 'i');
-        cm.encodeString("jinglebells", 'j', 'i');
+        cm.cypherMatrix("instacart", 'j', 'i');
+        cm.cypherMatrix("jinglebells", 'j', 'i');
     }
     
-    public char[][] encodeString(String word, char targetChar, char replaceChar)
+    public char[][] cypherMatrix(String word, char targetChar, char replaceChar)
     {
         char[][] encodedMatrix = new char[n][n];
         boolean[] used = new boolean[26];
