@@ -18,74 +18,57 @@ import java.lang.*;
 import java.util.*;
 
 
-/*
-Online Java - IDE, Code Editor, Compiler
-
-Online Java is a quick and easy tool that helps you to build, compile, test your programs online.
-*/
 import java.lang.*;
 import java.util.*;
 
-public class Main
+class Main
 {
-    public static void main(String[] args) {
-        System.out.println("Welcome to Online IDE!! Happy Coding :)");
+    int n = 5;
+    
+    public static void main(String[] args)
+    {
+        Main cm = new Main();
         
-        Main m = new Main();
-        // m.cipherMatrix("INSTACART");
-        m.cipherMatrix("JINGLEBELLS");
+        cm.encodeString("instacart", 'j', 'i');
+        cm.encodeString("jinglebells", 'j', 'i');
     }
     
-    public char[][] cipherMatrix(String word)
+    public char[][] encodeString(String word, char targetChar, char replaceChar)
     {
-        int n = 5;
-        char[] wordArr = word.toCharArray();
         char[][] encodedMatrix = new char[n][n];
-        Set<Character> visitedChars = new HashSet<>();
-        int k = 0;
-        char alph = 'A';
-        boolean setAlph = false; /*** imp ***/
+        boolean[] used = new boolean[26];
+        int count = 0;
         
-        nestedLoop:    
-        for(int i=0; i<n; i++)
+        used[targetChar-'a'] = true;
+        
+        for(char c: word.toCharArray())
         {
-            for(int j=0; j<n; j++)
-            {
-                char c = '0';
-                 
-                if(k<wordArr.length)
-                {
-                    while(k<wordArr.length && visitedChars.contains(wordArr[k])) { k++; }
-                    
-                    if(k<wordArr.length) { c = wordArr[k++]; }
-                    else { setAlph = true; } /*** imp ***/
-                }
-                else
-                {
-                    setAlph = true; /*** imp ***/
-                }
+            int index = c-'a';
+            
+            if(used[index])
+                continue;
+            
+            if(c == targetChar)
+                c = replaceChar;
                 
-                if(setAlph)
-                {
-                    System.out.println("alph: " + alph);
-                    while(visitedChars.contains(alph)){ alph++; }
-                    c = alph++;
-                }
-                
-                if(c == 'J' || c == 'I') 
-                {
-                    visitedChars.add('J');
-                    visitedChars.add('I');
-                    encodedMatrix[i][j] = 'I';
-                }
-                else 
-                {
-                    visitedChars.add(c);
-                    encodedMatrix[i][j] = c;
-                }
-            }
+            used[index] = true;
+            
+            encodedMatrix[count/5][count%5] = (char)(index + 'A');
+            
+            count++;
         }
         
+        for(int i=0; i<used.length; i++)
+        {
+            if(used[i])
+                continue;
+            
+            used[i] = true; // Doesn't really matter
+            encodedMatrix[count/5][count%5] = (char)(i + 'A');
+            count++;
+        }
+        
+        // PRINT OUTPUT
         for(int i=0; i<n; i++)
         {
             for(int j=0; j<n; j++)
@@ -94,8 +77,9 @@ public class Main
             }
             System.out.println();
         }
+        System.out.println();
         
         return encodedMatrix;
+        
     }
 }
-
