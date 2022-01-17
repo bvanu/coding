@@ -10,14 +10,13 @@ F H K M O
 P Q R T U
 V W X Y Z
  
+CypherDecrypt:
+Input: "RMROENAQUEANWRBS", "instacart", 'j', 'i'
+Output:“CONGRATULATIONSX”
 
 TC: O(5*5)
 SC: O(5*5) + O(26) which is O(1)
 */
-
-import java.lang.*;
-import java.util.*;
-
 
 import java.lang.*;
 import java.util.*;
@@ -30,8 +29,10 @@ class Main
     {
         Main cm = new Main();
         
-        cm.cypherMatrix("instacart", 'j', 'i');
-        cm.cypherMatrix("jinglebells", 'j', 'i');
+        // cm.cypherMatrix("instacart", 'j', 'i');
+        // cm.cypherMatrix("jinglebells", 'j', 'i');
+        
+        cm.cypherDecrypt("RMROENAQUEANWRBS", "instacart", 'j', 'i');
     }
     
     public char[][] cypherMatrix(String word, char targetChar, char replaceChar)
@@ -81,6 +82,55 @@ class Main
         System.out.println();
         
         return encodedMatrix;
+    }
+    
+    public String cypherDecrypt(String encryptedString, String key, char targetChar, char replaceChar)
+    {
+        char[][] cyphMatrix = cypherMatrix(key, 'j', 'i');
+        Map<Character, int[]> map= new HashMap<>(); // Pair<Integer, Integer>
+        StringBuilder decryptedString = new StringBuilder();
         
+        // Pouplate the indexes
+        for(int i=0; i<n; i++)
+        {
+            for(int j=0; j<n; j++)
+            {
+                map.put(cyphMatrix[i][j], new int[]{i, j});
+            }
+        }
+        
+        // Decode the encryptedString
+        for(int i=0; i<encryptedString.length()-1; i=i+2)
+        {
+            char c1 = encryptedString.charAt(i);
+            char c2 = encryptedString.charAt(i+1);
+            
+            if(!map.containsKey(c1) || !map.containsKey(c2))
+                return null;
+            
+            int[] index1 = map.get(c1);
+            int[] index2 = map.get(c2);
+            
+            // 1. Are 2 chars on the same column?
+            if(index1[1] == index2[1])
+            {
+                decryptedString.append(cyphMatrix[(index1[0]-1+5)%5][index1[1]]);
+                decryptedString.append(cyphMatrix[(index2[0]-1+5)%5][index2[1]]);
+            }
+            // 2. Are 2 chars on the same row?
+            else if(index1[0] == index2[0])
+            {
+                decryptedString.append(cyphMatrix[index1[0]][(index1[1]-1+5)%5]);
+                decryptedString.append(cyphMatrix[index2[0]][(index2[1]-1+5)%5]);
+            }
+            // Otherwise
+            else{
+                decryptedString.append(cyphMatrix[index1[0]][index2[1]]);
+                decryptedString.append(cyphMatrix[index2[0]][index1[1]]);
+            }
+        }
+        
+        System.out.println("DecryptedString: " + decryptedString.toString());
+        return decryptedString.toString();
     }
 }
