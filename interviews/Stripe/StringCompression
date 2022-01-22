@@ -1,0 +1,116 @@
+
+/*
+Online Java - IDE, Code Editor, Compiler
+
+Online Java is a quick and easy tool that helps you to build, compile, test your programs online.
+*/
+
+import java.util.*;
+import java.lang.*;
+
+public class Main
+{
+    public static void main(String[] args) {
+        
+        Main m = new Main();
+        
+        String str1 = "stripe.com/payments/checkout/customer.john.doe";
+        System.out.println(m.findMinorComponents(str1));
+        System.out.println(m.strCompression(str1));
+        
+        /*
+        # ### Example 1
+        # str = stripe.com/payments/checkout/customer.john.doe
+        # minor_parts = 2
+        
+        # after Part 1 compression
+        # =>
+        # s4e.c1m/p6s/c6t/c6r.j2n.d1e
+        
+        # after Part 2 compression
+        # =>
+        # s4e.c1m/p6s/c6t/c6r.j5e
+        
+        
+        # ### Example 2
+        # Given:
+        # str = www.api.stripe.com/checkout
+        # minor_parts = 3
+        
+        # (after Part 1 compression)
+        # =>
+        # w1w.a1i.s4e.c1m/c6t
+        
+        # (then after Part 2 compression)
+        # =>
+        # w1w.a1i.s7m/c6t
+        */
+    
+    }
+    
+    public int findMinorComponents(String str)
+    {
+        if(str==null || str.length()<1) return 0;
+        
+        int numMinorComp = 0;
+        
+        // get major components
+        String[] components = str.split("/");
+        
+        for(String comp: components)
+        {
+            // get minor components
+            if(comp.contains("."))
+            {
+                numMinorComp++;
+            }
+        }
+        
+        return numMinorComp;
+    }
+    
+    public String strCompression(String str)
+    {
+        if(str==null || str.length()<1) return null;
+        
+        StringBuilder compressedStr = new StringBuilder();
+        
+         String[] components = str.split("/");
+         String prefix1 = "";
+        
+        for(String comp: components) // str = stripe.com/payments/checkout/customer.john.doe => s4e.c1m/p6s/c6t/c6r.j2n.d1e
+        {
+            compressedStr.append(prefix1);
+            prefix1 = "/";
+            
+            // get minor components
+            if(comp.contains("."))
+            {
+                String[] minComps = comp.split("[.]");
+                System.out.println("minComp exists " + comp + " -> " + minComps.length);
+                
+                String prefix2 = "";
+                for(String minComp: minComps)
+                {
+                    System.out.println("minComp: " + minComp);
+                    
+                    compressedStr.append(prefix2);
+                    prefix2 = ".";
+                    compressedStr.append(compress(minComp));
+                }
+            }
+            else{
+                compressedStr.append(compress(comp));   
+            }
+        }
+        
+        return compressedStr.toString();
+    }
+    
+    private String compress(String str)
+    {
+        int n = str.length();
+        
+        return str.charAt(0) + Integer.toString(n-2) + str.charAt(n-1);
+    }
+}
