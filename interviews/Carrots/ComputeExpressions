@@ -1,0 +1,348 @@
+Part 1: https://www.online-java.com/UJDoQdlzF6
+
+/*
+Online Java - IDE, Code Editor, Compiler
+
+Online Java is a quick and easy tool that helps you to build, compile, test your programs online.
+*/
+import java.lang.*;
+import java.util.*;
+
+public class Main
+{
+    public static void main(String[] args) {
+        System.out.println("Welcome to Online IDE!! Happy Coding :)");
+        
+        Main m = new Main();
+        
+        String[] test1 = new String[] { "T1=1",
+                                        "T2=2",
+                                        "T3=T4",
+                                        "T4=T5",
+                                        "T5=T2"
+                                        };
+        System.out.println(m.computeExpressions(test1, "T3"));
+    }
+    
+    public int computeExpressions(String[] expressions, String computeExpression)
+    {
+        Map<String, String> expressionsMap = new HashMap<>();
+        
+        for(String expression: expressions)
+        {
+            String[] split = expression.split("=");
+            expressionsMap.put(split[0], split[1]);
+        }
+        
+        // compute the expression, do recrusion
+        return computeExp(expressionsMap, computeExpression);
+    }
+    
+    private int computeExp(Map<String, String> map, String exp)
+    {
+        if(isInt(map.get(exp))) 
+        {
+            return Integer.parseInt(map.get(exp));
+        }
+        else{
+            return computeExp(map, map.get(exp));
+            // map.put(exp, value); // optional, make it global and use it. not using this map anywhere now
+        }
+    }
+    
+    private boolean isInt(String str)
+    {
+        try {
+            int i = Integer.parseInt(str);
+            return true;
+        } catch(NumberFormatException e) {
+            System.out.println("In exception: " + str);
+            return false;
+        }
+    }
+    
+    private void printMap(Map<String, String> map)
+    {
+        for(String key: map.keySet())
+        {
+            System.out.println(key + " : \t" + map.get(key));
+        }
+    }
+}
+
+Part 2: 
+/*
+Online Java - IDE, Code Editor, Compiler
+
+Online Java is a quick and easy tool that helps you to build, compile, test your programs online.
+*/
+
+import java.util.*;
+import java.lang.*;
+
+public class Main
+{
+    public static void main(String[] args) {
+        Main m = new Main();
+        
+         String[] test2 = new String[] {
+                                        "T1=1",
+                                        "T2=2",
+                                        "T3=T4-T2",
+                                        "T4=T5+T5",
+                                        "T5=T2"
+                                        };
+                                        
+        System.out.println(m.computeExpressions(test2, "T3"));
+    }
+    
+    // Part 1
+    public int computeExpressions(String[] expressions, String computeExp)
+    {
+        Map<String, String> expMap = buildExpMap(expressions);
+        
+        return computeValues(expMap, computeExp);
+    }
+    
+    public Map<String, String> buildExpMap(String[] expressions)
+    {
+        Map<String, String> expMap = new HashMap<String, String>();
+        
+        for(String exp: expressions)
+        {
+            String[] elements = exp.split("=");
+            
+            if(elements.length!=2)
+            {
+                throw new IllegalArgumentException();
+            }
+            
+            expMap.put(elements[0], elements[1]);
+        }
+        
+        printMap(expMap);
+        return expMap;
+    }
+    
+    public int computeValues(Map<String, String> expMap, String computeExp) {
+		while(true) {
+			// Point 9: this step is necessary and can be forgotten, since the value can be a number
+			// You won't get the number from the map, so youhave to get it from here
+			if (isStringNumeric(computeExp)) {
+				return Integer.valueOf(expMap.get(computeExp));
+			}
+			
+			// Point 2: Remember to remove the potential space from the string
+			computeExp = expMap.get(computeExp).replaceAll("\\s+", "");
+			
+			boolean isNumber = isStringNumeric(computeExp);
+			
+			if (isNumber) {
+				return Integer.valueOf(computeExp);
+				// Point 7: this parse is very trick that you can't use String.find(), using the pattern.compile is safer
+			} 
+			//else if (Pattern.compile("[-+*/]").matcher(computeExp).find()) {
+			else if (computeExp.contains("-") || computeExp.contains("+") || computeExp.contains("/") || computeExp.contains("*"))
+			{
+				String[] operators = computeExp.split("[-+*/]");
+				
+				// Point 8: in the multiple factor step, you only need to
+				// String operator = computeExp.split("T[0-9]")[1];
+				// You only need to refactor at followup step 4
+				String[] operands = computeExp.split("T[0-9]");
+				
+				// T3=T4-T2
+				//operators: [T4, T2]
+				//Operands: [, -]
+				System.out.println("operators: " + Arrays.toString(operators));
+                System.out.println("operands: " + Arrays.toString(operands)); // this is adding empty space at first asn operand
+				
+				int firstOperatorValue = computeValues(expMap, operators[0]);
+				for (int i = 1; i < operators.length; i++) 
+				{
+					int secondOperatorValue = computeValues(expMap, operators[i]);
+					firstOperatorValue = compute(firstOperatorValue, secondOperatorValue,operands[i]);
+				}
+				// Pont 6: this is nice to have, you can avoid compute the expression again
+				expMap.put(computeExp, String.valueOf(firstOperatorValue));
+				return firstOperatorValue;
+			}
+		}
+    }
+    
+    private int compute(int firstOperatorValue, int secondOperatorValue, String operand)
+    {
+        System.out.println("Compute: " + firstOperatorValue + " " + operand + " " + secondOperatorValue);
+        switch(operand)
+        {
+            case "+":
+                return firstOperatorValue + secondOperatorValue;
+            case "-":
+                return firstOperatorValue - secondOperatorValue;
+            case "*":
+                return firstOperatorValue * secondOperatorValue;
+            case "/":
+                return firstOperatorValue / secondOperatorValue;
+        }
+        
+        // Point 5: this exception is helpful that it will help you bug if you failed to parse the expression correctly.
+		throw new IllegalArgumentException("invalid operands");
+    }
+    
+    private boolean isStringNumeric(String str)
+    {
+        try {
+            int i = Integer.parseInt(str);
+            return true;
+        } catch(NumberFormatException e) {
+            return false;
+        }
+    }
+    
+    private void printMap(Map<String, String> map)
+    {
+        for(String key: map.keySet())
+        {
+            System.out.println(key + " : \t" + map.get(key));
+        }
+    }
+}
+
+Alternate:
+
+/*
+Online Java - IDE, Code Editor, Compiler
+
+Online Java is a quick and easy tool that helps you to build, compile, test your programs online.
+*/
+
+import java.util.*;
+import java.lang.*;
+
+public class Main
+{
+    public static void main(String[] args) {
+        Main m = new Main();
+        
+         String[] test2 = new String[] {
+                                        "T1=1",
+                                        "T2=2",
+                                        "T3=T4-T2",
+                                        "T4=T5+T5",
+                                        "T5=T2"
+                                        };
+                                        
+        System.out.println(m.computeExpressions(test2, "T3"));
+    }
+    
+    // Part 1
+    public int computeExpressions(String[] expressions, String computeExp)
+    {
+        Map<String, String> expMap = buildExpMap(expressions);
+        
+        return computeValues(expMap, computeExp);
+    }
+    
+    public Map<String, String> buildExpMap(String[] expressions)
+    {
+        Map<String, String> expMap = new HashMap<String, String>();
+        
+        for(String exp: expressions)
+        {
+            String[] elements = exp.split("=");
+            
+            if(elements.length!=2)
+            {
+                throw new IllegalArgumentException();
+            }
+            
+            expMap.put(elements[0], elements[1]);
+        }
+        
+        printMap(expMap);
+        return expMap;
+    }
+    
+    public int computeValues(Map<String, String> expMap, String computeExp) {
+		while(true) {
+			// Point 9: this step is necessary and can be forgotten, since the value can be a number
+			// You won't get the number from the map, so youhave to get it from here
+			if (isStringNumeric(computeExp)) {
+				return Integer.valueOf(expMap.get(computeExp));
+			}
+			
+			// Point 2: Remember to remove the potential space from the string
+			computeExp = expMap.get(computeExp).replaceAll("\\s+", "");
+			
+			boolean isNumber = isStringNumeric(computeExp);
+			
+			if (isNumber) {
+				return Integer.valueOf(computeExp);
+				// Point 7: this parse is very trick that you can't use String.find(), using the pattern.compile is safer
+			} 
+			//else if (Pattern.compile("[-+*/]").matcher(computeExp).find()) {
+			else if (computeExp.contains("-") || computeExp.contains("+") || computeExp.contains("/") || computeExp.contains("*"))
+			{
+				String[] operators = computeExp.split("[-+*/]");
+				
+				// Point 8: in the multiple factor step, you only need to
+				// String operator = computeExp.split("T[0-9]")[1];
+				// You only need to refactor at followup step 4
+				String[] operands = computeExp.split("T[0-9]");
+				
+				// T3=T4-T2
+				//operators: [T4, T2]
+				//Operands: [, -]
+				System.out.println("operators: " + Arrays.toString(operators));
+                System.out.println("operands: " + Arrays.toString(operands)); // this is adding empty space at first asn operand
+				
+				int firstOperatorValue = computeValues(expMap, operators[0]);
+				for (int i = 1; i < operators.length; i++) 
+				{
+					int secondOperatorValue = computeValues(expMap, operators[i]);
+					firstOperatorValue = compute(firstOperatorValue, secondOperatorValue,operands[i]);
+				}
+				// Pont 6: this is nice to have, you can avoid compute the expression again
+				expMap.put(computeExp, String.valueOf(firstOperatorValue));
+				return firstOperatorValue;
+			}
+		}
+    }
+    
+    private int compute(int firstOperatorValue, int secondOperatorValue, String operand)
+    {
+        System.out.println("Compute: " + firstOperatorValue + " " + operand + " " + secondOperatorValue);
+        switch(operand)
+        {
+            case "+":
+                return firstOperatorValue + secondOperatorValue;
+            case "-":
+                return firstOperatorValue - secondOperatorValue;
+            case "*":
+                return firstOperatorValue * secondOperatorValue;
+            case "/":
+                return firstOperatorValue / secondOperatorValue;
+        }
+        
+        // Point 5: this exception is helpful that it will help you bug if you failed to parse the expression correctly.
+		throw new IllegalArgumentException("invalid operands");
+    }
+    
+    private boolean isStringNumeric(String str)
+    {
+        try {
+            int i = Integer.parseInt(str);
+            return true;
+        } catch(NumberFormatException e) {
+            return false;
+        }
+    }
+    
+    private void printMap(Map<String, String> map)
+    {
+        for(String key: map.keySet())
+        {
+            System.out.println(key + " : \t" + map.get(key));
+        }
+    }
+}
