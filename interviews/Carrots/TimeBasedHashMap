@@ -1,0 +1,53 @@
+class TimeMap {
+     Map<String, Map<Integer, String>> timeMap;
+    
+    public TimeMap() {
+        timeMap = new HashMap<>();
+    }
+    
+    // TC: O(1)
+    public void set(String key, String value, int timestamp) {
+        if(!timeMap.containsKey(key))
+            timeMap.put(key, new HashMap<>());
+        
+        timeMap.get(key).put(timestamp, value);
+    }
+    
+    // TC: O(logn) worst case, o(1) best and avg case
+    public String get(String key, int timestamp) {
+        if(timeMap.containsKey(key))
+        {
+            if(timeMap.get(key).containsKey(timestamp))
+            {
+                return timeMap.get(key).get(timestamp);
+            }
+            else
+            {
+                while(timestamp>0)
+                {
+                    if(timeMap.get(key).containsKey(timestamp))
+                    {
+                        return timeMap.get(key).get(timestamp);
+                    }
+                    
+                    timestamp--;
+                }
+            }
+        }
+        
+        return "";
+    }
+    
+    // do's binary search - O(logn)
+    private String getClosest(Map<Integer, String> map, int timestamp, int left, int right)
+    {
+        return null;
+    }
+}
+
+/**
+ * Your TimeMap object will be instantiated and called as such:
+ * TimeMap obj = new TimeMap();
+ * obj.set(key,value,timestamp);
+ * String param_2 = obj.get(key,timestamp);
+ */
