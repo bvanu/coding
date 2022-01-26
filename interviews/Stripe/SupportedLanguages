@@ -1,0 +1,251 @@
+
+/* 
+Your previous Plain Text content is preserved below:
+
+Part 1
+ 
+In an HTTP request, the Accept-Language header describes the list of
+languages that the requester would like content to be returned in. The header
+takes the form of a comma-separated list of language tags. For example:
+ 
+  Accept-Language: en-US, fr-CA, fr-FR
+ 
+means that the reader would accept:
+ 
+  1. English as spoken in the United States (most preferred)
+  2. French as spoken in Canada
+  3. French as spoken in France (least preferred)
+ 
+We're writing a server that needs to return content in an acceptable language
+for the requester, and we want to make use of this header. Our server doesn't
+support every possible language that might be requested (yet!), but there is a
+set of languages that we do support. Write a function that receives two arguments:
+an Accept-Language header value as a string and a set of supported languages,
+and returns the list of language tags that will work for the request. The
+language tags should be returned in descending order of preference (the
+same order as they appeared in the header).
+ 
+In addition to writing this function, you should use tests to demonstrate that it's
+correct, either via an existing testing system or one you create.
+ 
+Examples:
+ 
+parse_accept_language(
+  "en-US, fr-CA, fr-FR",  # the client's Accept-Language header, a string
+  ["fr-FR", "en-US"]      # the server's supported languages, a set of strings
+)
+returns: ["en-US", "fr-FR"]
+ 
+parse_accept_language("fr-CA, fr-FR", ["en-US", "fr-FR"])
+returns: ["fr-FR"]
+ 
+parse_accept_language("en-US", ["en-US", "fr-CA"])
+returns: ["en-US"]
+
+parse_accept_language("en-US, en-US", ["en-US", "fr-CA"])
+returns: [ ? ]
+
+
+Part 2
+ 
+Accept-Language headers will often also include a language tag that is not
+region-specific - for example, a tag of "en" means "any variant of English". Extend
+your function to support these language tags by letting them match all specific
+variants of the language.
+ 
+Examples:
+ 
+parse_accept_language("en", ["en-US", "fr-CA", "fr-FR"])
+returns: ["en-US"]
+ 
+parse_accept_language("fr", ["en-US", "fr-CA", "fr-FR"])
+returns: ["fr-CA", "fr-FR"]
+ 
+parse_accept_language("fr-FR, fr", ["en-US", "fr-CA", "fr-FR"])
+returns: ["fr-FR", "fr-CA"]
+
+Map
+en-US, {en-US}
+en, {en-US, en-UK, en-In, en-PH}
+fr-CA, {fr-CA}
+fr-FR, {fr-FR}
+fr, {fr-CA, fr-FR}
+
+
+TC: O(n) linear
+SC: O(m) to store server lang
+ */
+
+
+
+/*
+ * Click `Run` to execute the snippet below!
+ */
+
+import java.io.*;
+import java.util.*;
+
+/*
+ * To execute Java, please define "static void main" on a class
+ * named Solution.
+ *
+ * If you need more classes, simply define them inline.
+ */
+
+class Solution {
+  public static void main(String[] args) {
+    ArrayList<String> strings = new ArrayList<String>();
+    strings.add("Hello, World!");
+    strings.add("Welcome to CoderPad.");
+    strings.add("This pad is running Java " + Runtime.version().feature());
+
+    for (String string : strings) {
+      System.out.println(string);
+    }
+    Solution sol = new Solution();
+    
+    
+    String clientLang = "en-US, fr-CA, fr-FR";
+    String[] serverLang = {"fr-FR", "en-US"};
+    
+    System.out.println(sol.getSupportedLanguages(clientLang, serverLang) + " -> " + "en-US, fr-FR");
+    
+    String clientLang1 = "fr-CA, fr-FR";
+    String[] serverLang1 = {"en-US", "fr-FR"};
+    System.out.println(sol.getSupportedLanguages(clientLang1, serverLang1) + " -> " + "fr-FR");
+
+ 
+    String clientLang2 = "en-US";
+    String[] serverLang2 = {"en-US", "fr-CA"};
+    System.out.println(sol.getSupportedLanguages(clientLang2, serverLang2) + " -> " + "en-US");
+    
+    String clientLang3 = "en-US, en-US";
+    String[] serverLang3 = {"en-US", "fr-CA"};
+    System.out.println(sol.getSupportedLanguages(clientLang3, serverLang3) + " -> " + "en-US");
+    
+    
+    String clientLang21 = "en";
+    String[] serverLang21 = {"en-US", "fr-CA", "fr-FR"};
+    System.out.println(sol.getSupportedLanguages2(clientLang21, serverLang21) + " -> " + "en-US");
+    
+    String clientLang22 = "fr";
+    String[] serverLang22 = {"en-US", "fr-CA", "fr-FR"};
+    System.out.println(sol.getSupportedLanguages2(clientLang22, serverLang22) + " -> " + "fr-CA, fr-FR");
+    
+    String clientLang23 = "fr-FR, fr";
+    String[] serverLang23 = {"en-US", "fr-CA", "fr-FR"};
+    System.out.println(sol.getSupportedLanguages2(clientLang23, serverLang23) + " -> " + "fr-FR, fr-CA");
+    
+  }
+  
+  public List<String> getSupportedLanguages(String clientLang, String[] serverLang)
+  {
+    if(clientLang==null || clientLang.length()<1 || serverLang==null || serverLang.length<1)
+      return null;
+    
+    String[] clientLangArr = clientLang.split(",");
+    Set<String> serverLangSet = new HashSet<>();
+    
+    for(String lang: serverLang)
+    {
+       serverLangSet.add(lang);
+    }
+    
+    Set<String> supportedLangSet = new HashSet<>();
+    List<String> supportedLang = new ArrayList<>();
+    for(String lang: clientLangArr)
+    {      
+      lang = lang.replaceAll("\\s", "");
+      if(serverLangSet.contains(lang))
+      {
+        supportedLangSet.add(lang);
+      }
+    }
+    
+    Iterator<String> iter = supportedLangSet.iterator();
+    while(iter.hasNext())
+    {      
+      supportedLang.add(iter.next());
+    }
+    
+    return supportedLang;
+  }
+  
+   public List<String> getSupportedLanguages2(String clientLang, String[] serverLang)
+  {
+    if(clientLang==null || clientLang.length()<1 || serverLang==null || serverLang.length<1)
+      return null;
+    
+    String[] clientLangArr = clientLang.split(",");
+    Map<String, Set<String>> serverLangMap = new HashMap<>();
+    
+    for(String lang: serverLang)
+    {
+       String[] tags = lang.split("-");
+       
+       if(!serverLangMap.containsKey(tags[0]))
+       {
+          serverLangMap.put(tags[0], new HashSet<>());
+       }
+      
+       serverLangMap.get(tags[0]).add(lang);
+    }
+     
+     //System.out.println("MAP");
+     //printMap(serverLangMap);
+    
+    Set<String> supportedLangSet = new HashSet<>();
+    List<String> supportedLang = new ArrayList<>();
+    for(String lang: clientLangArr)
+    {
+      lang = lang.replaceAll("\\s", "");
+      String[] tags = lang.split("-");
+         
+      if(serverLangMap.containsKey(tags[0]))
+      {
+        Set<String> langSet = serverLangMap.get(tags[0]);
+       // System.out.println("lang: " + lang);
+        
+        if(tags.length==1) // fr
+        {          
+          Iterator<String> iter = langSet.iterator();
+          while(iter.hasNext())
+          {
+            supportedLangSet.add(iter.next());
+          }
+        }
+        else
+        {
+          if(langSet.contains(lang))
+          {
+            supportedLangSet.add(lang);
+          }
+        }
+      }
+    }
+    
+    Iterator<String> iter = supportedLangSet.iterator();
+    while(iter.hasNext())
+    {
+      supportedLang.add(iter.next());
+    }
+    
+    return supportedLang;
+  }
+  
+  private void printMap(Map<String, Set<String>> map)
+  {
+    for(String key:  map.keySet())
+    {
+       System.out.print(key + " - > " );
+        Iterator<String> iter = map.get(key).iterator();
+        while(iter.hasNext())
+        {
+          System.out.print(iter.next() + "\t");
+        }
+      
+      System.out.println();
+    }
+  }
+  
+}
