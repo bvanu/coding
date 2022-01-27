@@ -1,0 +1,141 @@
+import java.io.*;
+import java.util.*;
+import java.text.*;
+import java.math.*;
+import java.util.regex.*;
+
+/**
+bool hasNext()
+    return true if there is another element
+
+int next()
+    return the value of the next element
+
+void remove()
+    remove (from the underlying collection) the last element returned by the iterator.
+    In other words, remove the element that the previous call to next() returned.
+    This method can be called only once per call to next().
+    
+The implementation does not have to be thread-safe.
+    
+Given:  [[],[1,2,3],[4,5],[],[],[6],[7,8],[],[9],[10],[]]
+
+while (iterator.hasNext()) {
+  System.out.print(iterator.next() + " ");
+}
+
+Print: 1 2 3 4 5 6 7 8 9 10 
+*/
+
+public class Solution {
+    
+    static List<List<Integer>> input;
+    static int i=0, j=0;
+    static int prev_i = -1, prev_j = -1;
+
+    static int addNumbers(int a, int b) {
+      	return a+b; 
+   }
+
+ public static void main(String[] args) {        
+        input = getInput();
+        
+        System.out.println("Input size: " + input.size());
+        
+        boolean flip = true;
+        
+        while (hasNext()) {
+            if(flip)
+            {
+                System.out.print(next() + " ");        
+            }
+            else{
+                remove();
+            }
+            
+            flip = !flip;
+        }
+        
+        remove();
+        
+        
+   }
+   
+   public static List<List<Integer>> getInput() {
+    List<List<Integer>> list = new ArrayList<>();
+    list.add(new ArrayList<>());
+    list.add(new ArrayList<>(Arrays.asList(1,2,3)));
+    list.add(new ArrayList<>(Arrays.asList(4,5)));
+    list.add(new ArrayList<>());
+    list.add(new ArrayList<>());
+    list.add(new ArrayList<>(Arrays.asList(6)));
+    list.add(new ArrayList<>(Arrays.asList(7,8)));
+    list.add(new ArrayList<>());
+    list.add(new ArrayList<>(Arrays.asList(9)));
+    list.add(new ArrayList<>(Arrays.asList(10)));
+    list.add(new ArrayList<>());
+    return list;
+  }
+  
+  public static boolean hasNext()
+  {
+      //System.out.print("in hasNext() \t");
+      
+      int n = input.size();
+      
+      while(i<n)
+      {
+          int subList_n = input.get(i).size();
+          if(subList_n!=0 && j<subList_n)
+          {
+              //System.out.println("True");
+              return true;
+          }
+          else{
+              i++;
+              j=0;
+          }
+      }
+      
+      //System.out.println("False");
+      return false;
+  }
+
+  public static int next()
+  {
+      int val = input.get(i).get(j);
+      
+      prev_i = i;
+      prev_j = j;
+      
+      if(j<input.get(i).size())
+      {
+        j++;
+      }
+      else{
+          if(i<input.size())
+          {
+              i++;
+              j=0;
+          }
+      }  
+      
+      return val;
+  }
+  
+  public static void remove()
+  {
+      if(prev_i!=-1 && prev_j!=-1)
+        {
+            System.out.println("Remove: " + input.get(prev_i).get(prev_j));
+            input.get(prev_i).remove(prev_j);
+            
+            i = prev_i;
+            j = prev_j;
+            
+            // don't need to remove on second remove() call
+            prev_i = -1;
+            prev_j = -1;
+        }
+  }
+}
