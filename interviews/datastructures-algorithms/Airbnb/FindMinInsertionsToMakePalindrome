@@ -1,0 +1,36 @@
+
+/*
+https://www.geeksforgeeks.org/minimum-insertions-to-form-a-palindrome-dp-28/
+*/
+import java.util.*;
+import java.lang.*;
+
+public class Main
+{
+    public static void main(String[] args) {
+        Main m = new Main();
+        
+        System.out.println(m.findMininsertions("ab") + " -> 1");
+        System.out.println(m.findMininsertions("aa") + " -> 0");
+        System.out.println(m.findMininsertions("abcd") + " -> 3");
+        System.out.println(m.findMininsertions("abcda") + " -> 2");
+        System.out.println(m.findMininsertions("abcde") + " -> 4");
+    }
+    
+    public int findMininsertions(String str)
+    {
+        return findMininsertions(str.toCharArray(), 0, str.length()-1);
+    }
+    
+    // Recursion
+    private int findMininsertions(char[] charArr, int l, int r)
+    {
+        if(l>=r) 
+            return 0;
+        if(l+1 == r) 
+            return charArr[l]==charArr[r] ? 0: 1;
+            
+        return charArr[l]==charArr[r] ? findMininsertions(charArr, l+1, r-1) : 
+            Math.min(findMininsertions(charArr, l+1, r), findMininsertions(charArr, l, r-1)) + 1;
+    }
+}
