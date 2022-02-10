@@ -1,0 +1,123 @@
+import java.io.*;
+import java.util.*;
+import java.text.*;
+import java.math.*;
+import java.util.regex.*;
+
+public class Solution {
+    int count = 0;
+    boolean isAncestorFound = false;
+    String ancestor = null;
+    
+    class TreeNode
+    {
+        String value;
+        List<TreeNode> children;
+        
+        public TreeNode(String value)
+        {
+            this.value = value;
+            this.children = null;
+        }
+        
+        public TreeNode(String value, List<TreeNode> children)
+        {
+            this.value = value;
+            this.children = children;
+        }
+    }
+
+    static int addNumbers(int a, int b) {
+      	return a+b; 
+   }
+
+ public static void main(String[] args) {
+     
+     
+     // first column of each row is enclosing region, and following columns
+    // are all the regions within that row
+    List<List<String>> input = Arrays.asList(
+        Arrays.asList("Earth", "North America","South America"),
+        Arrays.asList("North America", "Mexico", "United States", "Canada"),
+        Arrays.asList("South America", "Argentina", "Brazil", "Chile"),
+        Arrays.asList("Mexico", "Oaxaca", "Puebla"),
+        Arrays.asList("United States", "California", "Wyoming", "New York"),
+        Arrays.asList("Canada", "Ontario", "Quebec", "Saskatchewan")
+    );
+        Scanner in = new Scanner(System.in);
+        int a;
+        a = in.nextInt();
+        int b;
+        b = in.nextInt();
+        int sum;
+
+        sum = addNumbers(a, b);
+        System.out.println(sum);
+   }
+   
+   public String findLCA(List<List<String>> input, String str1, String str2)
+   {
+       if(input==null || input.size()<1) return null;
+       
+       Map<String, TreeNode> map = new HashMap<>();
+       
+       for(List<String> list: input)
+       {
+           TreeNode node;
+           List<TreeNode> children = new ArrayList<>();
+           
+           if(!map.containsKey(list.get(0)))
+           {
+                node = new TreeNode(list.get(0));
+                
+                map.put(list.get(0), node);
+           }
+           else
+           {
+               node = map.get(list.get(0));
+           }
+           
+           for(int i=1; i<list.size()-1;i++)
+           {
+               TreeNode currNode = new TreeNode(list.get(i));
+               children.add(currNode);
+           }
+           
+           node.children = children;
+       }
+       
+       TreeNode root = map.get(input.get(0).get(0));
+       
+       return findLCAHelper(root, str1, str2);
+   }
+   
+   
+   public String findLCAHelper(TreeNode root, String str1, String str2)
+   {       
+       if(isAncestorFound)
+        return ancestor;
+        
+       if(root.value.equals(str1) || root.value.equals(str2)) 
+            return root.value;
+            
+        if(root.children == null) 
+            return null;
+               
+        for(int i=0; i<root.children.size(); i++)
+        {
+            String value = findLCAHelper(root.children.get(i), str1, str2);
+            
+            if(value!=null)
+                count++;
+        }
+        
+        if(count == 2)
+        {
+            isAncestorFound = true;
+            ancestor = root.value;
+            return ancestor;
+        }
+        
+        return null;
+   }
+}
