@@ -31,8 +31,9 @@ SC: O(1)
 class Result {
   
     public static void dutch_flag_sort(char[] balls) {
-        int green_index = -1;
         int red_index = -1;
+        int green_index = -1;
+        
         int i = 0;
         int n = balls.length;
         
