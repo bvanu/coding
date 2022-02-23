@@ -45,9 +45,8 @@ class Result {
                 swap(balls, i, green_index);
                 red_index++;
                 swap(balls, red_index, green_index);
-            }
-            
-             if(balls[i] == 'G')
+            }  //*** IMP else if, otherwise you work on updated input       
+            else if(balls[i] == 'G')
             {
                 green_index++;
                 swap(balls, i, green_index);
