@@ -1,0 +1,140 @@
+// Class name must be "Main"
+// Libraries included:
+// json simple, guava, apache commons lang3, junit, jmock
+/*
+               1
+          2   3     6
+        4        7  8  9  10
+      5   11     15      13  14
+      12
+root, employeeId = 6, k = 2 -> [13 14]
+k < 0 ->
+
+1. dfs traversal to find employeeId
+2. level order traversal to find employees
+
+6
+7 8 9 10 1
+13 14 2 3
+k distances away
+employeeId = 6, k = 2 -> [13 14 15 2 3]
+
+child to parent mapping
+{
+    child : parent
+}
+*/
+
+class TreeNode
+{
+    int val;
+    List<TreeNode> children;
+    TreeNode parent;
+    
+    public TreeNode(int val)
+    {
+        this.val = val;
+    }
+    
+    public TreeNode(List<TreeNode> children)
+    {
+        this.children = children;
+    }
+    
+    public getNeighbors():
+        return parent + children;
+}
+
+class Main {
+    public static void main(String[] args) {
+        System.out.println("Hello, world!");
+    }
+    
+    public List<Integer> findSubordinates(TreeNode root, int employeeId, int k)
+    {
+        List<Integer> result = new ArrayLsit<>();
+        
+        if(root == null)
+            return result;
+        
+        // 1. Find if employee exists
+        TreeNode[] node = employeeExists(root, employeeId);
+        
+        // 2. Once if employee exists find usbordinates
+        if(node!=null)
+        {
+            result = levelOrderTraversal(node[1], k);
+            result += levelOrderTraversal(node[0], k-1);
+        }
+        
+        return result;
+    }
+    
+    // TC: O(n) SC: O(n)
+    private List<Integer> levelOrderTraversal(TreeNode node, int k)
+    {
+        if(node==null && k>=0)
+            return null;
+        
+        List<Integer> result =  new ArrayLsit<>();
+        int level = 0;
+        Queue<TreeNode> que = new LinkedList<>();
+        que.add(node);
+        
+        while(!que.isEmpty())
+        {
+            int queSize = que.size();
+            
+            if(level==k)
+            {
+                // add elements in que to list - result
+                while(!que.isEmpty())
+                    reuslt.add(que.remove().val);
+                
+                return result;
+            }
+           
+            for(int i=0; i<queSize; i++)
+            {
+                TreeNode currNode = que.remove();
+                
+                for(int j=0; j<currNode.children.size(); j++)
+                {
+                    que.add(currNode.children.get(j));
+                }
+                que.add(currNode.parent)
+            }
+            
+            level++;
+        }
+           
+        return result ;
+    }
+    
+    // bfs TC: O(n), SC: O(n)
+    private TreeNode[] employeeExists(TreeNode node, int employeedId) // parent & node
+    {
+        if(node==null)
+            return null;
+        
+        // bfs
+        Queue<TreeNode> que = new LinkedList<>();
+        que.add(node);        // que = [1]
+        
+        while(!que.isEmpty())  
+        {
+            TreeNode currNode = que.remove();    // 2
+            
+            if(currNode.val==employeedId)
+                return node;
+            
+            for(int i=0; i<currNode.children.size(); i++)
+            {
+                que.add(currNode.children.get(i));    // 3 6
+            }
+        }
+        
+        return null;
+    }
+    
+}
