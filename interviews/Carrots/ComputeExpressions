@@ -129,7 +129,7 @@ public class Main
 			// Point 9: this step is necessary and can be forgotten, since the value can be a number
 			// You won't get the number from the map, so youhave to get it from here
 			if (isStringNumeric(computeExp)) {
-				return Integer.valueOf(expMap.get(computeExp));
+				return Integer.valueOf(computeExp); // Eg: computeValues(expMap, "2")
 			}
 			
 			// Point 2: Remember to remove the potential space from the string
