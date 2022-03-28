@@ -1,5 +1,8 @@
 /* Code: https://www.online-java.com/1RNpXuGFzZ
 Optimized: https://www.online-java.com/ayNSErvhkn
+
+Implement cipherMatrix(key), which takes a string key and returns the encoded 5 x 5 matrix with it.
+The encoding happens in the following way: the initial letters in the matrix are the unique characters of the given string in the upper case and in the order in which they appear, which then followed by the remaining letters of the English alphabet in order (except “J” is replaced by “l” to fit in the 5 x 5 matrix).
 Eg:
 Input:
 JINGLEBELLS
