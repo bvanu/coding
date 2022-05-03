@@ -1,4 +1,5 @@
 // "static void main" must be defined in a public class.
+// TC: O(n), SC: O(n)
 public class Main {
     static class Activity{
         String time;
@@ -22,6 +23,44 @@ public class Main {
             new Activity("2:25pm", "dropoff")
         ));
         System.out.println(m.getActiveDasherTime(activities1));
+        List<String> activities2 = new ArrayList<>(Arrays.asList(
+            "8:30am | pickup",
+            "9:10am | dropoff",
+            "10:20am| pickup",
+            "12:15pm| pickup",
+            "12:45pm| dropoff",
+            "2:25pm | dropoff"
+        ));
+        System.out.println(m.getActiveDasherTime1(activities2));
+    }
+    
+    public static int getActiveDasherTime1(List<String> activities) {
+        int timer = 0;
+        int activeTime = 0;
+        int startTime = 0, endTime = 0;
+        
+        for(String a: activities) {
+            String[] splits = a.split("\\|");
+            String time = splits[0].trim();
+            String action = splits[1].trim();
+            
+            if(action.equals("pickup")){
+                timer++;
+                if(timer==1)
+                    startTime = getMinutes(time); 
+            } else {
+                timer--;
+                endTime = getMinutes(time);
+            }
+            
+            if(timer==0){
+                activeTime += endTime-startTime;
+                startTime = 0;
+                endTime = 0;
+            }
+        }
+        
+        return activeTime;
     }
     
    public static int getActiveDasherTime(List<Activity> activities) {
