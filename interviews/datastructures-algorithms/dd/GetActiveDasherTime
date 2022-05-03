@@ -1,0 +1,112 @@
+// "static void main" must be defined in a public class.
+public class Main {
+    static class Activity{
+        String time;
+        String action;
+        
+        public Activity(String time, String action) {
+            this.time = time;
+            this.action = action;
+        }
+    }
+    
+    public static void main(String[] args) {
+        Main m = new Main();
+        
+        List<Activity> activities1 = new ArrayList<>(Arrays.asList(
+            new Activity("8:30am", "pickup"),
+            new Activity("9:10am", "dropoff"),
+            new Activity("10:20am", "pickup"),
+            new Activity("12:15pm", "pickup"),
+            new Activity("12:45pm", "dropoff"),
+            new Activity("2:25pm", "dropoff")
+        ));
+        System.out.println(m.getActiveDasherTime(activities1));
+    }
+    
+   public static int getActiveDasherTime(List<Activity> activities) {
+       // 1. Get intervals 
+       List<Integer> pickUpTimes = new ArrayList<>();   
+        List<Integer> dropOffTimes = new ArrayList<>();
+       
+       for(Activity a: activities) {
+           if(a.action.equals("pickup"))
+               pickUpTimes.add(getMinutes(a.time));
+           else
+               dropOffTimes.add(getMinutes(a.time));
+       }
+       
+       List<int[]> intervals = new ArrayList<>();
+       for(int i=0; i<pickUpTimes.size(); i++)
+           intervals.add(new int[]{pickUpTimes.get(i), dropOffTimes.get(i)});
+       
+       System.out.println("Intervals:");
+       printList(intervals);
+  
+       // 2. Merge intervals
+       List<int[]> mergedIntervals = new ArrayList<>();
+       mergedIntervals.add(new int[]{intervals.get(0)[0], intervals.get(0)[1]});
+       
+       for(int i=1; i<intervals.size(); i++){
+           int lastIndex = mergedIntervals.size()-1;
+ 
+           int lo = Math.max(intervals.get(i)[0], mergedIntervals.get(lastIndex)[0]);
+           int hi = Math.min(intervals.get(i)[1], mergedIntervals.get(lastIndex)[1]);
+           
+           if(lo<=hi){ // overlaps
+               int min = Math.min(intervals.get(i)[0], mergedIntervals.get(lastIndex)[0]); 
+               int max = Math.max(intervals.get(i)[1], mergedIntervals.get(lastIndex)[1]);
+               
+               mergedIntervals.remove(lastIndex);
+               mergedIntervals.add(new int[]{min, max});
+           } else {
+               mergedIntervals.add(new int[] {intervals.get(i)[0], intervals.get(i)[1]});
+           }
+       }
+       
+       System.out.println("Merged intervals:");
+       printList(mergedIntervals);
+       
+       // 3. Get active time
+       int activeTime = 0;
+       for(int[] interval: mergedIntervals) {
+           activeTime += interval[1] - interval[0];
+       }
+       
+       return activeTime;
+   }
+    
+    private static int getMinutes(String time) {
+        int colonIndex = time.indexOf(':');
+        
+        int hours = Integer.parseInt(time.substring(0, colonIndex))%12 * 60; // to min
+        int minutes = Integer.parseInt(time.substring(colonIndex+1, colonIndex+3));
+        String dayTime = time.substring(colonIndex+3, colonIndex+5);
+
+        if(dayTime.equals("pm"))
+            hours += 12 * 60;
+
+        return hours + minutes;
+    }
+    
+    private static void printList(List<int[]> intervals){
+        for(int[] interval: intervals) {
+            System.out.println(interval[0] + " " + interval[1]);
+        }
+    }
+}
+
+
+/**
+Timestamp(12h) | Action
+8:30am | pickup
+9:10am | dropoff
+10:20am| pickup
+12:15pm| pickup
+12:45pm| dropoff
+2:25pm | dropoff
+
+total time = 2:25pm-8:30am = 355 mins;
+idle time = 10:20am-9:10am = 70 mins;
+active time = total time-idle time = 355-70 = 285 mins;
+**/
