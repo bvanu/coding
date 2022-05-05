@@ -1,0 +1,108 @@
+/**
+Given a restaurant geolocation ( longitude / latitude), find 3 closest Dashers (drivers) near the restaurant who can be assigned for delivery, ordered by their distance from the restaurant. In case 2 Dashers are equidistant from the restraunt, use Dasher rating as tie breaker.
+
+Each Dasher has 3 properties:
+
+Dasher ID
+Last known location [x,y]
+Rating (0 - 100). Higher the better
+Assume you have a method GetDashers() which returns a list of all Dashers.
+
+Input
+Restaurant Location
+
+Output
+List of 3 nearest Dasher IDs. Example: [11, 14, 17]
+
+TC: O(nlogn) to maintain priorityQueue
+SC: O(k) k number of dashers 
+**/
+
+public class Main {
+    static class Dasher {
+        long id;
+        Location geoLocation;
+        int rating;
+        
+        public Dasher(long id, Location geoLocation, int rating) {
+            this.id = id;
+            this.geoLocation = geoLocation;
+            this.rating = rating; // 0 - 100
+        }
+    }
+    
+    static class Tuple {
+        long id;
+        double distance;
+        int rating;
+        
+        public Tuple(long id, double distance, int rating) {
+            this.id = id;
+            this.distance = distance;
+            this.rating = rating; // 0 - 100
+        }
+    }
+    
+    static class Location {
+        double longitude;
+        double lattitude;
+            
+        public Location(double longitude, double lattitude) {
+            this.longitude = longitude;
+            this.lattitude = lattitude;
+        }
+    }
+    
+    public static void main(String[] args) {
+        Main m = new Main();
+        System.out.println(Arrays.toString(m.getClosestDashers(0.0, 0.0)));
+    }
+    
+    public long[] getClosestDashers(double longitude, double lattitude) {
+        Location restLocation = new Location(longitude, lattitude);
+        
+        List<Dasher> dashers = this.getDashers();
+        PriorityQueue<Tuple> que = new PriorityQueue<Tuple>((o1, o2) -> {
+            if(o1.distance == o2.distance)
+                return o1.rating >= o2.rating ? 1:-1; // smallest on top o2
+            
+            return o1.distance >= o2.distance ? -1:1; // largest dis on top o1
+        });
+        
+        for(Dasher d: dashers) {
+            Tuple tup = new Tuple(d.id, getDistance(d.geoLocation, restLocation), d.rating);
+            que.offer(tup);
+            
+            if(que.size() > 3)
+                que.poll(); // top element     
+        }
+        
+        long[] closestDashers = new long[3];
+        int i= 0;
+        while(i < 3) {
+            closestDashers[i++] = que.poll().id; // this give distances in decreasing order
+        }
+        
+        return closestDashers;
+    }
+    
+    
+    private static double getDistance(Location loc1, Location loc2) {
+        double x = loc1.longitude - loc2.longitude;
+        double y = loc1.lattitude - loc2.lattitude;
+        
+        return Math.sqrt((x*x + y* y));
+    }
+    
+    private static List<Dasher> getDashers(){
+        List<Dasher> dashers = new ArrayList<>();
+        
+        dashers.add(new Dasher(1, new Location(1, 1), 5)); // 3, 1, 2
+        dashers.add(new Dasher(2, new Location(2, 2), 5));
+        dashers.add(new Dasher(3, new Location(4, 4), 5));
+        dashers.add(new Dasher(4, new Location(4, 4), 4));
+        dashers.add(new Dasher(5, new Location(4, 4), 10));    // 1,2 5
+        
+        return dashers;
+    }
+}
