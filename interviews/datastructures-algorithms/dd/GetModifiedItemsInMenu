@@ -1,0 +1,129 @@
+/**
+https://leetcode.com/discuss/interview-question/1367130/doordash-phone-interview/1026887
+Given newMenu and oldMenu, compare how many nodes/items got changed
+
+TC: O(m+n)  all nodes in the 2 graphs
+SC: O(height of Tree + n) for recursion stack and for the map
+**/
+public class Main {
+    static int numModifiedItems = 0;
+    
+    static class Node {
+        String id; // for 2 identical niodes id's are same and remaning values may/may not change
+        int val;
+        boolean status;
+        List<Node> children;
+        
+        public Node(String id, int val, boolean status){
+            this.id = id;
+            this.val = val;
+            this.status = status;
+            this.children = new ArrayList<>();
+        }
+        
+        // not comparing children here, we take care of it in recursion
+        public boolean equals(Node n){
+            if(n==null)
+                return false;
+            
+            return (this.id==n.id && this.val==n.val && this.status==n.status);
+        }
+    }
+    
+    public static int getModifiedItems(Node oldMenu, Node newMenu){
+        getNumberOfModifiedItems(oldMenu, newMenu);
+        return numModifiedItems;
+    }
+    
+    private static void getNumberOfModifiedItems(Node oldMenu, Node newMenu){
+        // 1. Base case
+        if(oldMenu==null && newMenu==null)
+            return; // same
+        
+        if(oldMenu == null || newMenu == null || !oldMenu.equals(newMenu)){
+            System.out.println("Items different! "  + oldMenu.id + " " + newMenu);
+            numModifiedItems++;
+            return; // different
+        }
+        
+        // 2. Recursive case
+        Map<String, Node> oldMenuChildren = getChildNodes(oldMenu);
+        Map<String, Node> newMenuChildren = getChildNodes(newMenu);
+        
+        System.out.println(oldMenu.id + " -> " + oldMenuChildren.size() + " \t" + newMenu.id + " -> " + newMenuChildren.size());
+        
+        for(String key: oldMenuChildren.keySet()){
+            getNumberOfModifiedItems(oldMenuChildren.get(key), newMenuChildren.getOrDefault(key, null));
+        }
+        
+        for(String key: newMenuChildren.keySet()){
+            // Ignore the exisitng nodes in oldMenuChildren
+            if(!oldMenuChildren.containsKey(key)) /*** IMP otherwise you make duplicate lookups ***/
+                getNumberOfModifiedItems(newMenuChildren.get(key), null);
+        }
+    }
+    
+    private static Map<String, Node> getChildNodes(Node n) {
+        Map<String, Node> childNodes = new HashMap<>();
+        
+        for(Node child: n.children){
+            childNodes.put(child.id, child);
+        }
+        
+        return childNodes; 
+    }
+    
+    public static void main(String[] args) {
+        /*
+                 Existing tree
+                    a(1, T)
+                  /         \
+                b(2, T)   c(3, T)
+              /       \
+          d(4, T) e(5, T)
+
+                        New tree
+                        a(1, T)
+                     /          \
+               b(2, T)         c(3, T)
+              /                   \
+         d(4, T)                   e(5, T)
+
+         */
+
+        Node a = new Node("a", 1, true);
+        Node b = new Node("b", 2, true);
+        Node c = new Node("c", 3, true);
+        Node d = new Node("d", 4, true);
+        Node e = new Node("e", 5, true);
+        Node g = new Node("g", 7, true);
+
+        a.children.add(b);
+        a.children.add(c);
+
+        b.children.add(d);
+        b.children.add(e);
+
+        //c.children.add(g);
+
+        Node a1 = new Node("a", 1, true);
+        Node b1 = new Node("b", 2, true);
+        Node c1 = new Node("c", 3, true);
+        Node d1 = new Node("d", 4, true);
+        Node e1 = new Node("e", 5, true);
+        Node f1 = new Node("f", 6, true);
+        Node g1 = new Node("g", 7, false);
+
+        a1.children.add(b1);
+        a1.children.add(c1);
+
+        b1.children.add(d1);
+        //b1.children.add(e1);
+        //b1.children.add(f1);
+
+        c1.children.add(e1);
+
+        int count = getModifiedItems(a, a1);
+        System.out.println("Changed Items are: " + count + " => 2");
+    }
+}
