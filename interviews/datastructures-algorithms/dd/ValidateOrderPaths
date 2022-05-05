@@ -1,0 +1,108 @@
+/**
+Doordash virtual onsite question:
+Given a set list of pickups and deliveries for order, figure out if the given list is valid or not.
+A delivery cannot happen for an order before pickup.
+
+Examples below:
+[P1, P2, D1, D2]==>valid
+[P1, D1, P2, D2]==>valid
+[P1, D2, D1, P2]==>invalid
+[P1, D2]==>invalid
+[P1, P2]==>invalid
+[P1, D1, D1]==>invalid
+[]==>valid
+[P1, P1, D1]==>invalid
+[P1, P1, D1, D1]==>invalid
+[P1, D1, P1]==>invalid
+[P1, D1, P1, D1]==>invalid
+
+TC: O(n) to iterate over orderPaths and also over map to check if any undelivered orders
+SC: O(n) for map
+**/
+public class Main {
+    public static void main(String[] args) {
+        Main m = new Main();
+        
+        System.out.println(m.validatePickUp(new String[]{"P1", "P2", "D1", "D2"}) + " ==> valid ");
+        System.out.println(m.validatePickUp(new String[]{"P1", "D1", "P2", "D2"}) + " ==> valid ");
+        System.out.println(m.validatePickUp(new String[]{"P1", "D2", "D1", "P2"}) + " ==> invalid ");
+        System.out.println(m.validatePickUp(new String[]{"P1", "D2"}) + " ==> invalid ");
+        System.out.println(m.validatePickUp(new String[]{"P1", "P2"}) + " ==> invalid ");
+        System.out.println(m.validatePickUp(new String[]{"P1", "D1", "D1"}) + " ==> invalid ");
+        System.out.println(m.validatePickUp(new String[]{}) + " ==> valid ");
+        System.out.println(m.validatePickUp(new String[]{"P1", "P1", "D1"}) + " ==> invalid "); // *
+        System.out.println(m.validatePickUp(new String[]{"P1", "P1", "D1", "D1"}) + " ==> invalid ");
+        System.out.println(m.validatePickUp(new String[]{"P1", "D1", "P1"}) + " ==> invalid ");
+        System.out.println(m.validatePickUp(new String[]{"P1", "D1", "P1", "D1"}) + " ==> invalid "); //. *
+        System.out.println(m.validatePickUp(new String[]{"P1", "P1", "P2", "D3", "P1", "P2", "D2", "D1", "P4", "D3", "D1"}) + " ==> invalid ");
+        System.out.println(m.validatePickUp(new String[]{"P11", "D11", "P12", "D12"}) + " ==> valid ");
+    }
+    
+    
+    public static boolean validatePickUp(String[] orderPaths) {
+        if(orderPaths.length < 1)
+            return true;
+        
+        // orderNumber, isDelivered>
+        Map<Integer, Boolean> orderStatusMap = new HashMap<>();
+        
+        for(String order: orderPaths){
+            char orderType = order.charAt(0);
+            int orderNum = Integer.parseInt(order.substring(1, order.length()));
+            
+            if(orderType == 'P'){
+                // 1. check for duplicate pickUps and 
+                // No NEED  as 1 hadles2. duplicate dropOffs,means order already droppedOff
+                if(!orderStatusMap.isEmpty() && orderStatusMap.containsKey(orderNum))
+                    return false;
+                else
+                    orderStatusMap.put(orderNum, false);
+            } else{ // 2. drop odd
+                // check if 1.pickUp doesn't exit or 2. order already dropped off
+                if(!orderStatusMap.isEmpty() && 
+                   (!orderStatusMap.containsKey(orderNum) || (orderStatusMap.containsKey(orderNum) && orderStatusMap.get(orderNum) == true)))
+                   return false; 
+                else
+                    orderStatusMap.put(orderNum, true);
+            }
+        } 
+        
+        // Cehck if there are any undelivered pickups
+        for(int order: orderStatusMap.keySet())
+        {
+            if(orderStatusMap.get(order)== false)
+                return false;
+        }
+        
+        return true;
+    }
+    
+    /** Fails for this case:
+    System.out.println(m.validatePickUp(new String[]{"P1", "D1", "P1", "D1"}) + " ==> invalid "); **/
+    public static boolean validatePickUp1(String[] orderPaths) {
+        if(orderPaths.length < 1)
+            return true;
+        
+        Set<Integer> pickUps = new HashSet<>();
+        
+        for(String str: orderPaths) {
+            char orderType = str.charAt(0);
+            int orderNum = Integer.parseInt(str.substring(1, str.length()));
+            
+            if(orderType == 'P') {
+                if(!pickUps.isEmpty() && pickUps.contains(orderNum))
+                    return false; // *** Duplicate order
+                else
+                    pickUps.add(orderNum); // to handle double or more digits
+                    
+            }else{ // it is dropOff
+                if(!pickUps.isEmpty() && pickUps.contains(orderNum))
+                    pickUps.remove(orderNum);
+                else
+                    return false;
+            }
+        }
+        
+        return pickUps.isEmpty();
+    }
+}
