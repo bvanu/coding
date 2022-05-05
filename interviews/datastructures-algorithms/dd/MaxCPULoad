@@ -1,0 +1,66 @@
+// "static void main" must be defined in a public class.
+public class Main {
+    static class Job {
+        int startTime;
+        int endTime;
+        int cpuLoad;
+        
+        public Job(int startTime, int endTime, int cpuLoad){
+            this.startTime = startTime;
+            this.endTime = endTime;
+            this.cpuLoad = cpuLoad;
+        }
+    }
+    public static void main(String[] args) {
+        Main m = new Main();
+        
+        List<Job> jobs = new ArrayList<>();
+        jobs.add(new Job(6, 7, 10));
+        jobs.add(new Job(2, 4, 11));
+        jobs.add(new Job(8, 12, 15));
+        
+        System.out.println(m.getMaxCPULoad(jobs) + " " + "15");
+        
+        List<Job> jobs2 = new ArrayList<>();
+        jobs2.add(new Job(1, 4, 3));
+        jobs2.add(new Job(2, 5, 4));
+        jobs2.add(new Job(7, 9, 6));
+        
+        System.out.println(m.getMaxCPULoad(jobs2) + " " + "7");
+    }
+    
+    Comparator<Job> sortStartTimesComparator = new Comparator<Job>(){
+      @Override
+        public int compare(Job j1, Job j2){
+            return j1.startTime - j2.startTime;
+        }
+    };
+    
+    public int getMaxCPULoad(List<Job> jobs){
+        // 1. sort jobs by start time
+        Collections.sort(jobs, sortStartTimesComparator);
+        // Arrays.sort(intervals, (a,b)->Integer.compare(a[0], b[0])); if Arrays 
+        
+        // 2. MergeIntervals, if overlapping add the jobTimes
+        int n = jobs.size();
+        int maxCPULoad = 0;
+        Job lastJob = jobs.get(0);
+           
+        for(int i=1; i<n; i++){
+            Job currJob = jobs.get(i);
+            
+            int lo = Math.max(lastJob.startTime, currJob.startTime);
+            int hi = Math.min(lastJob.endTime, currJob.endTime);
+            
+            // i. overlapping?
+            if(lo<=hi)
+                lastJob = new Job(lo, hi, lastJob.cpuLoad + currJob.cpuLoad);
+            else // ii. non-overlapping
+                lastJob = currJob;
+            
+            maxCPULoad = Math.max(maxCPULoad, lastJob.cpuLoad);   
+        }
+        
+        return maxCPULoad;
+    }
+}
