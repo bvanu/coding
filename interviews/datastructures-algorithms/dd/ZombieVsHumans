@@ -1,0 +1,112 @@
+public class Main
+{
+    public static void main(String[] args) {
+        Main m = new Main();
+        
+         String[] test2 = new String[] {
+                                        "T1=1",
+                                        "T2=2",
+                                        "T3=T4-T2",
+                                        "T4=T5+T5",
+                                        "T5=T2"
+                                        };
+                                        
+        System.out.println(m.computeExpressions(test2, "2"));
+    }
+    
+    // Part 1
+    public int computeExpressions(String[] expressions, String computeExp)
+    {
+        Map<String, String> expMap = buildExpMap(expressions);
+        
+        return computeValues(expMap, computeExp);
+    }
+    
+    public Map<String, String> buildExpMap(String[] expressions)
+    {
+        Map<String, String> expMap = new HashMap<String, String>();
+        
+        for(String exp: expressions)
+        {
+            String[] elements = exp.split("=");
+            
+            if(elements.length!=2)
+            {
+                throw new IllegalArgumentException();
+            }
+            
+            expMap.put(elements[0], elements[1]);
+        }
+        
+        printMap(expMap);
+        return expMap;
+    }
+    
+    public int computeValues(Map<String, String> expMap, String computeExp) {
+        while(true){
+            System.out.println("computeExp: " + computeExp);
+            if(isStringNumeric(computeExp)){
+                return Integer.parseInt(computeExp);
+            }
+            
+			computeExp = expMap.get(computeExp).replaceAll("\\s+", "");
+			boolean isNumber = isStringNumeric(computeExp);
+			
+			if (isNumber) {
+				return Integer.valueOf(computeExp);
+            }
+			else if (computeExp.contains("-") || computeExp.contains("+") || computeExp.contains("/") || computeExp.contains("*"))
+			{
+				String[] operators = computeExp.split("[-+*/]");
+				String[] operands = computeExp.split("T[0-9]");
+				
+				int firstOperatorValue = computeValues(expMap, operators[0]);
+				for (int i = 1; i < operators.length; i++) 
+				{
+					int secondOperatorValue = computeValues(expMap, operators[i]);
+					firstOperatorValue = compute(firstOperatorValue, secondOperatorValue,operands[i]);
+				}
+                
+				expMap.put(computeExp, String.valueOf(firstOperatorValue));
+				return firstOperatorValue;
+			}
+        }
+    }
+    
+    private int compute(int firstOperatorValue, int secondOperatorValue, String operand)
+    {
+        System.out.println("Compute: " + firstOperatorValue + " " + operand + " " + secondOperatorValue);
+        switch(operand)
+        {
+            case "+":
+                return firstOperatorValue + secondOperatorValue;
+            case "-":
+                return firstOperatorValue - secondOperatorValue;
+            case "*":
+                return firstOperatorValue * secondOperatorValue;
+            case "/":
+                return firstOperatorValue / secondOperatorValue;
+        }
+        
+        // Point 5: this exception is helpful that it will help you bug if you failed to parse the expression correctly.
+		throw new IllegalArgumentException("invalid operands");
+    }
+    
+    private boolean isStringNumeric(String str)
+    {
+        try {
+            int i = Integer.parseInt(str);
+            return true;
+        } catch(NumberFormatException e) {
+            return false;
+        }
+    }
+    
+    private void printMap(Map<String, String> map)
+    {
+        for(String key: map.keySet())
+        {
+            System.out.println(key + " : \t" + map.get(key));
+        }
+    }
+}
