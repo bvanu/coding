@@ -1,0 +1,84 @@
+// Google: Remove all non-border islands, mark thenm as 0
+public class Main {
+    public static void main(String[] args) {   
+         /**
+        Output:
+        {{1, 0, 0, 0, 0, 0},
+        {0, o, 0, 1, 1, 1},
+        {0, 0, o, 0, 1, 0},
+        {1, 1, 0, 0, 1, 0},
+        {1, 0, o, o, 0, 0},
+        {1, 0, 0, 0, 0, 1}}
+        **/
+        int[][] grid = {{1, 0, 0, 0, 0, 0},
+                        {0, 1, 0, 1, 1, 1},
+                        {0, 0, 1, 0, 1, 0},
+                        {1, 1, 0, 0, 1, 0},
+                        {1, 0, 1, 1, 0, 0},
+                        {1, 0, 0, 0, 0, 1}};
+        Main m = new Main();
+        m.removeIslands(grid);
+    }
+    /**
+    TC: O(mn) 2 passes 1 to get all border islands and second to mark non-border islands to 0
+    SC: O(mn)
+    **/
+    private int[][] removeIslands(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+        boolean[][] borderIslands = new boolean[m][n]; // this acts as visited too
+        
+        // 1. find border islands
+        for(int i=0; i<m; i++) {
+            for(int j=0; j<n; j++){
+                // 1. If 1, 2. if not visited 3. if it's border
+                if(grid[i][j] == 1 && !borderIslands[i][j] && isBorder(i, j, m, n))
+                    dfs(grid, i, j, borderIslands);
+            }
+        }
+        
+        // 2. remove non-border islands
+        for(int i=0; i<m; i++) {
+            for(int j=0; j<n; j++){
+                // 1. if 1 , 2. and not a border island
+                if(grid[i][j]==1 && !borderIslands[i][j])
+                    grid[i][j] = 0;
+            }
+        }
+        
+        printGrid(grid);
+        
+        return grid;
+    }
+    
+    private void printGrid(int[][] grid){
+        for(int i=0; i<grid.length; i++) {
+            for(int j=0; j<grid[0].length; j++){
+                System.out.print(grid[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
+    
+    private boolean isBorder(int i, int j, int m, int n){
+        if(i==0 || i==m-1 || j==0 || j==n-1)
+            return true;
+        
+        return false;
+    }
+    
+    int[][] directions = {{0,1}, {0,-1}, {1,0}, {-1,0}};
+    
+    private void dfs(int[][] grid, int i, int j, boolean[][] borderIslands){
+        borderIslands[i][j] = true;
+        
+        for(int[] direction: directions) {
+            int x = i+direction[0];
+            int y = j+direction[1];
+            
+            if(x>=0 && x<grid.length && y>=0 && y<grid[0].length && grid[x][y] == 1 && !borderIslands[x][y]){
+                dfs(grid, x, y, borderIslands);
+            }
+        }    
+    }
+}
