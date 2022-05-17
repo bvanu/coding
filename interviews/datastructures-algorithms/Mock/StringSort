@@ -1,0 +1,107 @@
+/*
+Given a string s, sort it in decreasing order based on the frequency of the characters. The frequency of a character is the number of times it appears in the string.
+
+Return the sorted string. If there are multiple answers, return any of them.
+
+ 
+
+Example 1:
+
+Input: s = "tree"
+Output: "eert"
+Explanation: 'e' appears twice while 'r' and 't' both appear once.
+So 'e' must appear before both 'r' and 't'. Therefore "eetr" is also a valid answer.
+Example 2:
+
+Input: s = "cccaaa"
+Output: "aaaccc"
+Explanation: Both 'c' and 'a' appear three times, so both "cccaaa" and "aaaccc" are valid answers.
+Note that "cacaca" is incorrect, as the same characters must be together.
+Example 3:
+
+Input: s = "Aabb"
+Output: "bbAa"
+Explanation: "bbaA" is also a valid answer, but "Aabb" is incorrect.
+Note that 'A' and 'a' are treated as two different characters.
+*/
+
+import java.util.*;
+
+class Main {
+    public static void main(String[] args) {
+        // Examples
+        System.out.println(sortString("tree"));
+        System.out.println(sortString("cccaaa"));
+        System.out.println(sortString("Aabb"));
+        System.out.println(sortString("Aaabb")); //aabbA or bbaaA
+        
+    }
+    
+    public static String sortString(String str) {
+        int n = str.length();
+        if(n<1) return null;
+        
+        List<List<Character>> freqList = new ArrayList<>();
+        
+        for(int i=0; i<n; i++)
+            freqList.add(new ArrayList<>());
+        
+        // 1. get freq
+        Map<Character, Integer> map = new HashMap<>();
+        for(char c: str.toCharArray())
+            map.put(c, map.getOrDefault(c, 0) +1);
+        
+        // 2. store int o list
+        for(Character key: map.keySet()) {
+            int index = map.get(key);
+            
+            freqList.get(index).add(key); // 1 - > t, r
+        }
+        
+        // 3. Iterate over list
+        StringBuilder result = new StringBuilder();
+        for(int i=freqList.size()-1; i>=1; i--) {
+            List<Character> charList = freqList.get(i);
+            
+            if(charList.size()>0){
+                for(char c: charList) { // e
+                    for(int j=0; j<i; j++)
+                        result.append(c); // ee
+                }       
+            }
+                
+        }
+        
+        return result.toString();
+    }
+}
+
+
+/***
+
+tree - 4
+
+4 - 0
+3 -0 
+2 - e
+1 - t ,r 
+0 
+
+eetr
+
+t - 1
+r - 1
+e - 2
+
+eert
+
+cccaaa
+c - 3
+a - 3
+
+1. Get freq Map
+2. Pritoirty Queue  - MaxHEap
+
+
+
+**/
