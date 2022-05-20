@@ -1,0 +1,102 @@
+/*
+A row-sorted binary matrix means that all elements are 0 or 1 and each row of the matrix is sorted in non-decreasing order.
+
+Given a row-sorted binary matrix binaryMatrix, return the index (0-indexed) of the leftmost column with a 1 in it. If such an index does not exist, return -1.
+
+You can't access the Binary Matrix directly. You may only access the matrix using a BinaryMatrix interface:
+
+    BinaryMatrix.get(row, col) returns the element of the matrix at index (row, col) (0-indexed).
+     returns the dimensions of the matrix as a list of 2 elements [rows, cols], which means the matrix is rows x cols.
+
+For custom testing purposes, the input will be the entire binary matrix mat. You will not have access to the binary matrix directly.
+
+Ex
+
+0 0
+1 1
+
+1. dimensions 2x2
+2. Col by col 
+3. I check last row of that col if it is 1
+4. return col
+
+col: 1
+
+output: 0
+
+Ex.
+
+0 0
+0 1
+
+dim 2*2
+j=0, lastrow = 1
+m[0][1] = 0
+j=1
+m[0][1] = 1 = > j=1
+
+output: 1
+
+Ex
+
+0 0
+0 0 
+
+output: -1
+
+TC: O(n)
+SC: O(1)
+
+
+0 1 1  - BS O(logn) j=1
+1 1 1  -  j = 0
+0 0 1  -  j = 2
+
+j=0 i=0,1,2
+m*n
+TC: O(mlogn)
+
+output: 0
+
+0 0 0
+0 0 0
+0 0 1
+
+output: 2
+TC: O(m*n) worst case
+
+Walk backwards
+1. Check cols before that only, if you find 1, as it is 1
+*/
+
+public class Main {
+    public static void main(String[] args){
+        int[][] grid1 = {{0,1,1}, {1,1,1}, {0,0,1}};
+        System.out.println(findMinColumn(grid1) + " => 0");
+        
+        int[][] grid2 = {{0,0,0}, {0,0,0}, {0,0,1}};
+        System.out.println(findMinColumn(grid1) + " => 2");
+    }
+    
+    // TC: O(m+n) SC: O(1)
+    public static int findMinColumn(int[][] grid){
+        int m = grid.length;
+        int n = grid[0].length;    
+        int minIndexSoFar = n;
+        
+        // System.out.println("Hello!");
+        
+        // Walk backwards
+        int i=0, j = n-1;
+        while(i<m && j>=0){
+            if(grid[i][j]==1){
+                minIndexSoFar = Math.min(minIndexSoFar, j);
+                j--;
+            } else{
+                 i++;   
+            }
+        }
+        
+        return minIndexSoFar==n ? -1: minIndexSoFar;
+    }   
+}
