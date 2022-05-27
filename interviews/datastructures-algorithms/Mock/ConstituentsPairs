@@ -1,0 +1,113 @@
+/**
+Problem: Extract Constituents
+
+In many theories of linguistics, a syntactic parse of a sentence can be represented as a binary tree. For example:
+ 
+      X
+     / \
+    /   \
+   X     \
+  / \     \
+ /   \     \
+the  cat jumped
+
+Each set of words that stem from a single X (or non-terminal) node, is called a constituent. In the above example, there are 2 constituents:
+
+(the cat)
+(the cat jumped)
+
+The above syntactic parse tree can be represented as a bracketed string:
+
+((the cat) jumped)
+
+Your task is to read in the bracketed string representation of a binary parse tree and to output a list of constituents. Here are some examples:
+
+ Input: ((the cat) jumped)
+Output: (the cat), (the cat jumped)
+
+ Input: (cats (eat mice)) 
+Output: (cats eat mice), (eat mice)
+
+ Input: ((cats (eat mice)) obviously)
+Output: (cats eat mice obviously), (cats eat mice), (eat mice)
+
+ Input: ((the cat) (eats mice))
+Output:(the cat eats mice), (the cat), (eats mice)
+
+         
+
+((the cat) jumped)
+
+
+the cat jumped
+
+
+((cats (eat mice)) obviously)
+
+
+cats eat mice obviously
+eat mice
+cats eat mice
+
+    
+TC: O(n)
+SC: O(n)
+    
+**/
+
+import java.util.*;
+
+class Main {
+    public static void main(String[] args) {   
+        System.out.println(getConstituents("((the cat) jumped)"));
+        System.out.println(getConstituents("(cats (eat mice))"));
+        System.out.println(getConstituents("((cats (eat mice)) obviously)"));
+        System.out.println(getConstituents("((the cat) (eats mice))"));
+        
+    }
+     
+    
+    public static List<String> getConstituents(String sentence){
+        int n = sentence.length();
+        List<String> result = new ArrayList<>();
+        
+        if(n<1) 
+            return result;
+        
+        Stack<String> stack = new Stack<>();
+        StringBuilder sb = new StringBuilder();
+        
+        for(char c: sentence.toCharArray()){   // (cats (eat mice)) 
+            if(c=='('){
+                if(sb.length()>1){
+                    stack.push(sb.toString());
+                    sb = new StringBuilder();
+                }
+                
+                stack.push(""+c);
+                
+                
+            } else if(c==')') {
+                //result.add(sb.toString());
+                //System.out.println(" before sb: " + sb.toString());
+                while(!stack.isEmpty() && !stack.peek().equals("("))
+                    sb.insert(0, stack.pop()); // append to front
+                
+                //System.out.println(" after sb: " + sb.toString());
+                
+                if(!stack.isEmpty()) // to take care of last char
+                    stack.pop(); // remove (
+                
+                stack.push(sb.toString());
+                result.add(sb.toString());
+                
+                sb = new StringBuilder();
+                
+            } else { // character or space
+                sb.append(c); // sb: the cat jumped
+            }
+        }
+        
+        return result;
+    }
+}
