@@ -1,0 +1,107 @@
+/*
+ * Click `Run` to execute the snippet below!
+ *
+ * Implement a hash map which has the following conditions with O(1) complexity:
+ * - get(key) 
+ * - put(key,value)
+ * - remove(key)
+ *
+
+ put(key, value) => key - 1 hash(1) -> location values
+ get(key) => hash(key) 
+ remove(key) => hash(key) 
+
+ size = 1000
+ size = 2000
+ 
+ int[] map = new int[size];
+ int[1] = value
+ hash => key%size = 1%1000 = 1
+
+Collisions:
+ 1, 1001
+ 1  - {1, 1001, 2001} O(n)
+ 2 - 2
+
+ List<List<Integer>>
+ size = 1M
+
+Key - String, Char
+abc => 123
+abc => 011011
+2^0 =>1 = >01
+2^1 = > 2 =>10
+3 => 11
+
+abc => a1b1c1
+aaabbbbbbccccc => a3b5c4
+
+Concurrent:
+Semaphore, Locking tecnique -> put, remove => updating
+get -> simply reading 
+
+
+1 -> a   b    c   d
+2
+3
+
+
+Concurernt hash map:
+
+
+T1                   T2                       T3
+                    getOp - begin ($1000)
+                                              getOp - begin
+putOp begin                                         ($2000)
+                                                                getOp - begin
+                    getOp - end ($1000)
+putOp-end
+  
+
+
+Reader Writers lock:
+
+Consistency is important.
+
+getLock = false
+putLock = false
+
+Readers: get
+-> while(!putLock) 
+    -> Perfom get => getLock = true
+    -> I will do get operations
+    -> getLock = false
+  
+
+
+Writers: put
+-> while(!getLock)
+    -> putLock = true
+    -> do put operations
+    -> putLock = false
+
+Deadlock
+ */
+
+import java.io.*;
+import java.util.*;
+
+/*
+ * To execute Java, please define "static void main" on a class
+ * named Solution.
+ *
+ * If you need more classes, simply define them inline.
+ */
+
+class Solution {
+  public static void main(String[] args) {
+    ArrayList<String> strings = new ArrayList<String>();
+    strings.add("Hello, World!");
+    strings.add("Welcome to CoderPad.");
+    strings.add("This pad is running Java " + Runtime.version().feature());
+
+    for (String string : strings) {
+      System.out.println(string);
+    }
+  }
+}
